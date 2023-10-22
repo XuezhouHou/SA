@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.15)  22 OCT 2023 11:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.15)  22 OCT 2023 12:54
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2321,32 +2321,34 @@ Package pdftex.def Info: figures/MessageConceptual.png  used on input line 181.
 (pdftex.def)             Requested size: 341.43306pt x 249.1515pt.
 Package cleveref Info: loaded `english' language definitions on input line 196.
  [10]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 206.
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 208.
 <figures/DT_Conceptual_Diagram.png, id=418, 1095.09125pt x 630.355pt>
 File: figures/DT_Conceptual_Diagram.png Graphic file (type png)
 <use figures/DT_Conceptual_Diagram.png>
-Package pdftex.def Info: figures/DT_Conceptual_Diagram.png  used on input line 256.
+Package pdftex.def Info: figures/DT_Conceptual_Diagram.png  used on input line 308.
 (pdftex.def)             Requested size: 455.24408pt x 262.04451pt.
 
-Overfull \hbox (28.45273pt too wide) in paragraph at lines 256--258
+Overfull \hbox (28.45273pt too wide) in paragraph at lines 308--310
  [][] 
  []
 
-Package cleveref Info: loaded `english' language definitions on input line 276.
+Package cleveref Info: loaded `english' language definitions on input line 328.
 [11{e:/Latex/texlive/2023/texmf-dist/fonts/enc/dvips/ly1/texnansi.enc} <./figures/MessageConceptual.png>]
-Package cleveref Info: loaded `english' language definitions on input line 276.
- [12])
+Package cleveref Info: loaded `english' language definitions on input line 328.
+ [12]
+Package cleveref Info: loaded `english' language definitions on input line 328.
+ [13])
 Package cleveref Info: loaded `english' language definitions on input line 76.
- [13 <./figures/DT_Conceptual_Diagram.png>]
+ [14 <./figures/DT_Conceptual_Diagram.png>]
 \openout2 = `source/chapter04.aux'.
 
- (./source/chapter04.tex [14
+ (./source/chapter04.tex
+Chapter 4.
+) [15
 
 
 
 ]
-Chapter 4.
-) [15]
 \openout2 = `source/chapter05.aux'.
 
  (./source/chapter05.tex [16
@@ -2425,17 +2427,17 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 66864 strings out of 477853
- 1511223 string characters out of 5833684
- 2461398 words of memory out of 5000000
- 85799 multiletter control sequences out of 15000+600000
+ 66877 strings out of 477853
+ 1511420 string characters out of 5833684
+ 2461504 words of memory out of 5000000
+ 85811 multiletter control sequences out of 15000+600000
  600506 words of font info for 139 fonts, out of 8000000 for 9000
  38 hyphenation exceptions out of 8191
  109i,18n,131p,2910b,2461s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <e:/Latex/texlive/2023/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb><e:/Latex/texlive/2023/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb><e:/Latex/texlive/2023/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb><e:/Latex/texlive/2023/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><e:/Latex/texlive/2023/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><e:/Latex/texlive/2023/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on main.pdf (33 pages, 764535 bytes).
+Output written on main.pdf (33 pages, 766236 bytes).
 PDF statistics:
- 575 PDF objects out of 1000 (max. 8388607)
- 114 named destinations out of 1000 (max. 500000)
+ 577 PDF objects out of 1000 (max. 8388607)
+ 115 named destinations out of 1000 (max. 500000)
  286 words of extra memory for PDF output out of 10000 (max. 10000000)
 

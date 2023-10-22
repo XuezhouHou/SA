@@ -201,7 +201,9 @@ This allows \gls{cda} to have an overall control among the entire prodution proc
 \algdef{SE}[CLASS]{Class}{EndClass}[1]
    {\algorithmicclass\ \textsc{#1}\vspace{0.2cm}}%
    {\vspace{0.2cm}}%
+
    
+%pseudo code for CDA
 \begin{algorithm}
 \caption{Pseudo-Code of Coordinator agent in MAS workflow}
 \label{alg:CDAPseudoCode}
@@ -219,7 +221,7 @@ This allows \gls{cda} to have an overall control among the entire prodution proc
 \State \textbf{Class} messageReceiver
     \Procedure{receive\_and\_send\_messages}{$self, recipient, message, priority$}
     \State 1. Establish a WebSocket connection
-    \State 2. Receive and send messages
+    \State 2. Receive, process and send messages
     \State 3. Handle exceptions
     \EndProcedure
 \State \textbf{EndClass}
@@ -243,6 +245,56 @@ This allows \gls{cda} to have an overall control among the entire prodution proc
 \State \textbf{End} receive finish message from last agent in sequence 
 \end{algorithmic}
 \end{algorithm}
+
+%pseudo code for RA
+\begin{algorithm}
+    \caption{Pseudo-Code of Resource agent in MAS workflow}
+    \label{alg:RAPseudoCode}
+    \begin{algorithmic}
+    \State \textbf{Import} necessary libraries
+    \State \textbf{Initialize} agent relevant variables
+    
+    \State \textbf{Class} messageSender
+        \Procedure{send\_and\_receive\_messages}{$self, recipient, message, priority$}
+        \State 1. Establish a WebSocket connection
+        \State 2. Send and receive messages
+        \State 3. Handle exceptions
+        \EndProcedure
+    \State \textbf{EndClass}
+    \State \textbf{Class} messageReceiver
+        \Procedure{receive\_and\_send\_messages}{$self, recipient, message, priority$}
+        \State 1. Establish a WebSocket connection
+        \State 2. Receive, process and send messages
+        \State 3. Handle exceptions
+        \EndProcedure
+    \State \textbf{EndClass}
+
+    
+    \State \textbf{Main:}
+    \State \textbf{Instantiate} allocated agents and message sender and receiver
+    \State \textbf{Wait} for connectivity check from Coordinator agent
+    \State \textbf{Loop} receive capability check from Coordinator agent
+    \State \textbf{Loop} 
+    \If{agent is first in sequence}
+        \State \textbf{wait} receive availability check from Coordinator agent
+    \Else
+        \If{previous agent is not self}
+            \State \textbf{wait} receive availability check and inform message from last agent
+            \State \textbf{do} execute corresponding primitive
+            \EndIf
+        \If{agent is not last one AND next agent is not self}
+            \State \textbf{do} send availability check and inform message to next agent
+            \State \textbf{do} execute corresponding primitive
+            \State \textbf{do} inform Coordinator agent about completion
+            \EndIf
+        \If{agent is last}
+            \State \textbf{do} execute corresponding primitive
+            \State \textbf{do} inform Coordinator agent about completion and send finish message
+        \EndIf
+    \EndIf
+    \State \textbf{End} 
+    \end{algorithmic}
+    \end{algorithm}
 
 \subsection{tcp socket and websocket}
 compare tcp and websockets in programming difference (server, clients)
