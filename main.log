@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.15)  22 OCT 2023 15:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.6.15)  22 OCT 2023 15:32
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2325,18 +2325,13 @@ Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on inp
 <figures/DT_Conceptual_Diagram.png, id=418, 1095.09125pt x 630.355pt>
 File: figures/DT_Conceptual_Diagram.png Graphic file (type png)
 <use figures/DT_Conceptual_Diagram.png>
-Package pdftex.def Info: figures/DT_Conceptual_Diagram.png  used on input line 308.
-(pdftex.def)             Requested size: 455.24408pt x 262.04451pt.
-
-Overfull \hbox (28.45273pt too wide) in paragraph at lines 308--310
- [][] 
- []
-
-Package cleveref Info: loaded `english' language definitions on input line 328.
-[11{e:/Latex/texlive/2023/texmf-dist/fonts/enc/dvips/ly1/texnansi.enc} <./figures/MessageConceptual.png>]
-Package cleveref Info: loaded `english' language definitions on input line 328.
+Package pdftex.def Info: figures/DT_Conceptual_Diagram.png  used on input line 302.
+(pdftex.def)             Requested size: 426.79135pt x 245.67393pt.
+Package cleveref Info: loaded `english' language definitions on input line 322.
+ [11{e:/Latex/texlive/2023/texmf-dist/fonts/enc/dvips/ly1/texnansi.enc} <./figures/MessageConceptual.png>]
+Package cleveref Info: loaded `english' language definitions on input line 322.
  [12]
-Package cleveref Info: loaded `english' language definitions on input line 328.
+Package cleveref Info: loaded `english' language definitions on input line 322.
  [13])
 Package cleveref Info: loaded `english' language definitions on input line 78.
  [14 <./figures/DT_Conceptual_Diagram.png>]
@@ -2435,7 +2430,7 @@ Here is how much of TeX's memory you used:
  38 hyphenation exceptions out of 8191
  109i,18n,131p,2910b,2461s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <e:/Latex/texlive/2023/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb><e:/Latex/texlive/2023/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb><e:/Latex/texlive/2023/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb><e:/Latex/texlive/2023/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7t.pfb><e:/Latex/texlive/2023/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><e:/Latex/texlive/2023/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><e:/Latex/texlive/2023/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on main.pdf (33 pages, 769241 bytes).
+Output written on main.pdf (33 pages, 768878 bytes).
 PDF statistics:
  582 PDF objects out of 1000 (max. 8388607)
  115 named destinations out of 1000 (max. 500000)
