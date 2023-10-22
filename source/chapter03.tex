@@ -101,62 +101,72 @@ Figure. \ref{fig: OSI} shows the famous OSI-Model with 7 abstraction layers with
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
 % \usepackage{tabularx}
+\subsubsection{Transport layer protocols}
+
+
+Table \ref{tab: transportlayer} compares the typical transport layer protocols \gls{tcp} and \gls{udp} from different aspects.  
+\gls{tcp} provides reliable data transfer while \gls{udp} mainly focuses on transport speed and efficiency without reliability guarantee. 
+With the focus on speed and reliability, \gls{udp} on one hand offers a faster packet transfer, while on the other hand produces a network dependent packet loss rate and out-of-order packet sequence, compared to \gls{tcp}. 
+Because of the requirement of a reliable real time ordered data transfer with minimum to no packet loss in \gls{mas} communication, TCP is used as the base protocols of the design. 
+
 
 \begin{table}[htbp]
-\small
-\centering
-\caption{Characteristics of different technologies in transportlayer protocols}
-\label{tab: transportlayer}
-\begin{tabular}{|m{0.2\textwidth}|m{0.3\textwidth}|m{0.3\textwidth}|}
-\hline
-\multicolumn{3}{|c|}{\textbf{Transport layer protocols}}                                                            \\ \hline
-\textbf{Aspect}                         & \textbf{\gls{tcp}}             & \textbf{\gls{udp}}        \\ \hline
-Use cases                      & Web browsing, email, text messaging, and file transfers & Live and real-time data transmission \\ \hline
-Reliability                    & Reliable        & Unreliable \\ \hline
-Stream type                    & Byte stream with no preserved boundaries & Message stream with preserved boundaries \\ \hline
-Connection type                & Connection oriented, three handshake & No connection needed \\ \hline
-Overhead                       & Larger than \gls{udp} & Very low   \\ \hline
-Header size                    & 20-60 bytes     & 8 bytes    \\ \hline
-Sequence                       & Packets arrive in sequence & No sequencing for packets \\ \hline
-Retransmission of lost packets & Yes             & No         \\ \hline
-Speed                          & Slower than \gls{udp}, because of overhead and connection & Relative faster than \gls{tcp} \\ \hline
-State                          & Stateful        & Stateless  \\ \hline
-Flow control                   & Yes             & No         \\ \hline
-\end{tabular}
-\end{table}
+    \small
+    \centering
+    \caption{Characteristics of different technologies in transportlayer protocols}
+    \label{tab: transportlayer}
+    \begin{tabular}{|m{0.2\textwidth}|m{0.3\textwidth}|m{0.3\textwidth}|}
+    \hline
+    \multicolumn{3}{|c|}{\textbf{Transport layer protocols}}                                                            \\ \hline
+    \textbf{Aspect}                         & \textbf{\gls{tcp}}             & \textbf{\gls{udp}}        \\ \hline
+    Use cases                      & Web browsing, email, text messaging, and file transfers & Live and real-time data transmission \\ \hline
+    Reliability                    & Reliable        & Unreliable \\ \hline
+    Stream type                    & Byte stream with no preserved boundaries & Message stream with preserved boundaries \\ \hline
+    Connection type                & Connection oriented, three handshake & No connection needed \\ \hline
+    Overhead                       & Larger than \gls{udp} & Very low   \\ \hline
+    Header size                    & 20-60 bytes     & 8 bytes    \\ \hline
+    Sequence                       & Packets arrive in sequence & No sequencing for packets \\ \hline
+    Retransmission of lost packets & Yes             & No         \\ \hline
+    Speed                          & Slower than \gls{udp}, because of overhead and connection & Relative faster than \gls{tcp} \\ \hline
+    State                          & Stateful        & Stateless  \\ \hline
+    Flow control                   & Yes             & No         \\ \hline
+    \end{tabular}
+    \end{table}
 
 
+
+\subsubsection{Application layer protocols}
 
 
 % % Please add the following required packages to your document preamble:
 
 \begin{sidewaystable}[htbp]
-\small
-\caption{Characteristics of different technologies in application layer protocols}
-\label{tab: applicationlayer}
-\centering
-\begin{tabular}{|m{0.13\textwidth}|m{0.2\textwidth}|m{0.2\textwidth}|m{0.2\textwidth}|m{0.2\textwidth}|}
-\hline
-\multicolumn{5}{|c|}{\textbf{Application layer protocols}} \\ \hline
-\textbf{Aspect} & \textbf{HTTP} & \textbf{WebSocket} & \textbf{RESTful API} & \textbf{MQTT} \\ \hline
-Use cases & Web pages, images, videos, World Wide Web, etc & Such as chat applications, live gaming, etc & Web and mobile applications with data management requirement & Usually in IoT with limited bandwidth \\ \hline
-Functionality & Request-response protocol based on TCP, foundation for both RESTful APIs and the initial connection in WebSockets & Bi-directional, real-time communication & Uses standard HTTP methods to perform CRUD (Create, Read, Update, Delete) & Lightweight message transport, runs over TCP \\ \hline
-Security & Use SSL/TLS & ws (unsecured) and wss (secured with SSL/TLS) & Similar to HTTP, can be further secured using various authentication mechanisms like OAuth, JWT & Use TLS, like username/password authentication and optional message-level security \\ \hline
-Message patterns & Request-Response & Full Duplex (send and receive independent) & Request-Response & Publish-Subscribe \\ \hline
-Connection type & No connection needed & Persistent {connection} & No connection needed & Persistent connection \\ \hline
-State & Stateless & Stateful & Stateless & Stateful \\ \hline
-Overhead & Overhead for each request-response cycle, especially for new connections & After the initial handshake (HTTP), data frames are lightweight & Similar to HTTP, dependent on API design & Minimal message overhead \\ \hline
-Realtime capability & Less Capable & Highly Suitable & Variable & Highly Suitable \\ \hline
-Flexibility & Supported in all environments & Supported in most modern web browsers and many backend environments & Similar to HTTP & Highly flexible \\ \hline
-Adaptability to dynamic changes & Relative lower (influenced by stateless nature) & High & Relative lower (influenced by stateless nature) & High \\ \hline
-Capability of handling instability & Less capable, requires a stable connection for each request-response cycle & Less stable if connection disruptions happen frequently & Identical to HTTP & Capable, Ideal for remote locations with limited connectivity \\ \hline
-Scalability & Less scalable, require more infrastructure support & Highly scalable, maintains connections for real-time interactions & similar to HTTP, dependent on API design & Highly scalable based on broker-client message transport \\ \hline
-\end{tabular}
+    \small
+    \caption{Characteristics of different technologies in application layer protocols}
+    \label{tab: applicationlayer}
+    \centering
+    \begin{tabular}{|m{0.13\textwidth}|m{0.2\textwidth}|m{0.2\textwidth}|m{0.2\textwidth}|m{0.2\textwidth}|}
+    \hline
+    \multicolumn{5}{|c|}{\textbf{Application layer protocols}} \\ \hline
+    \textbf{Aspect} & \textbf{HTTP} & \textbf{WebSocket} & \textbf{RESTful API} & \textbf{MQTT} \\ \hline
+    Use cases & Web pages, images, videos, World Wide Web, etc & Such as chat applications, live gaming, etc & Web and mobile applications with data management requirement & Usually in IoT with limited bandwidth \\ \hline
+    Functionality & Request-response protocol based on TCP, foundation for both RESTful APIs and the initial connection in WebSockets & Bi-directional, real-time communication & Uses standard HTTP methods to perform CRUD (Create, Read, Update, Delete) & Lightweight message transport, runs over TCP \\ \hline
+    Security & Use SSL/TLS & ws (unsecured) and wss (secured with SSL/TLS) & Similar to HTTP, can be further secured using various authentication mechanisms like OAuth, JWT & Use TLS, like username/password authentication and optional message-level security \\ \hline
+    Message patterns & Request-Response & Full Duplex (send and receive independent) & Request-Response & Publish-Subscribe \\ \hline
+    Connection type & No connection needed & Persistent {connection} & No connection needed & Persistent connection \\ \hline
+    State & Stateless & Stateful & Stateless & Stateful \\ \hline
+    Overhead & Overhead for each request-response cycle, especially for new connections & After the initial handshake (HTTP), data frames are lightweight & Similar to HTTP, dependent on API design & Minimal message overhead \\ \hline
+    Realtime capability & Less Capable & Highly Suitable & Variable & Highly Suitable \\ \hline
+    Flexibility & Supported in all environments & Supported in most modern web browsers and many backend environments & Similar to HTTP & Highly flexible \\ \hline
+    Adaptability to dynamic changes & Relative lower (influenced by stateless nature) & High & Relative lower (influenced by stateless nature) & High \\ \hline
+    Capability of handling instability & Less capable, requires a stable connection for each request-response cycle & Less stable if connection disruptions happen frequently & Identical to HTTP & Capable, Ideal for remote locations with limited connectivity \\ \hline
+    Scalability & Less scalable, require more infrastructure support & Highly scalable, maintains connections for real-time interactions & similar to HTTP, dependent on API design & Highly scalable based on broker-client message transport \\ \hline
+    \end{tabular}
 \end{sidewaystable}
 
-
-Table \ref{tab: transportlayer} compares the typical transport layer protocols \gls{tcp} and \gls{udp} from different aspects.  \gls{tcp} provides reliable data transfer while \gls{udp} mainly focuses on transport speed and efficiency without reliability guarantee. With the focus on speed and reliability, \gls{udp} on one hand offers a faster packet transfer, while on the other hand produces a network dependent packet loss rate and out-of-order packet sequence, compared to \gls{tcp}. Because of the requirement of a reliable real time ordered data transfer with minimum to no packet loss in \gls{mas} communication, TCP is used as the base protocols of the design. There are several protocols in application layers that are considered to be suitable for \gls{mas} communication, each with its own advantages and limits in different aspects according to table \ref{tab: applicationlayer}.
+There are several protocols in application layers that are considered to be suitable for \gls{mas} communication, each with its own advantages and limits in different aspects according to table \ref{tab: applicationlayer}.
 To get a closer look of the Table \ref{tab: applicationlayer},  a horizontal comparisons between different application layer protocols: 
+
 \begin{itemize}
 \item \gls{http},
 \item WebSocket,
@@ -172,9 +182,17 @@ should be performed. In one word, WebSocket is chosen to be the application laye
 \item Secure with wss.
 \end{enumerate}
 
-Figure.\ref{fig: MsgConceptual} shows the differences between bi-directional full duplex and other message patterns like Request-Response and Publish-Subscribe, in the context of data transfer. For the \gls{mqtt}, publisher publish (send) a message within a topic to the broker (server), while subscriber subscribes (receive) the message from the broker within the same topic. For response, a new topic needed to be started, but there is no guarantee that the original publisher is listening, which is a drawback for send-and-receive patterns of \gls{mas}. 
+Figure.\ref{fig: MsgConceptual} shows the differences between bi-directional full duplex and other message patterns like Request-Response and Publish-Subscribe, in the context of data transfer. 
+For the \gls{mqtt}, publisher publish (send) a message within a topic to the broker (server), while subscriber subscribes (receive) the message from the broker within the same topic. 
+For response, a new topic needed to be started, but there is no guarantee that the original publisher is listening, which is a drawback for send-and-receive patterns of \gls{mas}. 
 
-Relatively, the other three protocols will be considered as more appropriate. For instance both HTTP and RESTful API run in request-response mechanism. A client posts (sends) messages to the server for the other client will get (receive) from it. Whether the GET and POST method are successful or not, a response will be given back. With this mechanism, each time a message is going through the server, a new connection will be established and closed after responses are sent. The inconsistent connection will consume more communication time and lead to higher latency. The ideal solution for that is the bi-directional and full duplex real time communication mechanism of WebSocket. Basically the client sends a message to the server, after processing the data, the server will pass the message to the other client and receive response with the same logic. This allows simultaneous communication in both directions between clients, so that no re-connection in the message transfer cycle is necessary. The consistent server-client connection makes it possible to realize a continuous real time communication between agents. In the next section, a more detailed explanation of WebSocket mechanism will be given.
+Relatively, the other three protocols will be considered as more appropriate. 
+For instance both HTTP and RESTful API run in request-response mechanism. 
+A client posts (sends) messages to the server for the other client will get (receive) from it. 
+Whether the GET and POST method are successful or not, a response will be given back. With this mechanism, each time a message is going through the server, a new connection will be established and closed after responses are sent. 
+The inconsistent connection will consume more communication time and lead to higher latency. 
+The ideal solution for that is the bi-directional and full duplex real time communication mechanism of WebSocket. 
+Basically the client sends a message to the server, after processing the data, the server will pass the message to the other client and receive response with the same logic. This allows simultaneous communication in both directions between clients, so that no re-connection in the message transfer cycle is necessary. The consistent server-client connection makes it possible to realize a continuous real time communication between agents. In the next section, a more detailed explanation of WebSocket mechanism for \gls{mas} design will be given.
 
 %figure conceptual application layer protocols
 \begin{figure}[htb]
@@ -184,18 +202,26 @@ Relatively, the other three protocols will be considered as more appropriate. Fo
 \end{figure}
 
 
+\subsection{tcp socket and websocket}
+compare tcp and websockets in programming difference (server, clients)
 
 
 \subsection{Pseudo-Code of MAS workflow}
 In Algorithm \ref{alg:CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
 Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitives execution but the ability to do planning and decision making. 
-Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive$ functions under the messageSender class.
+Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive\_messages$ functions under the messageSender class.
 After getting responses from the agents, \gls{cda} should deicide whether to start processing by positive responses or retry the steps by negative responses.  
-Once the process starts, the \gls{cda} does nothing but wait for the inform messages from the allocated agents by using one of the $receive\_and\_send$ functions under the messageReceiver class. 
+Once the process starts, the \gls{cda} does nothing but wait for the inform messages from the allocated agents by using one of the $receive\_and\_send\_messages$ functions under the messageReceiver class. 
 This allows \gls{cda} to have an overall control among the entire prodution process with the purpose of centralization of the distributed agent systems.  
 
 
-
+As for the decentralization of \gls{mas}, the \gls{ra} should be able to react to \gls{cda} and do decision making for its own field level control.  
+Which means, \gls{cda} should only be informed about the status of the production process, while the exact processes should be done within \gls{ra} and the material flow should be informed between \gls{ras}. The combination of centralization and decentralization will save the resource power consumed by \gls{cda}, 
+while still maintains the management level control and decision making.  
+The Algorithm \ref{alg:RAPseudoCode} shows the logic of a \gls{ra}. At the beginning, \gls{ra} waits for the connection and capability check from \gls{cda}, after that first agent in the list of $sequenced\_agent$ will listen to the starting message from \gls{cda}, 
+and other agents, will wait for the availability check and inform message of the last agent in the list. 
+After executing all primitives of its own, the \gls{ra} should check the availability and inform the starting point of next agent.  
+Once all primitives in the list are done, the last agent should inform the \gls{cda} about the end of processing.
 % Define Class...EndClass for better representation
 \algnewcommand\algorithmicclass{\textbf{class}}
 \algdef{SE}[CLASS]{Class}{EndClass}[1]
@@ -203,7 +229,6 @@ This allows \gls{cda} to have an overall control among the entire prodution proc
    {\vspace{0.2cm}}%
 
    
-%pseudo code for CDA
 \begin{algorithm}
 \caption{Pseudo-Code of Coordinator agent in MAS workflow}
 \label{alg:CDAPseudoCode}
@@ -295,9 +320,6 @@ This allows \gls{cda} to have an overall control among the entire prodution proc
     \State \textbf{End} 
     \end{algorithmic}
     \end{algorithm}
-
-\subsection{tcp socket and websocket}
-compare tcp and websockets in programming difference (server, clients)
 
 
 \section{External}

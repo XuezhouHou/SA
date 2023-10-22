@@ -54,28 +54,7 @@
     \field{sortinit}{C}
     \field{sortinithash}{C}
     \field{abstract}{%
-    The growing complexity of production systems requires appropriate control
-  architectures that allow flexible adaptation during their runtime. Although
-  cyber-physical production systems (CPPS) provide the means to cope with
-  complexity and flexibility, the migration with existing control systems is
-  still a challenge. The term CPPS denotes a mechatronic system (physical
-  world) coupled with software entities and digital information (cyber part),
-  both enabling the smart factory concept for the Industry 4.0 (I4.0) paradigm.
-  In this regard, design patterns could help developers to build their software
-  with common solutions for manufacturing control derived from experiences. We
-  provide a description and comparison of the already existing multi-agent
-  systems (MAS) design patterns, which were collected and classified by
-  introducing two classification criteria to support MAS developers. The
-  applicability of these criteria is shown in the case of specific example
-  architectures from the lower and higher control levels. The authors, together
-  with experts from the German Agent Systems committee FA 5.15, gathered more
-  than twenty MAS patterns, evaluated, and compared four selected patterns with
-  the presented criteria and terminology. The main contribution is a CPPS
-  architecture that fulfills requirements related to the era of smart
-  factories, as well as the Reference Architectural Model I4.0 (RAMI 4.0). The
-  conclusions indicate that agent-based patterns greatly benefit the CPPS
-  design. In addition, it is shown that manufacturing based on MAS is a good
-  way to address complex requests of the CPPS development.%
+    The growing complexity of production systems requires appropriate control architectures that allow flexible adaptation during their runtime. Although cyber-physical production systems (CPPS) provide the means to cope with complexity and flexibility, the migration with existing control systems is still a challenge. The term CPPS denotes a mechatronic system (physical world) coupled with software entities and digital information (cyber part), both enabling the smart factory concept for the Industry 4.0 (I4.0) paradigm. In this regard, design patterns could help developers to build their software with common solutions for manufacturing control derived from experiences. We provide a description and comparison of the already existing multi-agent systems (MAS) design patterns, which were collected and classified by introducing two classification criteria to support MAS developers. The applicability of these criteria is shown in the case of specific example architectures from the lower and higher control levels. The authors, together with experts from the German Agent Systems committee FA 5.15, gathered more than twenty MAS patterns, evaluated, and compared four selected patterns with the presented criteria and terminology. The main contribution is a CPPS architecture that fulfills requirements related to the era of smart factories, as well as the Reference Architectural Model I4.0 (RAMI 4.0). The conclusions indicate that agent-based patterns greatly benefit the CPPS design. In addition, it is shown that manufacturing based on MAS is a good way to address complex requests of the CPPS development.%
     }
     \verb{doi}
     \verb 10.1007/s00170-019-03800-4
@@ -83,9 +62,7 @@
     \field{issn}{0268-3768, 1433-3015}
     \field{number}{9}
     \field{pages}{4005\bibrangedash 4034}
-    \field{title}{Cyber-physical production systems architecture based on
-  multi-agent’s design pattern—comparison of selected approaches mapping
-  four agent patterns}
+    \field{title}{Cyber-physical production systems architecture based on multi-agent’s design pattern—comparison of selected approaches mapping four agent patterns}
     \verb{url}
     \verb http://link.springer.com/10.1007/s00170-019-03800-4
     \endverb
@@ -98,8 +75,7 @@
     \verb based_on_multi-agentâs_design_patternâcomparison_of_selecte
     \verb d_approaches_mapping_four_agent_patterns.pdf:application/pdf
     \endverb
-    \field{journaltitle}{The International Journal of Advanced Manufacturing
-  Technology}
+    \field{journaltitle}{The International Journal of Advanced Manufacturing Technology}
     \field{month}{12}
     \field{year}{2019}
     \field{urlday}{17}
@@ -212,8 +188,7 @@
     \field{sortinit}{G}
     \field{sortinithash}{G}
     \field{abstract}{%
-    The idea of creating digital twins to simulate real-world systems
-  isn\&\#39;t new, but the concept is advancing rapidly.%
+    The idea of creating digital twins to simulate real-world systems isn\&\#39;t new, but the concept is advancing rapidly.%
     }
     \field{title}{Digital {Twins} {Grow} {Up}}
     \verb{url}
@@ -232,8 +207,7 @@
     \field{labeltitlesource}{title}
     \field{sortinit}{J}
     \field{sortinithash}{J}
-    \field{title}{Jacques {Ferber}: {Multi}-{Agent} {Systems}: {An}
-  {Introduction} to {Distributed} {Artificial} {Intelligence}}
+    \field{title}{Jacques {Ferber}: {Multi}-{Agent} {Systems}: {An} {Introduction} to {Distributed} {Artificial} {Intelligence}}
     \verb{url}
     \verb https://www.jasss.org/4/2/reviews/rouchier.html
     \endverb
@@ -268,9 +242,7 @@
     \list{publisher}{1}{%
       {Springer}%
     }
-    \keyw{Ada, Ada 95, analog, Automatisierung, Automatisierungstechnik,
-  Betriebssystem, Echtzeitprogrammierung, Feldbus, Java, Kommunikation,
-  Programmiersprache, Schnittstelle, Signale, Systementwurf}
+    \keyw{Ada, Ada 95, analog, Automatisierung, Automatisierungstechnik, Betriebssystem, Echtzeitprogrammierung, Feldbus, Java, Kommunikation, Programmiersprache, Schnittstelle, Signale, Systementwurf}
     \strng{namehash}{LRGP1}
     \strng{fullhash}{LRGP1}
     \field{labelnamesource}{author}
@@ -341,8 +313,7 @@
     \field{issn}{24058963}
     \field{number}{1}
     \field{pages}{837\bibrangedash 844}
-    \field{title}{Leveraging the {Asset} {Administration} {Shell} for
-  {Agent}-{Based} {Production} {Systems}}
+    \field{title}{Leveraging the {Asset} {Administration} {Shell} for {Agent}-{Based} {Production} {Systems}}
     \verb{url}
     \verb https://linkinghub.elsevier.com/retrieve/pii/S2405896321009563
     \endverb
@@ -378,17 +349,7 @@
     \field{sortinit}{O}
     \field{sortinithash}{O}
     \field{abstract}{%
-    In the numerous existing studies dealing with multi-agent robot systems,
-  the systems are positioned on the crossover area of robotics and distributed
-  autonomous systems. Multi-agent robots perform many tasks, which are
-  classiﬁed into six types according to the dimension of the goal state and
-  the number of iterations of the tasks. This paper surveys earlier studies on
-  multi-agent robots for each type, such as multi-robot motion-planning
-  algorithms and exploration algorithms of multiple robots. The tasks that
-  multi-agent robots can perform are becoming increasingly more complex as they
-  move from single, one-time tasks to those involving many iterations. This
-  study is an investigation of the current trends and the potentials for
-  multi-agent robot systems.%
+    In the numerous existing studies dealing with multi-agent robot systems, the systems are positioned on the crossover area of robotics and distributed autonomous systems. Multi-agent robots perform many tasks, which are classiﬁed into six types according to the dimension of the goal state and the number of iterations of the tasks. This paper surveys earlier studies on multi-agent robots for each type, such as multi-robot motion-planning algorithms and exploration algorithms of multiple robots. The tasks that multi-agent robots can perform are becoming increasingly more complex as they move from single, one-time tasks to those involving many iterations. This study is an investigation of the current trends and the potentials for multi-agent robot systems.%
     }
     \verb{doi}
     \verb 10.1016/j.aei.2005.06.002
@@ -464,23 +425,7 @@
     \field{sortinit}{V}
     \field{sortinithash}{V}
     \field{abstract}{%
-    The discussion paper “I4.0 language: vocabulary, message structure and
-  semantic interaction protocols of the I4.0 language”, published by the
-  working group “Semantics and Interaction of Industry 4.0 Components” of
-  the GMA, also known as UAG of the AG 1 of the platform Industry 4.0 (I4.0),
-  presented a concept for the language between I4.0 components. The main
-  conclusion is: The increasing networking and cooperation of components enable
-  new forms of organization and control. A clear understanding of machine
-  interactions paves self-organized and self-optimized value creation in I4.0.
-  Agent-based systems are an option for the realization of such I4.0
-  architectures. Due to their features, software agents are particularly well
-  suited for representing I4.0 components and enabling I4.0 interactions.
-  Agents are not only able to understand the necessary machine languages, but
-  also the essential mechanisms for self-organization and selfoptimization in
-  value creation. The paper focuses on I4.0 scenarios described by the Platform
-  I4.0 that describes challenges for the industry towards its digital future
-  and demonstrates how emerging challenges in the area of I4.0 can be met with
-  the help of agent-based systems.%
+    The discussion paper “I4.0 language: vocabulary, message structure and semantic interaction protocols of the I4.0 language”, published by the working group “Semantics and Interaction of Industry 4.0 Components” of the GMA, also known as UAG of the AG 1 of the platform Industry 4.0 (I4.0), presented a concept for the language between I4.0 components. The main conclusion is: The increasing networking and cooperation of components enable new forms of organization and control. A clear understanding of machine interactions paves self-organized and self-optimized value creation in I4.0. Agent-based systems are an option for the realization of such I4.0 architectures. Due to their features, software agents are particularly well suited for representing I4.0 components and enabling I4.0 interactions. Agents are not only able to understand the necessary machine languages, but also the essential mechanisms for self-organization and selfoptimization in value creation. The paper focuses on I4.0 scenarios described by the Platform I4.0 that describes challenges for the industry towards its digital future and demonstrates how emerging challenges in the area of I4.0 can be met with the help of agent-based systems.%
     }
     \verb{doi}
     \verb 10.1515/auto-2020-0004
@@ -525,54 +470,13 @@
     \field{sortinit}{W}
     \field{sortinithash}{W}
     \field{abstract}{%
-    Im Zuge des fortschreitenden globalen Wettbewerbs kommt dem Standort
-  Deutschland zunehmend die Rolle eines „Engineering“-Standorts denn eines
-  Produktionsstandorts zu. Im Bereich der Anlagenautomatisierung werden unter
-  dem Begriff Engineering die Arbeitsprozesse und Tätigkeiten beim technischen
-  Entwurf und der Auslegung von Automatisierungsanlagen zusammengefasst. Die
-  Kosten für das Engineering hängen wesentlich von der Effizienz und
-  Produktivität der menschlichen Arbeitsprozesse und der Qualität der
-  resultierenden Engineeringinformationen ab. Dabei stellt neben methodischen
-  und technologischen Aspekten die Beachtung der technischen Zusammenhänge
-  zwischen den einzelnen Anlagenkomponenten eine große Herausforderung dar.
-  Diese sind sehr vielfältig und für jede Automatisierungsanlage
-  unterschiedlich ausgeprägt. Sie müssen daher im Zuge des Engineerings
-  vollständig erfasst und aufeinander abgestimmt werden, was heute zum
-  überwiegenden Teil manuell erfolgt und hohe Aufwendungen sowie zusätzliche
-  Fehlermöglichkeiten mit sich bringt. Ausgehend von der modernen
-  komponentenbasierten Vorgehensweise im Engineering und der Beschaffenheit der
-  erstellten Engineeringinformationen wird in der vorliegenden Arbeit ein
-  Ansatz vorgestellt, der zur informationstechnischen Unterstützung des
-  Engineerings von Automatisierungsanlagen dient. Durch geeignete Konzepte wird
-  eine deutliche Reduktion des manuellen Aufwandes und eine vereinfachte
-  Durchführung der menschlichen Tätigkeiten ermöglicht. Dabei wird durch den
-  Einsatz von Softwareagenten eine aktive Form der Unterstützung
-  bereitgestellt, welche sich flexibel an den Ablauf der menschlichen
-  Arbeitsprozesse anpasst. Das Konzept nutzt die vorhandenen
-  Engineeringinformationen und bestehendes Wissen über technische
-  Abhängigkeiten einzelner Komponenten und überträgt diese auf einzelne
-  Softwareagenten. Auf dieser Basis agieren und kooperieren die Softwareagenten
-  parallel zu den Tätigkeiten des Ingenieurs im Hintergrund. Sie sind in der
-  Lage, die beim Engineering entstehenden technischen Zusammenhänge innerhalb
-  der Automatisierungsanlage selbstständig zu erkennen, zu analysieren und
-  geeignete Anpassungen der Engineeringinformationen zu ermitteln. Die
-  Interaktion mit dem Ingenieur erfolgt in Form von entsprechenden Hinweisen
-  und Lösungsvorschlägen, welche auf Wunsch von den Softwareagenten
-  selbstständig umgesetzt werden können. Auf diese Weise werden die
-  individuellen technischen Zusammenhänge einer Automatisierungsanlage bereits
-  auf informationstechnischer Ebene berücksichtigt und ein Großteil der
-  bisher erforderlichen manuellen Tätigkeiten und Überlegungen kann
-  entfallen. Das Konzept wurde darüber hinaus so ausgelegt, dass es zu bisher
-  verwendeten Komponentenmodellen und Werkzeugen kompatibel ist und sich
-  problemlos in bestehende Engineeringprozesse integrieren lässt.%
+    Im Zuge des fortschreitenden globalen Wettbewerbs kommt dem Standort Deutschland zunehmend die Rolle eines „Engineering“-Standorts denn eines Produktionsstandorts zu. Im Bereich der Anlagenautomatisierung werden unter dem Begriff Engineering die Arbeitsprozesse und Tätigkeiten beim technischen Entwurf und der Auslegung von Automatisierungsanlagen zusammengefasst. Die Kosten für das Engineering hängen wesentlich von der Effizienz und Produktivität der menschlichen Arbeitsprozesse und der Qualität der resultierenden Engineeringinformationen ab. Dabei stellt neben methodischen und technologischen Aspekten die Beachtung der technischen Zusammenhänge zwischen den einzelnen Anlagenkomponenten eine große Herausforderung dar. Diese sind sehr vielfältig und für jede Automatisierungsanlage unterschiedlich ausgeprägt. Sie müssen daher im Zuge des Engineerings vollständig erfasst und aufeinander abgestimmt werden, was heute zum überwiegenden Teil manuell erfolgt und hohe Aufwendungen sowie zusätzliche Fehlermöglichkeiten mit sich bringt. Ausgehend von der modernen komponentenbasierten Vorgehensweise im Engineering und der Beschaffenheit der erstellten Engineeringinformationen wird in der vorliegenden Arbeit ein Ansatz vorgestellt, der zur informationstechnischen Unterstützung des Engineerings von Automatisierungsanlagen dient. Durch geeignete Konzepte wird eine deutliche Reduktion des manuellen Aufwandes und eine vereinfachte Durchführung der menschlichen Tätigkeiten ermöglicht. Dabei wird durch den Einsatz von Softwareagenten eine aktive Form der Unterstützung bereitgestellt, welche sich flexibel an den Ablauf der menschlichen Arbeitsprozesse anpasst. Das Konzept nutzt die vorhandenen Engineeringinformationen und bestehendes Wissen über technische Abhängigkeiten einzelner Komponenten und überträgt diese auf einzelne Softwareagenten. Auf dieser Basis agieren und kooperieren die Softwareagenten parallel zu den Tätigkeiten des Ingenieurs im Hintergrund. Sie sind in der Lage, die beim Engineering entstehenden technischen Zusammenhänge innerhalb der Automatisierungsanlage selbstständig zu erkennen, zu analysieren und geeignete Anpassungen der Engineeringinformationen zu ermitteln. Die Interaktion mit dem Ingenieur erfolgt in Form von entsprechenden Hinweisen und Lösungsvorschlägen, welche auf Wunsch von den Softwareagenten selbstständig umgesetzt werden können. Auf diese Weise werden die individuellen technischen Zusammenhänge einer Automatisierungsanlage bereits auf informationstechnischer Ebene berücksichtigt und ein Großteil der bisher erforderlichen manuellen Tätigkeiten und Überlegungen kann entfallen. Das Konzept wurde darüber hinaus so ausgelegt, dass es zu bisher verwendeten Komponentenmodellen und Werkzeugen kompatibel ist und sich problemlos in bestehende Engineeringprozesse integrieren lässt.%
     }
     \verb{doi}
     \verb 10.18419/opus-2630
     \endverb
-    \field{note}{Accepted: 2008-05-19 Journal Abbreviation: Agent-supported
-  engineering of industrial plants}
-    \field{title}{Agentenunterstütztes {Engineering} von
-  {Automatisierungsanlagen}}
+    \field{note}{Accepted: 2008-05-19 Journal Abbreviation: Agent-supported engineering of industrial plants}
+    \field{title}{Agentenunterstütztes {Engineering} von {Automatisierungsanlagen}}
     \verb{url}
     \verb http://elib.uni-stuttgart.de/handle/11682/2647
     \endverb
@@ -616,24 +520,9 @@
     \field{sortinit}{W}
     \field{sortinithash}{W}
     \field{abstract}{%
-    A method for integrated development of multi agent PLC based control
-  systems using IEC 61131-3 will be introduced. Dependability of technical
-  plants will increase if control behaviour can be adapted during runtime. This
-  is achieved by dynamic reconfiguration of faulty devices, e.g. sensors, at
-  run-time. The replacement is based on analytical redundancy that is
-  represented by a network of sensors and their interdependencies. This method
-  supports the developer to sketch a suitable modular softwarearchitecture in
-  regards to the hardware-architecture and the specific requirements of
-  real-time and dependability. The integration of classical methods like
-  fault-tree-analysis and graph-theory enables the developer to build a
-  knowledge-based system so that the agents would have the ability to recognize
-  faults, seize the needed actions within their scope and fulfil their goal.
-  Recent investigations using a model-plant showed the feasibilities of this
-  approach.%
+    A method for integrated development of multi agent PLC based control systems using IEC 61131-3 will be introduced. Dependability of technical plants will increase if control behaviour can be adapted during runtime. This is achieved by dynamic reconfiguration of faulty devices, e.g. sensors, at run-time. The replacement is based on analytical redundancy that is represented by a network of sensors and their interdependencies. This method supports the developer to sketch a suitable modular softwarearchitecture in regards to the hardware-architecture and the specific requirements of real-time and dependability. The integration of classical methods like fault-tree-analysis and graph-theory enables the developer to build a knowledge-based system so that the agents would have the ability to recognize faults, seize the needed actions within their scope and fulfil their goal. Recent investigations using a model-plant showed the feasibilities of this approach.%
     }
-    \field{title}{Agent oriented software-development for networked embedded
-  systems with real time and dependability requirements the domain of
-  automation}
+    \field{title}{Agent oriented software-development for networked embedded systems with real time and dependability requirements the domain of automation}
     \verb{file}
     \verb 003_Agent_oriented_software-development_for_networked_embedded_system
     \verb s_with_real_time_and_dependability_requirements_the_domain_of_automat
@@ -660,19 +549,9 @@
     \field{sortinit}{W}
     \field{sortinithash}{W}
     \field{abstract}{%
-    Es wurden erstmals Agentensysteme für die Steuerung von Echtzeitsystemen
-  konzipiert und prototypisch implementiert, die direkt auf
-  Speicherprogrammierbaren Steuerungen nach der Norm IEC 61131-3 lauffähig
-  sind. Zudem wurden Beschreibungsmittel entwickelt, welche den Entwurf in
-  zukünftigen Applikationen unterstützen. Die entwickelten Konzepte wurden
-  anhand von zwei Demonstratoren und durch Experten evaluiert. Es konnte
-  gezeigt werden, dass sich durch die zusätzliche Flexibilität von Agenten
-  die Effektivität sowohl während des Produktionsbetrieb als auch der
-  Software-Entwicklung steigern lässt.%
+    Es wurden erstmals Agentensysteme für die Steuerung von Echtzeitsystemen konzipiert und prototypisch implementiert, die direkt auf Speicherprogrammierbaren Steuerungen nach der Norm IEC 61131-3 lauffähig sind. Zudem wurden Beschreibungsmittel entwickelt, welche den Entwurf in zukünftigen Applikationen unterstützen. Die entwickelten Konzepte wurden anhand von zwei Demonstratoren und durch Experten evaluiert. Es konnte gezeigt werden, dass sich durch die zusätzliche Flexibilität von Agenten die Effektivität sowohl während des Produktionsbetrieb als auch der Software-Entwicklung steigern lässt.%
     }
-    \field{title}{Entwicklung und {Evaluation} agentenorientierter
-  {Automatisierungssysteme} zur {Erhöhung} der {Flexibilität} und
-  {Zuverlässigkeit} von {Produktionsanlagen}}
+    \field{title}{Entwicklung und {Evaluation} agentenorientierter {Automatisierungssysteme} zur {Erhöhung} der {Flexibilität} und {Zuverlässigkeit} von {Produktionsanlagen}}
     \verb{url}
     \verb https://mediatum.ub.tum.de/958364
     \endverb
