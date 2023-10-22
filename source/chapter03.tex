@@ -210,39 +210,40 @@ This allows \gls{cda} to have an overall control among the entire prodution proc
 \begin{algorithmic}
 \State \textbf{Import} necessary libraries
 \State \textbf{Initialize} agent relevant variables
-
+\State \qquad
 \State \textbf{Class} messageSender
-    \Procedure{send\_and\_receive\_messages}{$self, recipient, message, priority$}
-    \State 1. Establish a WebSocket connection
-    \State 2. Send and receive messages
-    \State 3. Handle exceptions
-    \EndProcedure
+    \State \textbf{\qquad procedure} {SEND\_AND\_RECEIVE\_MESSAGES$(self, recipient, message, priority)$}
+    % \Procedure{send\_and\_receive\_messages}{$self, recipient, message, priority$}
+    \State \qquad \qquad 1. Establish a WebSocket connection
+    \State \qquad \qquad 2. Send and receive messages
+    \State \qquad \qquad 3. Handle exceptions
 \State \textbf{EndClass}
+\State \qquad
 \State \textbf{Class} messageReceiver
-    \Procedure{receive\_and\_send\_messages}{$self, recipient, message, priority$}
-    \State 1. Establish a WebSocket connection
-    \State 2. Receive, process and send messages
-    \State 3. Handle exceptions
-    \EndProcedure
+    \State \textbf{\qquad procedure} {RECEIVE\_AND\_SEND\_MESSAGES$(self, recipient, message, priority)$}
+    \State \qquad \qquad 1. Establish a WebSocket connection
+    \State \qquad \qquad 2. Receive, process and send messages
+    \State \qquad \qquad 3. Handle exceptions
 \State \textbf{EndClass}
+\State \qquad
 \State \textbf{Class} agentsAllocation
-    \Procedure{allocate\_agents\_with\_sequenced\_primitives}{$self, requirements$}
-    \State 1. Find tasks from customer requirements
-    \State 2. Breakdown tasks into skills
-    \State 3. Breakdown skills into primitives
-    \State 3. Allocate agents
-    \EndProcedure
+    \State \textbf{\qquad procedure} {ALLOCATE\_AGENTS\_WITH\_SEQ\_PRIMITIVES$(self, requirements)$}
+    \State \qquad \qquad 1. Find tasks from customer requirements
+    \State \qquad \qquad 2. Breakdown tasks into skills
+    \State \qquad \qquad 3. Breakdown skills into primitives
+    \State \qquad \qquad 4. Allocate agents
 \State \textbf{EndClass}
+\State \qquad
 
 \State \textbf{Main:}
-\State \textbf{Instantiate} allocated agents and message sender and receiver
-\State \textbf{Loop} for each agent to check connection
-\State \textbf{Loop} for each agent to check capabilities
-\State \textbf{Notify} agents about finished checks
-\State \textbf{Loop} to send sequence and agent information
-\State \textbf{Start} availability check to the first agent in sequence
-\State \textbf{Loop} to wait for inform messages
-\State \textbf{End} receive finish message from last agent in sequence 
+\State \textbf{\qquad Instantiate} allocated agents and message sender and receiver
+\State \textbf{\qquad Loop} for each agent to check connection
+\State \textbf{\qquad Loop} for each agent to check capabilities
+\State \textbf{\qquad Notify} agents about finished checks
+\State \textbf{\qquad Loop} to send sequence and agent information
+\State \textbf{\qquad Start} availability check to the first agent in sequence
+\State \textbf{\qquad Loop} to wait for inform messages
+\State \textbf{\qquad End} receive finish message from last agent in sequence 
 \end{algorithmic}
 \end{algorithm}
 
@@ -253,46 +254,45 @@ This allows \gls{cda} to have an overall control among the entire prodution proc
     \begin{algorithmic}
     \State \textbf{Import} necessary libraries
     \State \textbf{Initialize} agent relevant variables
-    
+    \State \qquad
     \State \textbf{Class} messageSender
-        \Procedure{send\_and\_receive\_messages}{$self, recipient, message, priority$}
-        \State 1. Establish a WebSocket connection
-        \State 2. Send and receive messages
-        \State 3. Handle exceptions
-        \EndProcedure
-    \State \textbf{EndClass}
-    \State \textbf{Class} messageReceiver
-        \Procedure{receive\_and\_send\_messages}{$self, recipient, message, priority$}
-        \State 1. Establish a WebSocket connection
-        \State 2. Receive, process and send messages
-        \State 3. Handle exceptions
-        \EndProcedure
-    \State \textbf{EndClass}
+    \State \textbf{\qquad procedure} {SEND\_AND\_RECEIVE\_MESSAGES$(self, recipient, message, priority)$}
+    \State \qquad \qquad 1. Establish a WebSocket connection
+    \State \qquad \qquad 2. Send and receive messages
+    \State \qquad \qquad 3. Handle exceptions
+\State \textbf{EndClass}
+\State \qquad
+\State \textbf{Class} messageReceiver
+    \State \textbf{\qquad procedure} {RECEIVE\_AND\_SEND\_MESSAGES$(self, recipient, message, priority)$}
+    \State \qquad \qquad 1. Establish a WebSocket connection
+    \State \qquad \qquad 2. Receive, process and send messages
+    \State \qquad \qquad 3. Handle exceptions
+\State \textbf{EndClass}
+\State \qquad
 
     
     \State \textbf{Main:}
-    \State \textbf{Instantiate} allocated agents and message sender and receiver
-    \State \textbf{Wait} for connectivity check from Coordinator agent
-    \State \textbf{Loop} receive capability check from Coordinator agent
-    \State \textbf{Loop} 
-    \If{agent is first in sequence}
-        \State \textbf{wait} receive availability check from Coordinator agent
-    \Else
-        \If{previous agent is not self}
-            \State \textbf{wait} receive availability check and inform message from last agent
-            \State \textbf{do} execute corresponding primitive
-            \EndIf
-        \If{agent is not last one AND next agent is not self}
-            \State \textbf{do} send availability check and inform message to next agent
-            \State \textbf{do} execute corresponding primitive
-            \State \textbf{do} inform Coordinator agent about completion
-            \EndIf
-        \If{agent is last}
-            \State \textbf{do} execute corresponding primitive
-            \State \textbf{do} inform Coordinator agent about completion and send finish message
-        \EndIf
-    \EndIf
-    \State \textbf{End} 
+    \State \textbf{\qquad Instantiate} allocated agents and message sender and receiver
+    \State \textbf{\qquad Wait} for connectivity check from Coordinator agent
+    \State \textbf{\qquad Loop} receive capability check from Coordinator agent
+    \State \textbf{\qquad repeat}
+    \State \textbf{\qquad \qquad if} {agent is first in sequence} \textbf{then}
+        \State \textbf{\qquad \qquad \qquad Wait} receive availability check from Coordinator agent
+        \State \textbf{\qquad \qquad else}
+        \State \textbf{\qquad \qquad \qquad if} {previous agent is not self} \textbf{then}
+            \State \textbf{\qquad \qquad \qquad Wait} receive availability check and inform message from last agent
+            \State \textbf{\qquad \qquad \qquad do} execute corresponding primitive
+        
+            \State \textbf{\qquad \qquad \qquad if} {agent is not last one AND next agent is not self} \textbf{then}
+            \State \textbf{\qquad \qquad \qquad \qquad do} send availability check and inform message to next agent
+            \State \textbf{\qquad \qquad \qquad \qquad do} execute corresponding primitive
+            \State \textbf{\qquad \qquad \qquad \qquad do} inform Coordinator agent about completion
+         
+            \State \textbf{\qquad \qquad \qquad if} {agent is last} \textbf{then}
+            \State \textbf{\qquad \qquad \qquad \qquad do} execute corresponding primitive
+            \State \textbf{\qquad \qquad \qquad \qquad do} inform Coordinator agent about completion, send finish message
+    
+    \State \textbf{\qquad End} 
     \end{algorithmic}
     \end{algorithm}
 
