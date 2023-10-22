@@ -202,11 +202,19 @@ Basically the client sends a message to the server, after processing the data, t
 \end{figure}
 
 
-\subsection{tcp socket and websocket}
-compare tcp and websockets in programming difference (server, clients)
+\subsection{Transport layer protocols versus Application layer protocols}
+The reason of choosing application layer protocols over transport layer protocols according to table \ref{tab:transportlayer} and \ref{tab:applicationlayer} are listed as following:
+\begin{enumerate}
+    \item Semantic-rich message patterns 
+    \item Higher flexibility
+    \item Standardized communication between different different agents
+    \item Header that contains agent relevant information
+    \item Security and authentication
+
+    \end{enumerate}
 
 
-\subsection{Pseudo-Code of MAS workflow}
+\subsection{Pseudo-Code of MAS workflow in WebSocket}
 In Algorithm \ref{alg:CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
 Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitives execution but the ability to do planning and decision making. 
 Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive\_messages$ functions under the messageSender class.
