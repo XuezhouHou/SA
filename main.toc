@@ -1,0 +1,36 @@
+\babel@toc {english}{}\relax 
+\babel@toc {ngerman}{}\relax 
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Motivation}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.2}Research questions}{1}{section.1.2}%
+\contentsline {section}{\numberline {1.3}Outline}{1}{section.1.3}%
+\contentsline {chapter}{\numberline {2}State of the art}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}MAS}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Network communication}{3}{section.2.2}%
+\contentsline {section}{\numberline {2.3}DSL}{4}{section.2.3}%
+\contentsline {section}{\numberline {2.4}Digital Twin}{4}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Research gap}{4}{section.2.5}%
+\contentsline {chapter}{\numberline {3}Methodology}{5}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Internal}{5}{section.3.1}%
+\contentsline {subsection}{\numberline {3.1.1}Overview (conceptual diagram)}{5}{subsection.3.1.1}%
+\contentsline {subsection}{\numberline {3.1.2}Prerequisite}{7}{subsection.3.1.2}%
+\contentsline {subsubsection}{System Setup}{7}{subsubsection*.6}%
+\contentsline {subsection}{\numberline {3.1.3}OSI model and comparison between sockets relevant protocol layers}{7}{subsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.1.4}Pseudo-Code of MAS workflow}{11}{subsection.3.1.4}%
+\contentsline {subsection}{\numberline {3.1.5}tcp socket and websocket}{11}{subsection.3.1.5}%
+\contentsline {section}{\numberline {3.2}External}{11}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Overview (conceptual diagram)}{11}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Prerequisite}{11}{subsection.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Pseudo-Code}{13}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}MS Azure Digital Twin}{13}{subsection.3.2.4}%
+\contentsline {chapter}{\numberline {4}Results and discussion}{15}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Test results of Websocket and Restful API}{15}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Test results of WS in diff. performance testing, worst case scenarios}{15}{section.4.2}%
+\contentsline {section}{\numberline {4.3}priority tests of WS server in diff. performance testing}{15}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Test results of DTagents related to Azure Digital Twin}{15}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Conclusion and outlook}{17}{chapter.5}%
+\contentsline {chapter}{\numberline {A}Anhangname}{19}{appendix.A}%
+\contentsline {chapter}{Bibliography}{21}{appendix*.13}%
+\contentsline {chapter}{List of Abbreviations}{23}{section*.14}%
+\contentsfinish 

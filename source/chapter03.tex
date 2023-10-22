@@ -187,6 +187,15 @@ Relatively, the other three protocols will be considered as more appropriate. Fo
 
 
 \subsection{Pseudo-Code of MAS workflow}
+In Algorithm \ref{alg:CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
+Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitives execution but the ability to do planning and decision making. 
+Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive$ functions under the messageSender class.
+After getting responses from the agents, \gls{cda} should deicide whether to start processing by positive responses or retry the steps by negative responses.  
+Once the process starts, the \gls{cda} does nothing but wait for the inform messages from the allocated agents by using one of the $receive\_and\_send$ functions under the messageReceiver class. 
+This allows \gls{cda} to have an overall control among the entire prodution process with the purpose of centralization of the distributed agent systems.  
+
+
+
 % Define Class...EndClass for better representation
 \algnewcommand\algorithmicclass{\textbf{class}}
 \algdef{SE}[CLASS]{Class}{EndClass}[1]
@@ -229,8 +238,9 @@ Relatively, the other three protocols will be considered as more appropriate. Fo
 \State \textbf{Loop} for each agent to check capabilities
 \State \textbf{Notify} agents about finished checks
 \State \textbf{Loop} to send sequence and agent information
-\State \textbf{Start} availability checks
-\State \textbf{Loop} to receive and send messages
+\State \textbf{Start} availability check to the first agent in sequence
+\State \textbf{Loop} to wait for inform messages
+\State \textbf{End} receive finish message from last agent in sequence 
 \end{algorithmic}
 \end{algorithm}
 
