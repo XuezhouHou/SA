@@ -7,7 +7,7 @@
 
 %figure conceptual MAS
 \begin{figure}[htb]
-\includegraphics[width=16cm]{figures/MAS_Conceptual_Diagram.png}
+\includegraphics[width=\textwidth]{figures/MAS_Conceptual_Diagram.png}
 \centering
 \caption{Conceptual diagram of MAS\label{fig: MASConceptual}}
 \end{figure}
@@ -80,7 +80,7 @@ could be retrieved by querying other agents\end{tabular}  \\
  
 %figure conceptual MAS
 \begin{figure}[htbp]
-\includegraphics[width=12cm]{figures/NamespaceConceptual.png}
+\includegraphics[width=0.8\textwidth]{figures/NamespaceConceptual.png}
 \centering
 \caption{Conceptual diagram of namespaces creation
 \label{fig: NSConceptual}}
@@ -91,12 +91,16 @@ In order to emulate network environments for agent's communication testing and d
 \subsection{OSI model and comparison between sockets relevant protocol layers}
 %figure conceptual MAS
 \begin{figure}[htbp]
-\includegraphics[width=12cm]{figures/OSI.pdf}
+\includegraphics[width=0.8\textwidth]{figures/OSI.pdf}
 \centering
 \caption{Conceptual diagram of Namespaces creation\label{fig: OSI}}
 \end{figure}
 
-Figure. \ref{fig: OSI} shows the famous OSI-Model with 7 abstraction layers with Transport layer and application layers most relevant to sockets. TCP and UDP are typical transport layer protocols and they provide an end-to-end data transport between two devices while the application layer protocols like HTTP or Websocket establish a communication between applications within devices. Although the application layer protocols still utilize TCP/UDP sockets to transport stream data, they defined additional "rules" to specify structure, content, and semantics of the messages transport through sockets. In the following tables, a comparison between sockets in different layers provide a more straight forward overview of their pro and cons in different contents.
+Figure. \ref{fig: OSI} shows the famous OSI-Model with 7 abstraction layers with Transport layer and application layers most relevant to sockets. 
+TCP and UDP are typical transport layer protocols and they provide an end-to-end data transport between two devices while the application layer protocols like HTTP or Websocket establish a communication between applications within devices. 
+Although the application layer protocols still utilize TCP/UDP sockets to transport stream data, they defined additional "rules" to specify structure, content, and semantics of the messages transport through sockets. 
+In the following tables, a comparison between protocols in different layers provide a more straight forward overview of their pro and cons in different contents.
+
 
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
@@ -196,23 +200,22 @@ Basically the client sends a message to the server, after processing the data, t
 
 %figure conceptual application layer protocols
 \begin{figure}[htb]
-\includegraphics[width=12cm]{figures/MessageConceptual.png}
+\includegraphics[width=0.8\textwidth]{figures/MessageConceptual.png}
 \centering
 \caption{Conceptual diagram of MAS\label{fig: MsgConceptual}}
 \end{figure}
 
-
 \subsection{Transport layer protocols versus Application layer protocols}
-The reason of choosing application layer protocols over transport layer protocols according to table \ref{tab:transportlayer} and \ref{tab:applicationlayer} are listed as following:
+The reasons of choosing application layer protocols over transport layer protocols for \gls{mas} according to table \ref{tab: transportlayer} and \ref{tab: applicationlayer} are listed as following:
 \begin{enumerate}
-    \item Semantic-rich message patterns 
-    \item Higher flexibility
-    \item Standardized communication between different different agents
-    \item Header that contains agent relevant information
-    \item Security and authentication
-
+    \item Semantic-rich message patterns. 
+    \item Higher flexibility.
+    \item Standardized communication between different agents.
+    \item Header with agent relevant information.
+    \item Security and authentication.
     \end{enumerate}
-
+However, unlike for \gls{mas} design, the architecture of \gls{dt} agent is more straightforward and the basic \gls{tcp} socket is chosen for the more to one server-client communication. 
+The details will be discussed later.
 
 \subsection{Pseudo-Code of MAS workflow in WebSocket}
 In Algorithm \ref{alg:CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
@@ -299,12 +302,12 @@ Once all primitives in the list are done, the last agent should inform the \gls{
 \State \textbf{EndClass}
    
     \State \textbf{Main:}
-    \State {\qquad Instantiate} allocated agents and message sender and receiver
+    \State {\qquad Instantiate}message sender and receiver
     \State {\qquad Wait} for connectivity check from Coordinator agent
-    \State {\qquad} Eeceive capability check results from coordinator agent
+    \State {\qquad} Receive capability check results from coordinator agent
     \State \textbf{\qquad repeat}
     \State \textbf{\qquad \qquad if} {agent is first in sequence} \textbf{then}
-        \State {\qquad \qquad \qquad wait} receive availability check from Coordinator agent
+        \State {\qquad \qquad \qquad wait} for availability check from Coordinator agent
         \State \textbf{\qquad \qquad else}
         \State \textbf{\qquad \qquad \qquad if} {previous agent is not self} \textbf{then}
             \State {\qquad \qquad \qquad wait} receive availability check and inform message from last agent
@@ -330,21 +333,46 @@ Once all primitives in the list are done, the last agent should inform the \gls{
 %figure conceptual DT
 \begin{figure}[htb]
 \includegraphics[width=\textwidth]{figures/DT_Conceptual_Diagram.png}
+
 \centering
 \caption{Conceptual diagram of MAS\label{fig: DTConceptual}}
 \end{figure}
 
+The figure \ref{fig: DTConceptual} shows the workflow of \gls{dt} agent updating global \gls{dt}.
+The process begins from the left hand side of the graph. The \gls{dt} agent receives process data constantly from robots, including steady state data. 
+After the separating the sticky packets from \gls{tcp} socket, the process data will be parsed and uploaded one by one to the \gls{ms} Azure Digital Twin cloud. 
+All the updates of the digital twin instances in cloud will be shown in \gls{ms} Azure Digital Twin Explorer temporarily and stored in Azure Event Hubs concurrently. 
+After that the history data could be ingested for further analysis in Azure Data Explorer. 
+The Azure Digital Twin Explorer here serves as a monitor of robot status while the Azure Data Explorer as a data analysis tool. 
+Once the remote data update is successful, the data will be downloaded to local host immediately and may be further used as inputs of any other visualization purposes. 
+Within this upload and download cycle of data, the real time capability should also be maintained.  
+
+
+
+It is worth mentioning that, the process data is produced by robot motion which makes the \gls{dt} agent completely decoupled from the \gls{mas}. 
+The advantages of the decoupling is that, even though there is a complete disorder of the \gls{mas}, the current robot states will be recorded and updated in remote, 
+which is beneficial for data acquisition and monitoring. 
+
 
 
 \subsection{Prerequisite}
-System Setup: 
+\subsubsection{\gls{ntp} Setup}
+In order to measure the delays between local host and cloud, the clock of both end must be synchronized. 
+Due to the nature of computer systems, the software clock might drift away from the "true" time (absolute \gls{utc} time) due to various reasons like system load, hardware imperfections, or even temperature changes.
+Therefore, before the measurement, the software clock of local host should be synchronized with the global clock using \gls{ntp}. 
+The NTP setup of linux system are:  
 
+\begin{enumerate}
+    \item System update and upgrade.
+    \item Install \gls{ntp}.
+    \item Add reliable global \gls{ntp} servers/server pools to configure ntp.conf file.
+    \item Allow port 123/udp for or disable firewall.
+    \item Security and authentication.
+    \item Restart \gls{ntp} and check \gls{ntp} status.
+    \item Check synchronization status (e.g.: reach, delay, offset and jitter, etc).
+    \end{enumerate}
 
-1. NTP setup
-
-
-2. packages installation for tcp sockets
-
+Since the cloud system clock is already synchronized \gls{utc} time, all the tests and calculations results are based on UTC time. 
 
 \subsection{Pseudo-Code}
 Pseudo-Code of workflow of RCP-DTAgent
