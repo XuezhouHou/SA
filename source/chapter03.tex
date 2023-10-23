@@ -248,35 +248,35 @@ Once all primitives in the list are done, the last agent should inform the \gls{
 \State {Import} WebSocket
 \State {Initialize} agentID, centralServerIP
 \State \textbf{Class} messageSender
-    \State \textbf{\qquad function} {$send\_and\_receive(self, recipient, message, priority)$}
+    \State \textbf{\qquad procedure} {$send\_and\_receive(self, recipient, message, priority)$}
     \State \qquad \qquad Establish a WebSocket connection    
     \State \textbf{\qquad \qquad while} recipient not Found \textbf{do}    
     \State \qquad \qquad \qquad Send prioritized messages and wait for response
 
-    \State \textbf{\qquad function} {$send\_capCheck\_and\_receive(self, recipient, primitive, priority)$}
+    \State \textbf{\qquad procedure} {$send\_capCheck\_and\_receive(self, recipient, primitive, priority)$}
     \State \qquad \qquad Establish a WebSocket connection
     \State \textbf{\qquad \qquad while} recipient not found \textbf{do} 
     \State \qquad \qquad \qquad Send prioritized messages and wait for response
     \State \qquad \qquad \qquad Handle capability exceptions
     \State \qquad {\#similar to $send\_and\_receive()$ but send an image }
-    \State \textbf{\qquad function} {$send\_image\_and\_receive(self, recipient, image\_path, priority)$}
+    \State \textbf{\qquad procedure} {$send\_image\_and\_receive(self, recipient, image\_path, priority)$}
     \State \qquad \qquad ...
     \State \qquad {\#similar to $send\_capCheck\_and\_receive()$ but raise availibility exceptions } 
-    \State \textbf{\qquad function} {$send\_availCheck\_and\_receive(self, recipient, primitive, priority)$}
+    \State \textbf{\qquad procedure} {$send\_availCheck\_and\_receive(self, recipient, primitive, priority)$}
     \State \qquad \qquad ...
 
 \State \textbf{EndClass}
 \State \textbf{Class} messageReceiver
-    \State \textbf{\qquad function} {$receive\_and\_send(self, response, priority)$}
+    \State \textbf{\qquad procedure} {$receive\_and\_send(self, response, priority)$}
     \State \qquad \qquad Establish a WebSocket connection
     \State \textbf{\qquad \qquad while} message not received \textbf{do}
     \State \qquad \qquad \qquad Receive, process and send responses with priority
     \State \qquad {\#similar to $receive\_and\_send()$ but receive and save an image }
-    \State \textbf{\qquad function} {$receive\_image\_and\_send(self, response, priority)$}
+    \State \textbf{\qquad procedure} {$receive\_image\_and\_send(self, response, priority)$}
     \State \qquad \qquad ...    
     \State \textbf{EndClass}
 \State \textbf{Class} agentsAllocation
-    \State \textbf{\qquad function} {$allocate\_agents\_with\_seq\_primitives(self, requirements)$}
+    \State \textbf{\qquad procedure} {$allocate\_agents\_with\_seq\_primitives(self, requirements)$}
     \State \qquad \qquad Find tasks from customer requirements
     \State \qquad \qquad Breakdown tasks into skills into primitives
     \State \qquad \qquad Create sequence lists for primitives and agents allocation    
@@ -313,45 +313,45 @@ Once all primitives in the list are done, the last agent should inform the \gls{
     \label{alg:RAPseudoCode}
     \begin{algorithmic}[1]
     \State {Import} WebSocket
-    \State {Initialize} agentID, centralServerIP
+    \State {Initialize} agentID, centralServerIP, subServerIP
     
 \State \textbf{Class} messageSender
-    \State \textbf{\qquad function} {$send\_and\_receive(self, recipient, message, priority)$}
+    \State \textbf{\qquad procedure} {$send\_and\_receive(self, recipient, message, priority)$}
     \State \qquad \qquad Establish a WebSocket connection    
-    \State \textbf{\qquad \qquad while} recipientNotFound \textbf{do}    
+    \State \textbf{\qquad \qquad while} recipient not Found \textbf{do}    
     \State \qquad \qquad \qquad Send prioritized messages and wait for response
 
-    \State \textbf{\qquad function} {$send\_availCheck\_and\_receive(self, recipient, primitive, priority)$}
+    \State \textbf{\qquad procedure} {$send\_availCheck\_and\_receive(self, recipient, primitive, priority)$}
     \State \qquad \qquad Establish a WebSocket connection
     \State \textbf{\qquad \qquad while} recipient not found \textbf{do} 
     \State \qquad \qquad \qquad Send prioritized messages and wait for response
     \State \qquad \qquad \qquad Handle availability exceptions
     \State \qquad {\#similar to $send\_and\_receive()$ but send an image }
-    \State \textbf{\qquad function} {$send\_image\_and\_receive(self, recipient, image\_path, priority)$}
+    \State \textbf{\qquad procedure} {$send\_image\_and\_receive(self, recipient, image\_path, priority)$}
     \State \qquad \qquad ...
 
 \State \textbf{EndClass}
 
 \State \textbf{Class} messageReceiver
-    \State \textbf{\qquad function} {$receive\_and\_send(self, response, serverID)$}
+    \State \textbf{\qquad procedure} {$receive\_and\_send(self, response, serverID)$}
     \State \qquad \qquad Establish a WebSocket connection
     \State \textbf{\qquad \qquad while} message not received \textbf{do}
     \State \qquad \qquad \qquad Receive, process and send responses with priority
-    \State \textbf{\qquad function} {$receive\_capCheck\_and\_send(self, response, serverID)$}
+    \State \textbf{\qquad procedure} {$receive\_capCheck\_and\_send(self, response, serverID)$}
     \State \qquad \qquad Establish a WebSocket connection
     \State \textbf{\qquad \qquad while} message not received \textbf{do}
     \State \qquad \qquad \qquad Receive, check capability and send responses with priority
     \State \qquad \qquad \qquad Handle capability exceptions
-    \State \textbf{\qquad function} {$receive\_sequences\_and\_send(self, response, serverID)$}
+    \State \textbf{\qquad procedure} {$receive\_sequences\_and\_send(self, response, serverID)$}
     \State \qquad \qquad Establish a WebSocket connection
     \State \textbf{\qquad \qquad while} message not received \textbf{do}
     \State \qquad \qquad \qquad Receive, store sequences and send responses with priority
 
     \State \qquad {\#similar to $receive\_and\_send()$ but receive and save an image }
-    \State \textbf{\qquad function} {$receive\_image\_and\_send(self, response, serverID)$}
+    \State \textbf{\qquad procedure} {$receive\_image\_and\_send(self, response, serverID)$}
     \State \qquad \qquad ...    
     \State \qquad {\#similar to $receive\_capCheck\_and\_send()$ but check availability}
-    \State \textbf{\qquad function} {$receive\_availCheck\_and\_send(self, response, serverID)$}
+    \State \textbf{\qquad procedure} {$receive\_availCheck\_and\_send(self, response, serverID)$}
     \State \qquad \qquad ...  
     \State \textbf{EndClass}
  
@@ -389,6 +389,42 @@ Once all primitives in the list are done, the last agent should inform the \gls{
 \end{algorithmic}
 \end{algorithm}
 
+
+%pseudo code for Server
+\begin{algorithm}
+    \caption{Pseudo-Code for Server in MAS workflow}
+    \label{alg:ServerPseudoCode}
+    \begin{algorithmic}[1]
+        \State {Import} WebSocket
+        \State {Initialize} serverID, priorityDict, messageQueue, connectedAgents
+        \State \textbf{Do in parallel}
+        \State \textbf{\qquad procedure} handler(websocket, path)  
+        \State \textbf \qquad \qquad receive agent name and store in connectedAgents
+        \State \textbf {\qquad \qquad while} websocket connected \textbf{do} 
+        \State \textbf \qquad \qquad \qquad receive message from agent   
+        \State \textbf{\qquad \qquad \qquad if} {message is json} \textbf{then}
+        \State \textbf \qquad \qquad \qquad \qquad parse json message and retrieve recipient
+        \State \textbf \qquad \qquad \qquad \qquad store agent messages in messageQueue  
+        \State \textbf \qquad \qquad \qquad \qquad processJsonMessage(recipient, jsonMsg)
+        \State \textbf{\qquad \qquad \qquad else}  
+        \State \textbf \qquad \qquad \qquad \qquad retrieve recipient from string message
+        \State \textbf \qquad \qquad \qquad \qquad store agent messages in messageQueue  
+        \State \textbf \qquad \qquad \qquad \qquad processMessage(recipient, stringMsg)
+        
+        \State \textbf{\qquad procedure} $processMessage(recipient, stringMsg)$   
+        \State \textbf \qquad \qquad prioritize messages from priorityDict and store in messageQueue 
+        \State \textbf \qquad \qquad handle messages with higher priority first   
+        \State \textbf \qquad \qquad send stringMsg to recipient 
+        \State \textbf{\qquad procedure} $processJsonMessage(recipient, jsonMsg)$   
+        \State \textbf \qquad \qquad prioritize messages from priorityDict and store in messageQueue
+        \State \textbf \qquad \qquad handle messages with higher priority first 
+        \State \textbf \qquad \qquad send jsonMsg to recipient
+        \State \textbf{Main:}   
+        \State \textbf {\qquad while} true \textbf {do}
+        \State \textbf \qquad \qquad handler(websocket, serverID) 
+        \State \textbf{End}                 
+    \end{algorithmic}
+\end{algorithm}
 
 
 

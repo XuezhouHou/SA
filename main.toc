@@ -25,15 +25,15 @@
 \contentsline {subsection}{\numberline {3.2.1}Overview (conceptual diagram)}{12}{subsection.3.2.1}%
 \contentsline {subsection}{\numberline {3.2.2}Prerequisite}{15}{subsection.3.2.2}%
 \contentsline {subsubsection}{\gls {ntp} Setup}{15}{subsubsection*.15}%
-\contentsline {subsection}{\numberline {3.2.3}Pseudo-Code of \gls {rcp} and \gls {dt} agent workflow in C\+\+ and C\#}{16}{subsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}MS Azure Digital Twin}{16}{subsection.3.2.4}%
-\contentsline {chapter}{\numberline {4}Results and discussion}{17}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Test results of Websocket and Restful API}{17}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Test results of WS in diff. performance testing, worst case scenarios}{17}{section.4.2}%
-\contentsline {section}{\numberline {4.3}priority tests of WS server in diff. performance testing}{17}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Test results of DTagents related to Azure Digital Twin}{17}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Conclusion and outlook}{19}{chapter.5}%
-\contentsline {chapter}{\numberline {A}Anhangname}{21}{appendix.A}%
-\contentsline {chapter}{Bibliography}{23}{appendix*.16}%
-\contentsline {chapter}{List of Abbreviations}{25}{section*.17}%
+\contentsline {subsection}{\numberline {3.2.3}Pseudo-Code of \gls {rcp} and \gls {dt} agent workflow in C\+\+ and C\#}{17}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}MS Azure Digital Twin}{17}{subsection.3.2.4}%
+\contentsline {chapter}{\numberline {4}Results and discussion}{19}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Test results of Websocket and Restful API}{19}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Test results of WS in diff. performance testing, worst case scenarios}{19}{section.4.2}%
+\contentsline {section}{\numberline {4.3}priority tests of WS server in diff. performance testing}{19}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Test results of DTagents related to Azure Digital Twin}{19}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Conclusion and outlook}{21}{chapter.5}%
+\contentsline {chapter}{\numberline {A}Anhangname}{23}{appendix.A}%
+\contentsline {chapter}{Bibliography}{25}{appendix*.16}%
+\contentsline {chapter}{List of Abbreviations}{27}{section*.17}%
 \contentsfinish 
