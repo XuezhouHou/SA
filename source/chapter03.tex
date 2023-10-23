@@ -241,61 +241,101 @@ Once all primitives in the list are done, the last agent should inform the \gls{
 
    
 \begin{algorithm}
-\caption{Pseudo-Code of Coordinator agent in MAS workflow}
+\caption{Pseudo-Code for Coordinator agent in MAS workflow}
 \label{alg:CDAPseudoCode}
-\begin{algorithmic}
-\State {Import} necessary libraries
-\State {Initialize} agent relevant variables
+\begin{algorithmic}[1]
+\State \textbf{Input:} custRequirement
+\State {Import} WebSocket
+\State {Initialize} agentID, centralServerIP
 \State \textbf{Class} messageSender
-    \State \textbf{\qquad procedure} {SEND\_AND\_RECEIVE\_MESSAGES$(self, recipient, message, priority)$}
-    % \Procedure{send\_and\_receive\_messages}{$self, recipient, message, priority$}
-    \State \qquad \qquad 1. Establish a WebSocket connection
-    \State \qquad \qquad 2. Send and receive messages
-    \State \qquad \qquad 3. Handle exceptions
+    \State \textbf{\qquad function} {$send\_and\_receive(self, recipient, message, priority)$}
+    \State \qquad \qquad Establish a WebSocket connection    
+    \State \textbf{\qquad \qquad while} recipientNotFound \textbf{do}    
+    \State \qquad \qquad \qquad Send prioritized messages and wait for response
+
+    \State \textbf{\qquad function} {$send\_capCheck\_and\_receive(self, recipient, primitive, priority)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} recipient not found \textbf{do} 
+    \State \qquad \qquad \qquad Send prioritized messages and wait for response
+    \State \qquad \qquad \qquad Handle capability exceptions
+    \State \qquad {\#similar to $send\_and\_receive()$ but send an image }
+    \State \textbf{\qquad function} {$send\_image\_and\_receive(self, recipient, image\_path, priority)$}
+    \State \qquad \qquad ...
+    % \State \qquad \qquad Establish a WebSocket connection
+    % \State \textbf{\qquad \qquad while} recipient not found \textbf{do}   
+    % \State \qquad \qquad \qquad Send prioritized json image and wait for response
+    
+    \State \qquad {\#similar to $send\_capCheck\_and\_receive()$ but raise availibility exceptions } 
+    \State \textbf{\qquad function} {$send\_availCheck\_and\_receive(self, recipient, primitive, priority)$}
+    \State \qquad \qquad ...
+    % \State \qquad \qquad Establish a WebSocket connection
+    % \State \textbf{\qquad \qquad while} recipient not found \textbf{do} 
+    % \State \qquad \qquad \qquad Send prioritized messages and wait for response
+    % \State \qquad \qquad \qquad Handle availability exceptions   
 \State \textbf{EndClass}
 \State \textbf{Class} messageReceiver
-    \State \textbf{\qquad procedure} {RECEIVE\_AND\_SEND\_MESSAGES$(self, recipient, message, priority)$}
-    \State \qquad \qquad 1. Establish a WebSocket connection
-    \State \qquad \qquad 2. Receive, process and send messages
-    \State \qquad \qquad 3. Handle exceptions
-\State \textbf{EndClass}
+    \State \textbf{\qquad function} {$receive\_and\_send(self, message, priority)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} message not received \textbf{do}
+    \State \qquad \qquad \qquad Receive, process and send messages with priority
+    \State \qquad {\#similar to $receive\_and\_send()$ but receive and save an image }
+    \State \textbf{\qquad function} {$receive\_image\_and\_send(self, message, priority)$}
+    \State \qquad \qquad ...    
+    % \State \qquad \qquad Establish a WebSocket connection
+    % \State \textbf{\qquad \qquad while} message not received \textbf{do}
+    % \State \qquad \qquad \qquad Receive, parse json, save images and send messages with priority
+    \State \textbf{EndClass}
 \State \textbf{Class} agentsAllocation
-    \State \textbf{\qquad procedure} {ALLOCATE\_AGENTS\_WITH\_SEQ\_PRIMITIVES$(self, requirements)$}
-    \State \qquad \qquad 1. Find tasks from customer requirements
-    \State \qquad \qquad 2. Breakdown tasks into skills
-    \State \qquad \qquad 3. Breakdown skills into primitives
-    \State \qquad \qquad 4. Allocate agents
+    \State \textbf{\qquad function} {$allocate\_agents\_with\_seq\_primitives(self, requirements)$}
+    \State \qquad \qquad Find tasks from customer requirements
+    \State \qquad \qquad Breakdown tasks into skills into primitives
+    \State \qquad \qquad Create sequence lists for primitives agents allocation    
 \State \textbf{EndClass}
 \State \textbf{Main:}
-\State {\qquad Instantiate} allocated agents and message sender and receiver
-\State {\qquad}Agent check connections
-\State {\qquad}Agent check capabilities
-\State {\qquad Notify} agents about finished checks
-\State {\qquad}Send sequence and agent information
-\State {\qquad Start} availability check to the first agent in sequence
-\State {\qquad}Wait for inform messages
-\State \qquad Rreceive finish message from last agent in sequence 
+\State \qquad Instantiate agentsAllocation, messageSender and messageReceiver
+\State \qquad \textbf{repeat}
+\State \qquad \qquad $sequences = allocate\_agents\_with\_seq\_primitives(custRequirement)$
+\State \qquad \textbf{until} all allocated agents connected
+\State \qquad \textbf{repeat}
+\State \qquad \qquad $send\_and\_receive(agent, connectMsg, priority)$
+\State \qquad \textbf{until} all allocated agents connected
+\State \qquad \textbf{repeat}
+\State \qquad \qquad $send\_capCheck\_and\_receive(agent, primitive, priority)$
+\State \qquad \textbf{until} all allocated agents capable of all primitives
+\end{algorithmic}
+\end{algorithm}
+
+% break the code, too long
+\begin{algorithm}
+    \begin{algorithmic}[1]
+\State \qquad \textbf{repeat}
+\State \qquad \qquad $send\_and\_receive(agent, sequences, priority)$
+\State \qquad \textbf{until} all allocated agents receive sequences
+\State \qquad \qquad $send\_availCheck\_and\_receive(1st\_Agent, 1st\_primitive, priority)$
+\State \qquad \textbf{repeat}
+\State \qquad \qquad $receive\_and\_send(responseMsg, priority)$
+\State \qquad \textbf{until} informed by last agent with finish message 
 \State \textbf{\qquad End} 
 \end{algorithmic}
 \end{algorithm}
 
 %pseudo code for RA
 \begin{algorithm}
-    \caption{Pseudo-Code of Resource agent in MAS workflow}
+    \caption{Pseudo-Code for Resource agent in MAS workflow}
     \label{alg:RAPseudoCode}
-    \begin{algorithmic}
+    \begin{algorithmic}[1]
     \State {Import} necessary libraries
     \State {Initialize} agent relevant variables
     
     \State \textbf{Class} messageSender
-    \State \textbf{\qquad procedure} {SEND\_AND\_RECEIVE\_MESSAGES$(self, recipient, message, priority)$}
+    \State \textbf{\qquad function} {$send\_and\_receive\_messages(self, recipient, message, priority)$}
     \State \qquad \qquad 1. Establish a WebSocket connection
     \State \qquad \qquad 2. Send and receive messages
     \State \qquad \qquad 3. Handle exceptions
 \State \textbf{EndClass}
 
 \State \textbf{Class} messageReceiver
-    \State \textbf{\qquad procedure} {RECEIVE\_AND\_SEND\_MESSAGES$(self, recipient, message, priority)$}
+\State \textbf{\qquad function} {$receive\_and\_send\_messages(self, recipient, message, priority)$}
     \State \qquad \qquad 1. Establish a WebSocket connection
     \State \qquad \qquad 2. Receive, process and send messages
     \State \qquad \qquad 3. Handle exceptions
