@@ -25,8 +25,8 @@
 \contentsline {subsection}{\numberline {3.2.1}Overview (conceptual diagram)}{12}{subsection.3.2.1}%
 \contentsline {subsection}{\numberline {3.2.2}Prerequisite}{15}{subsection.3.2.2}%
 \contentsline {subsubsection}{\gls {ntp} Setup}{15}{subsubsection*.15}%
-\contentsline {subsection}{\numberline {3.2.3}Pseudo-Code of \gls {rcp} and \gls {dt} agent workflow in C\+\+ and C\#}{15}{subsection.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}MS Azure Digital Twin}{15}{subsection.3.2.4}%
+\contentsline {subsection}{\numberline {3.2.3}Pseudo-Code of \gls {rcp} and \gls {dt} agent workflow in C\+\+ and C\#}{16}{subsection.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}MS Azure Digital Twin}{16}{subsection.3.2.4}%
 \contentsline {chapter}{\numberline {4}Results and discussion}{17}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Test results of Websocket and Restful API}{17}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Test results of WS in diff. performance testing, worst case scenarios}{17}{section.4.2}%

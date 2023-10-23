@@ -250,7 +250,7 @@ Once all primitives in the list are done, the last agent should inform the \gls{
 \State \textbf{Class} messageSender
     \State \textbf{\qquad function} {$send\_and\_receive(self, recipient, message, priority)$}
     \State \qquad \qquad Establish a WebSocket connection    
-    \State \textbf{\qquad \qquad while} recipientNotFound \textbf{do}    
+    \State \textbf{\qquad \qquad while} recipient not Found \textbf{do}    
     \State \qquad \qquad \qquad Send prioritized messages and wait for response
 
     \State \textbf{\qquad function} {$send\_capCheck\_and\_receive(self, recipient, primitive, priority)$}
@@ -261,41 +261,29 @@ Once all primitives in the list are done, the last agent should inform the \gls{
     \State \qquad {\#similar to $send\_and\_receive()$ but send an image }
     \State \textbf{\qquad function} {$send\_image\_and\_receive(self, recipient, image\_path, priority)$}
     \State \qquad \qquad ...
-    % \State \qquad \qquad Establish a WebSocket connection
-    % \State \textbf{\qquad \qquad while} recipient not found \textbf{do}   
-    % \State \qquad \qquad \qquad Send prioritized json image and wait for response
-    
     \State \qquad {\#similar to $send\_capCheck\_and\_receive()$ but raise availibility exceptions } 
     \State \textbf{\qquad function} {$send\_availCheck\_and\_receive(self, recipient, primitive, priority)$}
     \State \qquad \qquad ...
-    % \State \qquad \qquad Establish a WebSocket connection
-    % \State \textbf{\qquad \qquad while} recipient not found \textbf{do} 
-    % \State \qquad \qquad \qquad Send prioritized messages and wait for response
-    % \State \qquad \qquad \qquad Handle availability exceptions   
+
 \State \textbf{EndClass}
 \State \textbf{Class} messageReceiver
-    \State \textbf{\qquad function} {$receive\_and\_send(self, message, priority)$}
+    \State \textbf{\qquad function} {$receive\_and\_send(self, response, priority)$}
     \State \qquad \qquad Establish a WebSocket connection
     \State \textbf{\qquad \qquad while} message not received \textbf{do}
-    \State \qquad \qquad \qquad Receive, process and send messages with priority
+    \State \qquad \qquad \qquad Receive, process and send responses with priority
     \State \qquad {\#similar to $receive\_and\_send()$ but receive and save an image }
-    \State \textbf{\qquad function} {$receive\_image\_and\_send(self, message, priority)$}
+    \State \textbf{\qquad function} {$receive\_image\_and\_send(self, response, priority)$}
     \State \qquad \qquad ...    
-    % \State \qquad \qquad Establish a WebSocket connection
-    % \State \textbf{\qquad \qquad while} message not received \textbf{do}
-    % \State \qquad \qquad \qquad Receive, parse json, save images and send messages with priority
     \State \textbf{EndClass}
 \State \textbf{Class} agentsAllocation
     \State \textbf{\qquad function} {$allocate\_agents\_with\_seq\_primitives(self, requirements)$}
     \State \qquad \qquad Find tasks from customer requirements
     \State \qquad \qquad Breakdown tasks into skills into primitives
-    \State \qquad \qquad Create sequence lists for primitives agents allocation    
+    \State \qquad \qquad Create sequence lists for primitives and agents allocation    
 \State \textbf{EndClass}
 \State \textbf{Main:}
-\State \qquad Instantiate agentsAllocation, messageSender and messageReceiver
-\State \qquad \textbf{repeat}
-\State \qquad \qquad $sequences = allocate\_agents\_with\_seq\_primitives(custRequirement)$
-\State \qquad \textbf{until} all allocated agents connected
+
+\State \qquad $sequences = allocate\_agents\_with\_seq\_primitives(custRequirement)$
 \State \qquad \textbf{repeat}
 \State \qquad \qquad $send\_and\_receive(agent, connectMsg, priority)$
 \State \qquad \textbf{until} all allocated agents connected
@@ -315,7 +303,7 @@ Once all primitives in the list are done, the last agent should inform the \gls{
 \State \qquad \textbf{repeat}
 \State \qquad \qquad $receive\_and\_send(responseMsg, priority)$
 \State \qquad \textbf{until} informed by last agent with finish message 
-\State \textbf{\qquad End} 
+\State \textbf{End} 
 \end{algorithmic}
 \end{algorithm}
 
@@ -324,47 +312,85 @@ Once all primitives in the list are done, the last agent should inform the \gls{
     \caption{Pseudo-Code for Resource agent in MAS workflow}
     \label{alg:RAPseudoCode}
     \begin{algorithmic}[1]
-    \State {Import} necessary libraries
-    \State {Initialize} agent relevant variables
+    \State {Import} WebSocket
+    \State {Initialize} agentID, centralServerIP
     
-    \State \textbf{Class} messageSender
-    \State \textbf{\qquad function} {$send\_and\_receive\_messages(self, recipient, message, priority)$}
-    \State \qquad \qquad 1. Establish a WebSocket connection
-    \State \qquad \qquad 2. Send and receive messages
-    \State \qquad \qquad 3. Handle exceptions
+\State \textbf{Class} messageSender
+    \State \textbf{\qquad function} {$send\_and\_receive(self, recipient, message, priority)$}
+    \State \qquad \qquad Establish a WebSocket connection    
+    \State \textbf{\qquad \qquad while} recipientNotFound \textbf{do}    
+    \State \qquad \qquad \qquad Send prioritized messages and wait for response
+
+    \State \textbf{\qquad function} {$send\_availCheck\_and\_receive(self, recipient, primitive, priority)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} recipient not found \textbf{do} 
+    \State \qquad \qquad \qquad Send prioritized messages and wait for response
+    \State \qquad \qquad \qquad Handle availability exceptions
+    \State \qquad {\#similar to $send\_and\_receive()$ but send an image }
+    \State \textbf{\qquad function} {$send\_image\_and\_receive(self, recipient, image\_path, priority)$}
+    \State \qquad \qquad ...
+
 \State \textbf{EndClass}
 
 \State \textbf{Class} messageReceiver
-\State \textbf{\qquad function} {$receive\_and\_send\_messages(self, recipient, message, priority)$}
-    \State \qquad \qquad 1. Establish a WebSocket connection
-    \State \qquad \qquad 2. Receive, process and send messages
-    \State \qquad \qquad 3. Handle exceptions
-\State \textbf{EndClass}
+    \State \textbf{\qquad function} {$receive\_and\_send(self, response, serverID)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} message not received \textbf{do}
+    \State \qquad \qquad \qquad Receive, process and send responses with priority
+    \State \textbf{\qquad function} {$receive\_capCheck\_and\_send(self, response, serverID)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} message not received \textbf{do}
+    \State \qquad \qquad \qquad Receive, check capability and send responses with priority
+    \State \qquad \qquad \qquad Handle capability exceptions
+    \State \textbf{\qquad function} {$receive\_sequences\_and\_send(self, response, serverID)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} message not received \textbf{do}
+    \State \qquad \qquad \qquad Receive, store sequences and send responses with priority
+
+    \State \qquad {\#similar to $receive\_and\_send()$ but receive and save an image }
+    \State \textbf{\qquad function} {$receive\_image\_and\_send(self, response, serverID)$}
+    \State \qquad \qquad ...    
+    \State \qquad {\#similar to $receive\_capCheck\_and\_send()$ but check availability}
+    \State \textbf{\qquad function} {$receive\_availCheck\_and\_send(self, response, serverID)$}
+    \State \qquad \qquad ...  
+    \State \textbf{EndClass}
+ 
+\end{algorithmic}
+\end{algorithm}
+
+% break the code, too long
+\begin{algorithm}
+    \begin{algorithmic}[1]
    
     \State \textbf{Main:}
-    \State {\qquad Instantiate} message sender and receiver
-    \State {\qquad Wait} for connectivity check from Coordinator agent
-    \State {\qquad} Receive capability check results from coordinator agent
+    \State {\qquad Instantiate} messageSender and messageReceiver
+    \State \qquad $receive\_and\_send(connectMsg, centralServerID)$
     \State \textbf{\qquad repeat}
+    \State \qquad \qquad $receive\_capCheck\_and\_send(capMsg, centralServerID)$
+    \State \textbf{\qquad until} CapabilityCheck finished  
+    \State \textbf{\qquad for} agent in sequence {\textbf do}
     \State \textbf{\qquad \qquad if} {agent is first in sequence} \textbf{then}
-        \State {\qquad \qquad \qquad wait} for availability check from Coordinator agent
+        \State {\qquad \qquad \qquad} $receive\_availCheck\_and\_send(availMsg, centralServerID)$
         \State \textbf{\qquad \qquad else}
         \State \textbf{\qquad \qquad \qquad if} {previous agent is not self} \textbf{then}
-            \State {\qquad \qquad \qquad wait} receive availability check and inform message from last agent
-            \State \textbf{\qquad \qquad \qquad do} execute corresponding primitive
+            \State \qquad \qquad \qquad \qquad $receive\_availCheck\_and\_send(availMsg, SubServerID)$
+            \State \qquad \qquad \qquad \qquad executePrimitive(primitive)
         
             \State \textbf{\qquad \qquad \qquad if} {agent is not last one AND next agent is not self} \textbf{then}
-            \State \textbf{\qquad \qquad \qquad \qquad} send availability check and inform message to next agent
-            \State \textbf{\qquad \qquad \qquad \qquad} execute corresponding primitive
-            \State \textbf{\qquad \qquad \qquad \qquad} inform Coordinator agent about completion
+            \State \textbf{\qquad \qquad \qquad \qquad} $send\_availCheck\_and\_receive(nextAgent, primitive, priority)$
+            \State \textbf{\qquad \qquad \qquad \qquad} executePrimitive(primitive)
+            \State \textbf{\qquad \qquad \qquad \qquad} $send\_and\_receive(nextAgent, informMsg, priority)$
          
             \State \textbf{\qquad \qquad \qquad if} {agent is last} \textbf{then}
-            \State \textbf{\qquad \qquad \qquad \qquad} execute corresponding primitive
-            \State \textbf{\qquad \qquad \qquad \qquad} inform Coordinator agent about completion, send finish message
-    
-    \State \textbf{\qquad End} 
-    \end{algorithmic}
-    \end{algorithm}
+            \State \textbf{\qquad \qquad \qquad \qquad} executePrimitive(primitive)
+            \State \textbf{\qquad \qquad \qquad \qquad} $send\_and\_receive(\gls{cda}, informFinishMsg, priority)$
+            \State \textbf{\qquad end for} 
+    \State \textbf{End} 
+\end{algorithmic}
+\end{algorithm}
+
+
+
 
 
 \section{External}

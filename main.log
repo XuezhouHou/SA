@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.10.22)  23 OCT 2023 18:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.10.22)  23 OCT 2023 22:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2268,37 +2268,38 @@ Package cleveref Info: loaded `english' language definitions on input line 211.
 Package cleveref Info: loaded `english' language definitions on input line 241.
  [11 <./figures/MessageConceptual.png>]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on input line 244.
-<figures/DT_Conceptual_Diagram.png, id=456, 1095.09125pt x 630.355pt>
+<figures/DT_Conceptual_Diagram.png, id=457, 1095.09125pt x 630.355pt>
 File: figures/DT_Conceptual_Diagram.png Graphic file (type png)
 <use figures/DT_Conceptual_Diagram.png>
-Package pdftex.def Info: figures/DT_Conceptual_Diagram.png  used on input line 375.
+Package pdftex.def Info: figures/DT_Conceptual_Diagram.png  used on input line 401.
 (pdftex.def)             Requested size: 426.79135pt x 245.67393pt.
-Package cleveref Info: loaded `english' language definitions on input line 395.
+Package cleveref Info: loaded `english' language definitions on input line 421.
  [12 <./figures/DT_Conceptual_Diagram.png>]
-Package cleveref Info: loaded `english' language definitions on input line 395.
+Package cleveref Info: loaded `english' language definitions on input line 421.
  [13]
-Package cleveref Info: loaded `english' language definitions on input line 395.
+Package cleveref Info: loaded `english' language definitions on input line 421.
  [14]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\gls' on input line 416.
+(hyperref)                removing `\gls' on input line 442.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\gls' on input line 416.
+(hyperref)                removing `\gls' on input line 442.
 
-)
+Package cleveref Info: loaded `english' language definitions on input line 476.
+[15])
 Package cleveref Info: loaded `english' language definitions on input line 80.
- [15]
+ [16]
 \openout2 = `source/chapter04.aux'.
 
- (./source/chapter04.tex [16
+ (./source/chapter04.tex
+Chapter 4.
+) [17
 
 
 
 ]
-Chapter 4.
-) [17]
 \openout2 = `source/chapter05.aux'.
 
  (./source/chapter05.tex [18
@@ -2379,15 +2380,15 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 Here is how much of TeX's memory you used:
  66529 strings out of 480080
  1497858 string characters out of 5891144
- 2395146 words of memory out of 5000000
+ 2402177 words of memory out of 5000000
  83184 multiletter control sequences out of 15000+600000
  557660 words of font info for 136 fonts, out of 8000000 for 9000
  83 hyphenation exceptions out of 8191
  106i,18n,131p,1917b,2457s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/ly1/texnansi.enc}</usr/share/texlive/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7t.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on main.pdf (35 pages, 787582 bytes).
+Output written on main.pdf (35 pages, 789269 bytes).
 PDF statistics:
- 664 PDF objects out of 1000 (max. 8388607)
+ 665 PDF objects out of 1000 (max. 8388607)
  137 named destinations out of 1000 (max. 500000)
  286 words of extra memory for PDF output out of 10000 (max. 10000000)
 
