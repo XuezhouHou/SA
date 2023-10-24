@@ -1,0 +1,17 @@
+# files without git function
+
+iwb_latex_doc.pdf
+main-blx.bib
+
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.run.xml
+*.gz
+*.toc
+*.upa
+*.upb
+
+
