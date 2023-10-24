@@ -547,12 +547,11 @@ Under the same condition, the message transfer routine with RESTful API will pos
 The fig.\ref{fig: DTConceptual} shows the workflow of \gls{dt} agent updating global \gls{dt}.
 The process begins from the left hand side of the graph. The \gls{dt} agent receives process data constantly from robots, including steady state data. 
 After the separating the sticky packets from \gls{tcp} socket, the process data will be parsed and uploaded one by one to the \gls{ms} Azure Digital Twin cloud. 
-All the updates of the digital twin instances in cloud will be shown in \gls{ms} Azure Digital Twin Explorer temporarily and stored in Azure Event Hubs concurrently. 
+All the updates of the \gls{dt} instances in cloud will be shown in \gls{ms} Azure \gls{dt} Explorer temporarily and stored in Azure Event Hubs concurrently. 
 After that the history data could be ingested for further analysis in Azure Data Explorer. 
 The Azure Digital Twin Explorer here serves as a monitor of robot status while the Azure Data Explorer as a data analysis tool. 
 Once the remote data update is successful, the data will be downloaded to local host immediately and may be further used as inputs of any other visualization purposes. 
 Within this upload and download cycle of data, the real time capability should also be maintained.  
-
 
 
 It is worth mentioning that, the process data is produced by robot motion which makes the \gls{dt} agent completely decoupled from the \gls{mas}. 
@@ -580,6 +579,14 @@ The NTP setup of linux system are:
 Since the cloud system clock is already synchronized with \gls{utc} time, all the tests and calculations results are based on UTC time. 
 
 \subsection{Pseudo-Code of \gls{rcp} and \gls{dt} agent workflow in C++ and C\#}
+
+As mentioned at the beginning of this chapter, \gls{dt} agent should be completely decoupled from \gls{mas}. 
+In the following alg.\ref{alg:RCPPseudoCode} and \ref{alg:DTAgentPseudoCode}, the workflows of \gls{rcp} and \gls{dt} agent are listed separately.
+In the \gls{rcp} workflow, the robot arm is controled by a set of predefined functions with a possibility to record the current states. 
+Each time when a new state is recorded, it should be sent to the \gls{dt} agent immediately through the established \gls{tcp} socket.
+As for the \gls{dt} agent side, it should be started before \gls{rcp}, and listen to the socket to receive data stream once connected.
+After the packets 
+
 
 
 %pseudo code for RCP
