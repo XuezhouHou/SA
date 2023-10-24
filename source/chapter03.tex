@@ -220,7 +220,7 @@ The details will be discussed later.
 \subsection{Pseudo-Code of MAS workflow in WebSocket}
 In Algorithm \ref{alg:CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
 Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitives execution but the ability to do planning and decision making. 
-Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive\_messages$ functions under the messageSender class.
+Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive$ functions under the messageSender class.
 After getting responses from the agents, \gls{cda} should deicide whether to start processing by positive responses or retry the steps by negative responses.  
 Once the process starts, the \gls{cda} does nothing but wait for the inform messages from the allocated agents by using one of the $receive\_and\_send\_messages$ functions under the messageReceiver class. 
 This allows \gls{cda} to have an overall control among the entire prodution process with the purpose of centralization of the distributed agent systems.  
@@ -233,6 +233,9 @@ The Algorithm \ref{alg:RAPseudoCode} shows the logic of a \gls{ra}. At the begin
 and other agents, will wait for the availability check and inform message of the last agent in the list. 
 After executing all primitives of its own, the \gls{ra} should check the availability and inform the starting point of next agent.  
 Once all primitives in the list are done, the last agent should inform the \gls{cda} about the end of processing.
+
+
+All messages will be routed to a WebSocket server, which serves a \gls{ca}.  
 % Define Class...EndClass for better representation
 \algnewcommand\algorithmicclass{\textbf{class}}
 \algdef{SE}[CLASS]{Class}{EndClass}[1]
@@ -322,9 +325,11 @@ Once all primitives in the list are done, the last agent should inform the \gls{
     \State \textbf{\qquad \qquad while} recipient not found \textbf{do} 
     \State \qquad \qquad \qquad Send prioritized messages and wait for response
     \State \qquad \qquad \qquad Handle availability exceptions
-    \State \qquad {\#similar to $send\_and\_receive()$ but send an image }
+
     \State \textbf{\qquad function} {$send\_image\_and\_receive(self, recipient, image\_path, priority)$}
-    \State \qquad \qquad ...
+    \State \qquad \qquad{\#similar to $send\_and\_receive()$ but send an image }
+    % \State \qquad \qquad ...
+
 \State \textbf{EndClass}
 
 \State \textbf{Class} messageReceiver
@@ -342,13 +347,16 @@ Once all primitives in the list are done, the last agent should inform the \gls{
     \State \textbf{\qquad \qquad while} message not received \textbf{do}
     \State \qquad \qquad \qquad Receive, store sequences and send responses with priority
 
-    \State \qquad {\#similar to $receive\_and\_send()$ but receive and save an image }
     \State \textbf{\qquad function} {$receive\_image\_and\_send(self, response, serverID)$}
-    \State \qquad \qquad ...    
-    \State \qquad {\#similar to $receive\_capCheck\_and\_send()$ but check availability}
+    \State \qquad \qquad{\#similar to $receive\_and\_send()$ but receive and save an image }    
+    % \State \qquad \qquad ...    
     \State \textbf{\qquad function} {$receive\_availCheck\_and\_send(self, response, serverID)$}
-    \State \qquad \qquad ...  
-    \State \textbf{EndClass}  
+    \State \qquad \qquad {\#similar to $receive\_capCheck\_and\_send()$ but check availability}
+    % \State \qquad \qquad ...  
+    \State \textbf{EndClass}
+ 
+
+   
     \State \textbf{Main:}
     \State {\qquad Instantiate} messageSender and messageReceiver
     \State \qquad $receive\_and\_send(connectMsg, centralServerID)$
@@ -385,9 +393,9 @@ Once all primitives in the list are done, the last agent should inform the \gls{
         \State {Import} WebSocket
         \State {Initialize} serverID, priorityDict, messageQueue, connectedAgents
         \State \textbf{Do in parallel}
-        \State \textbf{\qquad function} handler(websocket, path)  
+        \State \textbf{\qquad function} handler(WebSocket, path)  
         \State \textbf \qquad \qquad receive agent name and store in connectedAgents
-        \State \textbf {\qquad \qquad while} websocket connected \textbf{do} 
+        \State \textbf {\qquad \qquad while} WebSocket connected \textbf{do} 
         \State \textbf \qquad \qquad \qquad receive message from agent   
         \State \textbf{\qquad \qquad \qquad if} {message is json} \textbf{then}
         \State \textbf \qquad \qquad \qquad \qquad parse json message and retrieve recipient
@@ -408,7 +416,7 @@ Once all primitives in the list are done, the last agent should inform the \gls{
         \State \textbf \qquad \qquad send jsonMsg to recipient
         \State \textbf{Main:}   
         \State \textbf {\qquad while} true \textbf {do}
-        \State \textbf \qquad \qquad handler(websocket, serverID) 
+        \State \textbf \qquad \qquad handler(WebSocket, serverID) 
         \State \textbf{End}                 
     \end{algorithmic}
 \end{breakablealgorithm}
