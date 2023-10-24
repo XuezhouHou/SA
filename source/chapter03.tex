@@ -1,10 +1,10 @@
 % !TeX spellcheck = en_US
-\chapter{Methodology}%
+\chapter{Methodology}\label{chap: Meth}%
 This chapter describes the methodologies of general \gls{mas} design. 
-The general \gls{mas} is distributed into internal (3.1) and external(3.2) parts,  
+The general \gls{mas} is distributed into internal (\ref{chap: Meth-Internal}) and external (\ref{chap: Meth-External}) parts,  
 with a \gls{mas} for \gls{cda} and \gls{ra} as an internal and \gls{dt} agent as an external system. 
 These two systems are decoupled from each other but still under the concept of agent based operation system. 
-\section{Internal}
+\section{Internal}\label{chap: Meth-Internal}
 In this section, the design pattern for \gls{mas} is chosen and the tasks of each module within is discussed.
 After that, the characteristics of transport layer protocols and application layers protocols are compared. 
 Eventually the methodologies of using python WebSocket for \gls{mas} and RESTful API for one to one agent communication are listed in pseudocode. 
@@ -22,11 +22,11 @@ Eventually the methodologies of using python WebSocket for \gls{mas} and RESTful
 
 The fig.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based on the \gls{ra} design patterns in Wannagat’s architecture, with the focus on communication between agents, planning and decision making inside each agent. The \gls{cda} here is identical to \gls{ams} of Wanagat, which should also be counted as an agent instead of a management system. The five modules within an agent are: 
 \begin{itemize}
-\item Planning Module,
-\item Control Module,
-\item Knowledge Base,
-\item Diagnosis Module,
-\item Communication Interface.
+    \item Planning Module
+    \item Control Module
+    \item Knowledge Base
+    \item Diagnosis Module
+    \item Communication Interface
 \end{itemize}
 
 for both Coordinator agent or a \gls{ra}.
@@ -57,7 +57,7 @@ current state, e.g.: emergent stop \\ \textbullet\ Control and optimize the robo
 
 \begin{tabular}[c]{@{}p{0.2\textwidth}@{}}Knowledge Base \end{tabular} & \begin{tabular}[c]{@{}p{0.3\textwidth}@{}} \textbullet\ \gls{db} \\ \textbullet\ Knowledge representation and reasoning \\ \textbullet\ Learning \\ \textbullet\ Knowledge sharing\end{tabular} 
 & \begin{tabular}[c]{@{}p{0.5\textwidth}@{}} \textbullet\ Hierarchical, relational, non-relational and object oriented\\ \textbullet\ Relational ontology \gls{db} system \\ \textbullet\ Agent learns from the existing primitives
-and create new executable primitives for customer’s changing
+and create new executable primitives for customer's changing
 requirements \\ \textbullet\ Unfound primitives
 could be retrieved by querying other agents\end{tabular}  \\ 
 \hline
@@ -108,13 +108,8 @@ Although the application layer protocols still utilize TCP/UDP sockets to transp
 In the following tables, a comparison between protocols in different layers provide a more straight forward overview of their pro and cons in different contents.
 
 
-% Please add the following required packages to your document preamble:
-% \usepackage{graphicx}
-% \usepackage{tabularx}
 \subsubsection{Transport layer protocols}
-
-
-Table \ref{tab: transportlayer} compares the typical transport layer protocols \gls{tcp} and \gls{udp} from different aspects.  
+Tab.\ref{tab: transportlayer} compares the typical transport layer protocols \gls{tcp} and \gls{udp} from different aspects.  
 \gls{tcp} provides reliable data transfer while \gls{udp} mainly focuses on transport speed and efficiency without reliability guarantee. 
 With the focus on speed and reliability, \gls{udp} on one hand offers a faster packet transfer, while on the other hand produces a network dependent packet loss rate and out-of-order packet sequence, compared to \gls{tcp}. 
 Because of the requirement of a reliable real time ordered data transfer with minimum to no packet loss in \gls{mas} communication, TCP is used as the base protocols of the design. 
@@ -123,7 +118,7 @@ Because of the requirement of a reliable real time ordered data transfer with mi
 \begin{table}[htbp]
     \small
     \centering
-    \caption{Characteristics of different technologies in transportlayer protocols}
+    \caption{Characteristics of different technologies in transport layer protocols}
     \label{tab: transportlayer}
     \begin{tabular}{|m{0.2\textwidth}|m{0.3\textwidth}|m{0.3\textwidth}|}
     \hline
@@ -145,12 +140,13 @@ Because of the requirement of a reliable real time ordered data transfer with mi
 
 
 
+
 \subsubsection{Application layer protocols}
 
 
 % % Please add the following required packages to your document preamble:
 
-\begin{sidewaystable}[htbp]
+\begin{sidewaystable}[p]
     \small
     \caption{Characteristics of different technologies in application layer protocols}
     \label{tab: applicationlayer}
@@ -174,23 +170,25 @@ Because of the requirement of a reliable real time ordered data transfer with mi
     \end{tabular}
 \end{sidewaystable}
 
-There are several protocols in application layers that are considered to be suitable for \gls{mas} communication, each with its own advantages and limits in different aspects according to table \ref{tab: applicationlayer}.
-To get a closer look of the Table \ref{tab: applicationlayer},  a horizontal comparisons between different application layer protocols: 
+There are several protocols in application layers that are considered to be suitable for \gls{mas} communication, each with its own advantages and limits in different aspects according to tab.\ref{tab: applicationlayer}.
+To get a closer look of the tab.\ref{tab: applicationlayer}, a horizontal comparisons between different application layer protocols: 
 
 \begin{itemize}
-\item \gls{http},
-\item WebSocket,
-\item RESTful API,
-\item and \gls{mqtt},
+    \item \gls{http}
+    \item WebSocket
+    \item RESTful API
+    \item and \gls{mqtt}
 \end{itemize}
+
 should be performed. In one word, WebSocket is chosen to be the application layer protocols for MAS communication, while \gls{tcp} socket for the \gls{dt} agent design, which will be further discussed in the next chapter. Here are the reasons of the choice of WebSocket: 
-\begin{enumerate}
-\item Bi-directional, full duplex, real time communication between server and clients, no re-connection needed. Suitable for continuous data transfer.
-\item Overhead small after connection establishment to reduce latency(\gls{http}).
-\item Stateful, store the information of the client's state under connection.
-\item High flexibility, adaptability and scalability
-\item Secure with wss.
-\end{enumerate}
+
+\begin{itemize}
+    \item Bi-directional, full duplex, real time communication between server and clients, no re-connection needed. Suitable for continuous data transfer.
+    \item Small overhead after connection establishment to reduce latency (\gls{http}).
+    \item Stateful, store the information of the client's state under connection.
+    \item High flexibility, adaptability and scalability.
+    \item Secure with wss.
+\end{itemize}
 
 Fig.\ref{fig: MsgConceptual} shows the differences between bi-directional full duplex and other message patterns like Request-Response and Publish-Subscribe, in the context of data transfer. 
 For the \gls{mqtt}, publisher publish (send) a message within a topic to the broker (server), while subscriber subscribes (receive) the message from the broker within the same topic. 
@@ -213,18 +211,18 @@ Basically the client sends a message to the server, after processing the data, t
 
 \subsection{Transport layer protocols versus Application layer protocols}
 The reasons of choosing application layer protocols over transport layer protocols for \gls{mas} according to table \ref{tab: transportlayer} and \ref{tab: applicationlayer} are listed as following:
-\begin{enumerate}
-    \item Semantic-rich message patterns. 
-    \item Higher flexibility.
-    \item Standardized communication between different agents.
-    \item Header with agent relevant information.
-    \item Security and authentication.
-    \end{enumerate}
+\begin{itemize}
+    \item Semantic-rich message patterns
+    \item Higher flexibility
+    \item Standardized communication between different agents
+    \item Header with agent relevant information
+    \item Security and authentication
+    \end{itemize}
 However, unlike for \gls{mas} design, the architecture of \gls{dt} agent is more straightforward and the basic \gls{tcp} socket is chosen for the more to one server-client communication. 
-The details will be discussed later in section 3.2.
+The details will be discussed later in section \ref{chap: Meth-External}.
 
 \subsection{Pseudo-Code of MAS workflow in WebSocket python}
-In algorithm \ref{alg:CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
+In algorithm\ref{alg: CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
 Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitives execution but the ability to do planning and decision making. 
 Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive()$ functions under the messageSender class.
 After getting responses from the agents, \gls{cda} should deicide whether to start processing by positive responses or retry the steps by negative responses.  
@@ -235,13 +233,13 @@ This allows \gls{cda} to have an overall control among the entire prodution proc
 As for the decentralization of \gls{mas}, the \gls{ra} should be able to react to \gls{cda} and do decision making for its own field level control.  
 Which means, \gls{cda} should only be informed about the status of the production process, while the exact processes should be done within \gls{ra} and the material flow should be informed between \gls{ras}. The combination of centralization and decentralization will save the resource power consumed by \gls{cda}, 
 while still maintains the management level control and decision making.  
-The algorithm \ref{alg:RAPseudoCode} shows the logic of a \gls{ra}. At the beginning, \gls{ra} waits for the connection and capability check from \gls{cda}, after that first agent in the list of $sequenced\_agent$ will listen to the starting message from \gls{cda}, 
+The algorithm \ref{alg: RAPseudoCode} shows the logic of a \gls{ra}. At the beginning, \gls{ra} waits for the connection and capability check from \gls{cda}, after that first agent in the list of $sequenced\_agent$ will listen to the starting message from \gls{cda}, 
 and other agents, will wait for the availability check and inform message of the last agent in the list. 
 After executing all primitives of its own, the \gls{ra} should check the availability and inform the starting point of next agent.  
 Once all primitives in the list are done, the last agent should inform the \gls{cda} about the end of processing.
 
 
-Before the agents start to run, the WebSocket server program (algorithm \ref{alg:ServerPseudoCode}) must be started first, so that the messages from agents will be routed to it, which serves as a \gls{ca}.  
+Before the agents start to run, the WebSocket server program (algorithm \ref{alg: ServerPseudoCode}) must be started first, so that the messages from agents will be routed to it, which serves as a \gls{ca}.  
 The server runs asychronously and listen to incoming messages forever. 
 Which means, every time a new agent gets connected to the server, a new thread will be started and killed after the incoming message is processed and sent to the recipient agent. 
 All threads run concurrently and the maximal possible connection number is limited by the hardware and also the network bandwidth and latency. 
@@ -250,16 +248,11 @@ After that, it will either split the string or parse the json file to retrieve t
 Since all message handling processes run concurrently, there is a chance that multiple messages coming in the server and waiting for processing at the same time. 
 In order to rearrange them and handle the messages with higher priority first, all messages should be pushed to queue and the critical messages should be popped out first, after this the important and then normal messages. 
 Finally the message will be either processed further or sent directly to the recipient. 
-% Define Class...EndClass for better representation
-\algnewcommand\algorithmicclass{\textbf{class}}
-\algdef{SE}[CLASS]{Class}{EndClass}[1]
-   {\algorithmicclass\ \textsc{#1}\vspace{0.2cm}}%
-   {\vspace{0.2cm}}%
 
    
 \begin{breakablealgorithm}
 \caption{Pseudo-Code for Coordinator agent in MAS workflow}
-\label{alg:CDAPseudoCode}
+\label{alg: CDAPseudoCode}
 \begin{algorithmic}[1]
 \State \textbf{Input:} custRequirement
 \State {Import} WebSocket
@@ -324,7 +317,7 @@ Finally the message will be either processed further or sent directly to the rec
 %pseudo code for RA
 \begin{breakablealgorithm}
     \caption{Pseudo-Code for Resource agent in MAS workflow}
-    \label{alg:RAPseudoCode}
+    \label{alg: RAPseudoCode}
     \begin{algorithmic}[1]
     \State {Import} WebSocket
     \State {Initialize} agentID, centralServerIP, subServerIP
@@ -403,7 +396,7 @@ Finally the message will be either processed further or sent directly to the rec
 %pseudo code for Server
 \begin{breakablealgorithm}
     \caption{Pseudo-Code for Server in MAS workflow}
-    \label{alg:ServerPseudoCode}
+    \label{alg: ServerPseudoCode}
     \begin{algorithmic}[1]
         \State {Import} WebSocket
         \State {Initialize} serverID, priorityDict, messageQueue, connectedAgents
@@ -439,20 +432,27 @@ Finally the message will be either processed further or sent directly to the rec
 \subsection{Pseudo-Code of one to one agent communication workflow in RESTful API}
 A more comparable application layer protocol is RESTful API, which has the request-response mechanism with more addtional functionalities compared to \gls{http}. 
 Therefore RESTful API was considered as an alternative of communication protocol other than WebSocket. 
-However, based on some test results in chapter 4, WebSocket is proved to be more appropriate.
+However, based on some test results in chapter \ref{chap: Result}, WebSocket is 
+proved to be more appropriate.
 As a result, different from WebSocket, the design of RESTful API based system is only built for performance testing and comparison with WebSocket.
 Therefore, the RESTful API system is simplified to be an one to one agent communication without other functionalities like decision making or message prioritization, etc.
 
-According to the pseudo code for agentSR (send and receive messages) and agentRS (receive and send messages) in algorithm \ref{alg:SRPseudoCode} and \ref{alg:RSPseudoCode}, and the server in algorithm \ref{alg:apiServerPseudoCode}, 
-the basic mechanism is similar to the one designed for WebSocket. One major difference is that, the connection will be closed after the message is sent from the clientSR to clientRS.
-If the agentRS needs to send a response message back to inform the success, re-connection is needed. . 
+According to the pseudo code for agentSR (send and receive messages) and 
+agentRS (receive and send messages) in 
+algorithm \ref{alg: SRPseudoCode} and \ref{alg: RSPseudoCode}, and the server 
+in algorithm \ref{alg: apiServerPseudoCode}, 
+the basic mechanism is similar to the one designed for WebSocket. One major 
+difference is that, the connection will be closed after the message is sent 
+from the clientSR to clientRS.
+If the agentRS needs to send a response message back to inform the success, 
+re-connection is needed. 
 Instead of send and receive from WebSocket, agentSR first POST a request to the server to call the function $send\_message()$, 
 while agentRS GET a request to the server for the function call $get\_message()$, same for the reverse direction. 
 Under the same condition, the message transfer routine with RESTful API will possibly results in more latency than WebSocket, which will be verified later.
   
 \begin{algorithm}
     \caption{Pseudo-Code for agentSR in one to one communication workflow}
-    \label{alg:SRPseudoCode}
+    \label{alg: SRPseudoCode}
     \begin{algorithmic}[1]
     \State {Import} flask
     \State {Initialize} agentID, serverIP
@@ -477,7 +477,7 @@ Under the same condition, the message transfer routine with RESTful API will pos
 
     \begin{algorithm}
         \caption{Pseudo-Code for agentRS in one to one communication workflow}
-        \label{alg:RSPseudoCode}
+        \label{alg: RSPseudoCode}
         \begin{algorithmic}[1]
         \State {Import} flask
         \State {Initialize} agentID, serverIP
@@ -500,7 +500,7 @@ Under the same condition, the message transfer routine with RESTful API will pos
 
     \begin{algorithm}
         \caption{Pseudo-Code for server in one to one communication workflow}
-        \label{alg:apiServerPseudoCode}
+        \label{alg: apiServerPseudoCode}
         \begin{algorithmic}[1]
         \State {Import} flask
         \State {Initialize} jsonMsg 
@@ -531,7 +531,7 @@ Under the same condition, the message transfer routine with RESTful API will pos
         \end{algorithmic}
         \end{algorithm}
 
-\section{External}
+\section{External} \label{chap: Meth-External}
 
 
 \subsection{Overview (conceptual diagram)}
