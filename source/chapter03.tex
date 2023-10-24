@@ -1,13 +1,13 @@
 % !TeX spellcheck = en_US
 \chapter{Methodology}%
-This chapter describes the methodologies of \gls{mas} design. 
-The general \gls{mas} is separated as internal (section 3.1) and external(section 3.2) parts,  
+This chapter describes the methodologies of general \gls{mas} design. 
+The general \gls{mas} is distributed into internal (3.1) and external(3.2) parts,  
 with a \gls{mas} for \gls{cda} and \gls{ra} as an internal and \gls{dt} agent as an external system. 
-The two systems are decoupled from each other but still still under the concept of agent based operation system. 
+These two systems are decoupled from each other but still under the concept of agent based operation system. 
 \section{Internal}
 In this section, the design pattern for \gls{mas} is chosen and the tasks of each module within is discussed.
 After that, the characteristics of transport layer protocols and application layers protocols are compared. 
-Eventually the methodologies of using python WebSocket and RESTful API are listed in pseudocode. 
+Eventually the methodologies of using python WebSocket for \gls{mas} and RESTful API for one to one agent communication are listed in pseudocode. 
 
 \subsection{Overview (conceptual diagram)}
 
@@ -22,14 +22,14 @@ Eventually the methodologies of using python WebSocket and RESTful API are liste
 
 The figure.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based on the \gls{ra} design patterns in Wannagat’s architecture, with the focus on communication between agents, planning and decision making inside each agent. The \gls{cda} here is identical to \gls{ams} of Wanagat, which should also be counted as an agent instead of a management system. The five modules within an agent are: 
 \begin{itemize}
-\item Planning Module
-\item Control Module
-\item Knowledge Base
-\item Diagnosis Module
+\item Planning Module,
+\item Control Module,
+\item Knowledge Base,
+\item Diagnosis Module,
 \item Communication Interface.
 \end{itemize}
 
-Each module within a Coordinator agent or a \gls{ra}
+for both Coordinator agent or a \gls{ra}.
 Based on these five modules, the task to be executed in an agent should also be categorized into 5 parts. The following table shows some tasks of each module based on the general requirements of a smart factory.
 
 
@@ -63,7 +63,7 @@ could be retrieved by querying other agents\end{tabular}  \\
 \hline
 
 \begin{tabular}[c]{@{}p{0.2\textwidth}@{}} Diagnosis Module \end{tabular} & \begin{tabular}[c]{@{}p{0.3\textwidth}@{}} \textbullet\ Fault detection \\ \textbullet\ Fault diagnosis \\ \textbullet\ Root cause analysis and classification \\ \textbullet\ Fault prediction\end{tabular} 
-& \begin{tabular}[c]{@{}p{0.5\textwidth}@{}} \textbullet\ Monitor the time-series data to detect anomalies from robot states, e.g.: detect faulty joint values for abortion\\ \textbullet\ More complex analysis to diagnose faulty patterns with mathematical algorithms and models, or AI-based methods \\ \textbullet\ Find the reasons for anomalies and categorize them for patterns recognition \\ \textbullet\ predict the system faults by learning the classification models\end{tabular}  \\ 
+& \begin{tabular}[c]{@{}p{0.5\textwidth}@{}} \textbullet\ Monitor the time-series data to detect anomalies from robot states, e.g.: detect faulty joint values for abortion\\ \textbullet\ More complex analysis to diagnose faulty patterns with mathematical algorithms and models, or AI-based methods \\ \textbullet\ Find the reasons for anomalies and categorize them for patterns recognition \\ \textbullet\ Predict the system faults by learning the classification models\end{tabular}  \\ 
 \hline
 
 \begin{tabular}[c]{@{}p{0.2\textwidth}@{}} Communication Interface \end{tabular}& \begin{tabular}[c]{@{}p{0.3\textwidth}@{}} \textbullet\ Message parsing and encoding \\ \textbullet\ Connection establishment and maintenance \\ \textbullet\ Message handling \\ \textbullet\ Data security\end{tabular} 
@@ -221,10 +221,10 @@ The reasons of choosing application layer protocols over transport layer protoco
     \item Security and authentication.
     \end{enumerate}
 However, unlike for \gls{mas} design, the architecture of \gls{dt} agent is more straightforward and the basic \gls{tcp} socket is chosen for the more to one server-client communication. 
-The details will be discussed later.
+The details will be discussed later in section 3.2.
 
 \subsection{Pseudo-Code of MAS workflow in WebSocket}
-In Algorithm \ref{alg:CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
+In algorithm \ref{alg:CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
 Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitives execution but the ability to do planning and decision making. 
 Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive()$ functions under the messageSender class.
 After getting responses from the agents, \gls{cda} should deicide whether to start processing by positive responses or retry the steps by negative responses.  
@@ -235,13 +235,13 @@ This allows \gls{cda} to have an overall control among the entire prodution proc
 As for the decentralization of \gls{mas}, the \gls{ra} should be able to react to \gls{cda} and do decision making for its own field level control.  
 Which means, \gls{cda} should only be informed about the status of the production process, while the exact processes should be done within \gls{ra} and the material flow should be informed between \gls{ras}. The combination of centralization and decentralization will save the resource power consumed by \gls{cda}, 
 while still maintains the management level control and decision making.  
-The Algorithm \ref{alg:RAPseudoCode} shows the logic of a \gls{ra}. At the beginning, \gls{ra} waits for the connection and capability check from \gls{cda}, after that first agent in the list of $sequenced\_agent$ will listen to the starting message from \gls{cda}, 
+The algorithm \ref{alg:RAPseudoCode} shows the logic of a \gls{ra}. At the beginning, \gls{ra} waits for the connection and capability check from \gls{cda}, after that first agent in the list of $sequenced\_agent$ will listen to the starting message from \gls{cda}, 
 and other agents, will wait for the availability check and inform message of the last agent in the list. 
 After executing all primitives of its own, the \gls{ra} should check the availability and inform the starting point of next agent.  
 Once all primitives in the list are done, the last agent should inform the \gls{cda} about the end of processing.
 
 
-Before the agents start to run, the WebSocket server program (Algorithm \ref{alg:ServerPseudoCode}) must be started first, so that the messages from agents will be routed to it, which serves as a \gls{ca}.  
+Before the agents start to run, the WebSocket server program (algorithm \ref{alg:ServerPseudoCode}) must be started first, so that the messages from agents will be routed to it, which serves as a \gls{ca}.  
 The server runs asychronously and listen to incoming messages forever. 
 Which means, every time a new agent gets connected to the server, a new thread will be started and killed after the incoming message is processed and sent to the recipient agent. 
 All threads run concurrently and the maximal possible connection number is limited by the hardware and also the network bandwidth and latency. 
@@ -299,9 +299,10 @@ Finally the message will be either processed further or sent directly to the rec
     \State \qquad \qquad Find tasks from customer requirements
     \State \qquad \qquad Breakdown tasks into skills into primitives
     \State \qquad \qquad Create sequence lists for primitives and agents allocation    
-\State \textbf{EndClass}
+    \State \qquad \qquad \textbf{return} sequences
+    \State \textbf{EndClass}
 \State \textbf{Main:}
-
+\State {\qquad Instantiate} agentsAllocation, messageSender and messageReceiver with agentID
 \State \qquad $sequences = allocate\_agents\_with\_seq\_primitives(custRequirement)$
 \State \qquad \textbf{repeat}
 \State \qquad \qquad $send\_and\_receive(agent, connectMsg, priority)$
@@ -372,7 +373,7 @@ Finally the message will be either processed further or sent directly to the rec
 
    
     \State \textbf{Main:}
-    \State {\qquad Instantiate} messageSender and messageReceiver
+    \State {\qquad Instantiate} messageSender and messageReceiver with agentID
     \State \qquad $receive\_and\_send(connectMsg, centralServerID)$
     \State \textbf{\qquad repeat}
     \State \qquad \qquad $receive\_capCheck\_and\_send(capMsg, centralServerID)$
@@ -435,8 +436,100 @@ Finally the message will be either processed further or sent directly to the rec
     \end{algorithmic}
 \end{breakablealgorithm}
 
+\subsection{Pseudo-Code of one to one agent communication workflow in RESTful API}
+A more comparable application layer protocol is RESTful API, which has the request-response mechanism with more addtional functionalities compared to \gls{http}. 
+Therefore RESTful API was considered as an alternative of communication protocol other than WebSocket. 
+However, based on some test results in chapter 4, WebSocket is proved to be more appropriate.
+As a result, different from WebSocket, the design of RESTful API based system is only built for performance testing and comparison with WebSocket.
+Therefore, the RESTful API system is simplified to be an one to one agent communication without other functionalities like decision making or message prioritization, etc.
+
+According to the pseudo code for agentSR (send and receive messages) and agentRS (receive and send messages) in algorithm \ref{alg:SRPseudoCode} and \ref{alg:RSPseudoCode}, and the server in algorithm \ref{alg:apiServerPseudoCode}, 
+the basic mechanism is similar to the one designed for WebSocket. One major difference is that, the connection will be closed after the message is sent from the clientSR to clientRS.
+If the agentRS needs to send a response message back to inform the success, re-connection is needed. . 
+Instead of send and receive from WebSocket, agentSR first POST a request to the server to call the function $send\_message()$, 
+while agentRS GET a request to the server for the function call $get\_message()$, same for the reverse direction. 
+Under the same condition, the message transfer routine with RESTful API will possibly results in more latency than WebSocket, which will be verified later.
+  
+\begin{algorithm}
+    \caption{Pseudo-Code for agentSR in one to one communication workflow}
+    \label{alg:SRPseudoCode}
+    \begin{algorithmic}[1]
+    \State {Import} flask
+    \State {Initialize} agentID, serverIP
+        \State \textbf{function} {$send\_and\_receive(sender, recipient, msg)$}
+        \State \qquad format msg with agent IDs 
+        \State \qquad post request msg to server
+        \State \textbf{\qquad while} no response \textbf{do}    
+        \State \qquad \qquad {$wait\_for\_response(sender, recipient)$}
+
+        \State \textbf{function} {$wait\_for\_response(sender, recipient)$}
+        \State \textbf{\qquad while} message not received \textbf{do}    
+        \State \qquad \qquad get request jsonMsg from server and wait for reponse
+        \State \qquad \qquad parse jsonMsg to retrieve message content
+    
+
+    \State \textbf{Main:}
+    \State \qquad {$send\_and\_receive(agentID, recipient, msg)$}
+    \State \textbf{End} 
+    \end{algorithmic}
+    \end{algorithm}
 
 
+    \begin{algorithm}
+        \caption{Pseudo-Code for agentRS in one to one communication workflow}
+        \label{alg:RSPseudoCode}
+        \begin{algorithmic}[1]
+        \State {Import} flask
+        \State {Initialize} agentID, serverIP
+            \State \textbf{function} {$send\_message(recipient, msg)$}
+            \State \qquad format msg with recipient ID 
+            \State \qquad post request msg to server and wait for response 
+    
+            \State \textbf{function} {$get\_message(agentID)$}  
+            \State \qquad get request jsonMsg from server and wait for response
+            \State \qquad parse jsonMsg to retrieve message content
+            \State \qquad \textbf{return} msg, recipient         
+    
+        \State \textbf{Main:}
+        \State \qquad {$msg, recipient = get\_message(agentID)$}
+        \State \textbf{\qquad if} msg AND recipient \textbf{then}   
+        \State \qquad \qquad{$send\_message(recipient, msg)$}
+        \State \textbf{End} 
+        \end{algorithmic}
+        \end{algorithm}
+
+    \begin{algorithm}
+        \caption{Pseudo-Code for server in one to one communication workflow}
+        \label{alg:apiServerPseudoCode}
+        \begin{algorithmic}[1]
+        \State {Import} flask
+        \State {Initialize} jsonMsg 
+        \State \textbf{Class} app
+            \State \qquad \textbf{function} {$send\_message()$}
+            \State \qquad \qquad {\# POST request in app class} 
+            \State \qquad \qquad parse the json file from request
+            \State \qquad \qquad retrieve recipient and message content 
+            \State \qquad \qquad \textbf{if} recipient AND msgContent \textbf{then}
+            \State \qquad \qquad \qquad jsonify senderIP and message content and store in jsonMsg
+            \State \qquad \qquad \qquad response is OK status code
+            \State \qquad \qquad \textbf{else}            
+            \State \qquad \qquad \qquad response is Error code            
+            \State \qquad \qquad \textbf{return} response  
+
+            \State \qquad \textbf{function} {$get\_message(agentID)$}  
+            \State \qquad \qquad {\# GET request in app class} 
+            \State \qquad \qquad \textbf{if} agentID in jsonMsg \textbf{then}
+            \State \qquad \qquad \qquad send jsonMsg and response is OK status code
+            \State \qquad \qquad \textbf{else}
+            \State \qquad \qquad \qquad response is Error code
+            \State \qquad \qquad \textbf{return} response         
+    
+        \State \textbf{Main:}
+        \State \qquad Instantiate app
+        \State \qquad run app forever
+        \State \textbf{End} 
+        \end{algorithmic}
+        \end{algorithm}
 
 \section{External}
 \subsection{Overview (conceptual diagram)}
