@@ -223,7 +223,7 @@ The reasons of choosing application layer protocols over transport layer protoco
 However, unlike for \gls{mas} design, the architecture of \gls{dt} agent is more straightforward and the basic \gls{tcp} socket is chosen for the more to one server-client communication. 
 The details will be discussed later in section 3.2.
 
-\subsection{Pseudo-Code of MAS workflow in WebSocket}
+\subsection{Pseudo-Code of MAS workflow in WebSocket python}
 In algorithm \ref{alg:CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
 Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitives execution but the ability to do planning and decision making. 
 Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive()$ functions under the messageSender class.
@@ -532,6 +532,8 @@ Under the same condition, the message transfer routine with RESTful API will pos
         \end{algorithm}
 
 \section{External}
+
+
 \subsection{Overview (conceptual diagram)}
 
 %figure conceptual DT
@@ -577,7 +579,7 @@ The NTP setup of linux system are:
 
 Since the cloud system clock is already synchronized with \gls{utc} time, all the tests and calculations results are based on UTC time. 
 
-\subsection{Pseudo-Code of \gls{rcp} and \gls{dt} agent workflow in C\+\+ and C\#}
+\subsection{Pseudo-Code of \gls{rcp} and \gls{dt} agent workflow in C++ and C\#}
 %pseudo code for RCP
 \begin{minipage}{0.49\textwidth}
 \begin{breakablealgorithm}[H]

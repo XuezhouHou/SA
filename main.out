@@ -19,7 +19,7 @@
 \BOOKMARK [1][-]{section.3.2}{External}{chapter.3}% 19
 \BOOKMARK [2][-]{subsection.3.2.1}{Overview\040\(conceptual\040diagram\)}{section.3.2}% 20
 \BOOKMARK [2][-]{subsection.3.2.2}{Prerequisite}{section.3.2}% 21
-\BOOKMARK [2][-]{subsection.3.2.3}{Pseudo-Code\040of\040rcp\040and\040dt\040agent\040workflow\040in\040C\040and\040C#}{section.3.2}% 22
+\BOOKMARK [2][-]{subsection.3.2.3}{Pseudo-Code\040of\040rcp\040and\040dt\040agent\040workflow\040in\040C++\040and\040C#}{section.3.2}% 22
 \BOOKMARK [2][-]{subsection.3.2.4}{MS\040Azure\040Digital\040Twin}{section.3.2}% 23
 \BOOKMARK [0][-]{chapter.4}{Results\040and\040discussion}{}% 24
 \BOOKMARK [1][-]{section.4.1}{Test\040results\040of\040Websocket\040and\040Restful\040API}{chapter.4}% 25
