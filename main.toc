@@ -20,7 +20,7 @@
 \contentsline {subsubsection}{Transport layer protocols}{8}{subsubsection*.9}%
 \contentsline {subsubsection}{Application layer protocols}{8}{subsubsection*.11}%
 \contentsline {subsection}{\numberline {3.1.4}Transport layer protocols versus Application layer protocols}{11}{subsection.3.1.4}%
-\contentsline {subsection}{\numberline {3.1.5}Pseudo-Code of MAS workflow in WebSocket}{11}{subsection.3.1.5}%
+\contentsline {subsection}{\numberline {3.1.5}Pseudo-Code of MAS workflow in WebSocket python}{11}{subsection.3.1.5}%
 \contentsline {subsection}{\numberline {3.1.6}Pseudo-Code of one to one agent communication workflow in RESTful API}{15}{subsection.3.1.6}%
 \contentsline {section}{\numberline {3.2}External}{15}{section.3.2}%
 \contentsline {subsection}{\numberline {3.2.1}Overview (conceptual diagram)}{18}{subsection.3.2.1}%

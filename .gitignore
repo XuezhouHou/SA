@@ -15,3 +15,11 @@ main-blx.bib
 *.upb
 
 
+*.aux
+main-blx.bib
+*.bbl
+*.blg
+*.log
+*.out
+*.gz
+*.toc
