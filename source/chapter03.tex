@@ -240,7 +240,7 @@ Once all primitives in the list are done, the last agent should inform the \gls{
    {\vspace{0.2cm}}%
 
    
-\begin{algorithm}
+\begin{breakablealgorithm}
 \caption{Pseudo-Code for Coordinator agent in MAS workflow}
 \label{alg:CDAPseudoCode}
 \begin{algorithmic}[1]
@@ -301,10 +301,10 @@ Once all primitives in the list are done, the last agent should inform the \gls{
 \State \qquad \textbf{until} informed by last agent with finish message 
 \State \textbf{End} 
 \end{algorithmic}
-\end{algorithm}
+\end{breakablealgorithm}
 
 %pseudo code for RA
-\begin{algorithm}
+\begin{breakablealgorithm}
     \caption{Pseudo-Code for Resource agent in MAS workflow}
     \label{alg:RAPseudoCode}
     \begin{algorithmic}[1]
@@ -325,7 +325,6 @@ Once all primitives in the list are done, the last agent should inform the \gls{
     \State \qquad {\#similar to $send\_and\_receive()$ but send an image }
     \State \textbf{\qquad function} {$send\_image\_and\_receive(self, recipient, image\_path, priority)$}
     \State \qquad \qquad ...
-
 \State \textbf{EndClass}
 
 \State \textbf{Class} messageReceiver
@@ -349,15 +348,7 @@ Once all primitives in the list are done, the last agent should inform the \gls{
     \State \qquad {\#similar to $receive\_capCheck\_and\_send()$ but check availability}
     \State \textbf{\qquad function} {$receive\_availCheck\_and\_send(self, response, serverID)$}
     \State \qquad \qquad ...  
-    \State \textbf{EndClass}
- 
-\end{algorithmic}
-\end{algorithm}
-
-% break the code, too long
-\begin{algorithm}
-    \begin{algorithmic}[1]
-   
+    \State \textbf{EndClass}  
     \State \textbf{Main:}
     \State {\qquad Instantiate} messageSender and messageReceiver
     \State \qquad $receive\_and\_send(connectMsg, centralServerID)$
@@ -383,11 +374,11 @@ Once all primitives in the list are done, the last agent should inform the \gls{
             \State \textbf{\qquad end for} 
     \State \textbf{End} 
 \end{algorithmic}
-\end{algorithm}
+\end{breakablealgorithm}
 
 
 %pseudo code for Server
-\begin{algorithm}
+\begin{breakablealgorithm}
     \caption{Pseudo-Code for Server in MAS workflow}
     \label{alg:ServerPseudoCode}
     \begin{algorithmic}[1]
@@ -420,7 +411,7 @@ Once all primitives in the list are done, the last agent should inform the \gls{
         \State \textbf \qquad \qquad handler(websocket, serverID) 
         \State \textbf{End}                 
     \end{algorithmic}
-\end{algorithm}
+\end{breakablealgorithm}
 
 
 
@@ -474,7 +465,7 @@ Since the cloud system clock is already synchronized with \gls{utc} time, all th
 \subsection{Pseudo-Code of \gls{rcp} and \gls{dt} agent workflow in C\+\+ and C\#}
 %pseudo code for RCP
 \begin{minipage}{0.49\textwidth}
-\begin{algorithm}[H]
+\begin{breakablealgorithm}[H]
     \caption{Pseudo-Code of \gls{rcp} in RCP-DTAgent workflow}
     \label{alg:RCPPseudoCode}
     \begin{algorithmic}
@@ -486,11 +477,11 @@ Since the cloud system clock is already synchronized with \gls{utc} time, all th
     \State \qquad Send robot state to DTAgent 
     \State \qquad End
     \end{algorithmic}
-\end{algorithm}
+\end{breakablealgorithm}
 \end{minipage}
 \hfill
 \begin{minipage}{0.49\textwidth}
-    \begin{algorithm}[H]
+    \begin{breakablealgorithm}[H]
         \caption{Pseudo-Code of \gls{dt} agent in RCP-DTAgent workflow}
         \label{alg:DTAgentPseudoCode}
         \begin{algorithmic}
@@ -501,7 +492,7 @@ Since the cloud system clock is already synchronized with \gls{utc} time, all th
         \State Send robot state to \gls{dt} agent 
         \State End
         \end{algorithmic}
-    \end{algorithm}
+    \end{breakablealgorithm}
     \end{minipage}
 
 
