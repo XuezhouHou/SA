@@ -1,9 +1,15 @@
 % !TeX spellcheck = en_US
 \chapter{Methodology}%
+This chapter describes the methodologies of \gls{mas} design. 
+The general \gls{mas} is separated as internal (section 3.1) and external(section 3.2) parts,  
+with a \gls{mas} for \gls{cda} and \gls{ra} as an internal and \gls{dt} agent as an external system. 
+The two systems are decoupled from each other but still still under the concept of agent based operation system. 
 \section{Internal}
+In this section, the design pattern for \gls{mas} is chosen and the tasks of each module within is discussed.
+After that, the characteristics of transport layer protocols and application layers protocols are compared. 
+Eventually the methodologies of using python WebSocket and RESTful API are listed in pseudocode. 
+
 \subsection{Overview (conceptual diagram)}
-
-
 
 %figure conceptual MAS
 \begin{figure}[htb]
@@ -14,7 +20,7 @@
 
 % decribe the conceptual diagram
 
-In the figure.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based on the \gls{ra} design patterns in Wannagat’s architecture, with the focus on communication between agents, planning and decision making inside each agent. The \gls{cda} here is identical to \gls{ams} of Wanagat, which should also be counted as an agent instead of a management system. The five modules within an agent are: 
+The figure.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based on the \gls{ra} design patterns in Wannagat’s architecture, with the focus on communication between agents, planning and decision making inside each agent. The \gls{cda} here is identical to \gls{ams} of Wanagat, which should also be counted as an agent instead of a management system. The five modules within an agent are: 
 \begin{itemize}
 \item Planning Module
 \item Control Module
@@ -220,9 +226,9 @@ The details will be discussed later.
 \subsection{Pseudo-Code of MAS workflow in WebSocket}
 In Algorithm \ref{alg:CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
 Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitives execution but the ability to do planning and decision making. 
-Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive$ functions under the messageSender class.
+Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive()$ functions under the messageSender class.
 After getting responses from the agents, \gls{cda} should deicide whether to start processing by positive responses or retry the steps by negative responses.  
-Once the process starts, the \gls{cda} does nothing but wait for the inform messages from the allocated agents by using one of the $receive\_and\_send\_messages$ functions under the messageReceiver class. 
+Once the process starts, the \gls{cda} does nothing but wait for the inform messages from the allocated agents by using one of the $receive\_and\_send()$ functions under the messageReceiver class. 
 This allows \gls{cda} to have an overall control among the entire prodution process with the purpose of centralization of the distributed agent systems.  
 
 
@@ -235,7 +241,15 @@ After executing all primitives of its own, the \gls{ra} should check the availab
 Once all primitives in the list are done, the last agent should inform the \gls{cda} about the end of processing.
 
 
-All messages will be routed to a WebSocket server, which serves a \gls{ca}.  
+Before the agents start to run, the WebSocket server program (Algorithm \ref{alg:ServerPseudoCode}) must be started first, so that the messages from agents will be routed to it, which serves as a \gls{ca}.  
+The server runs asychronously and listen to incoming messages forever. 
+Which means, every time a new agent gets connected to the server, a new thread will be started and killed after the incoming message is processed and sent to the recipient agent. 
+All threads run concurrently and the maximal possible connection number is limited by the hardware and also the network bandwidth and latency. 
+After the server receives a message, it should first identify the message type to check whether it is in json or string format. 
+After that, it will either split the string or parse the json file to retrieve the recipient name, the priority and the message content. 
+Since all message handling processes run concurrently, there is a chance that multiple messages coming in the server and waiting for processing at the same time. 
+In order to rearrange them and handle the messages with higher priority first, all messages should be pushed to queue and the critical messages should be popped out first, after this the important and then normal messages. 
+Finally the message will be either processed further or sent directly to the recipient. 
 % Define Class...EndClass for better representation
 \algnewcommand\algorithmicclass{\textbf{class}}
 \algdef{SE}[CLASS]{Class}{EndClass}[1]
