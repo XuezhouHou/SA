@@ -1,7 +1,16 @@
-# SA
-Semesterarbeit of Xuezhou Hou for obtaining the masters degree.
+# SA-Semesterarbeit of Xuezhou Hou for obtaining the masters degree.
+--
+Set-ups:
+--
+latex configuration for semesterthesis: main.tex 
 
-main.tex is latex configuration for semesterthesis. Documentation can be found in iwb_latex_doc.pdf
+
+Documentation: iwb_latex_doc.pdf
+
+Content:
+-------
 
 figures in directory:  /figures
+
+
 main content:          /source
