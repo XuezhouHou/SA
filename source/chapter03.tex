@@ -415,17 +415,17 @@ Finally the message will be either processed further or sent directly to the rec
         \State \textbf{\qquad \qquad \qquad if} {message is json} \textbf{then}
         \State \textbf \qquad \qquad \qquad \qquad parse json message and retrieve recipient
         \State \textbf \qquad \qquad \qquad \qquad store agent messages in messageQueue  
-        \State \textbf \qquad \qquad \qquad \qquad processJsonMessage(recipient, jsonMsg)
+        \State \textbf \qquad \qquad \qquad \qquad $process\_jsonMessage(recipient, jsonMsg)$
         \State \textbf{\qquad \qquad \qquad else}  
         \State \textbf \qquad \qquad \qquad \qquad retrieve recipient from string message
         \State \textbf \qquad \qquad \qquad \qquad store agent messages in messageQueue  
-        \State \textbf \qquad \qquad \qquad \qquad processMessage(recipient, stringMsg)
+        \State \textbf \qquad \qquad \qquad \qquad $process\_message(recipient, stringMsg)$
         
-        \State \textbf{\qquad function} $processMessage(recipient, stringMsg)$   
+        \State \textbf{\qquad function} $process\_message(recipient, stringMsg)$   
         \State \textbf \qquad \qquad prioritize messages from priorityDict and store in messageQueue 
         \State \textbf \qquad \qquad handle messages with higher priority first   
         \State \textbf \qquad \qquad send stringMsg to recipient 
-        \State \textbf{\qquad function} $processJsonMessage(recipient, jsonMsg)$   
+        \State \textbf{\qquad function} $process\_jsonMessage(recipient, jsonMsg)$   
         \State \textbf \qquad \qquad prioritize messages from priorityDict and store in messageQueue
         \State \textbf \qquad \qquad handle messages with higher priority first 
         \State \textbf \qquad \qquad send jsonMsg to recipient
@@ -590,8 +590,8 @@ Since the cloud system clock is already synchronized with \gls{utc} time, all th
     \State {Initialize} DTAgentIP
     \State \textbf{function} {$get\_rState\_and\_send(clientSocket)$}
         \State \qquad Start robot motion and record robot state
-        \State \qquad {$send\_message(robotState, cliencSocket)$}
-    \State \textbf{function} {$send\_message(msg, cliencSocket)$}
+        \State \qquad {$send\_message(robotState, clientSocket)$}
+    \State \textbf{function} {$send\_message(msg, clientSocket)$}
         \State \qquad 
     \State \textbf{Main:}
     \State \qquad Instantiate robot
@@ -610,16 +610,18 @@ Since the cloud system clock is already synchronized with \gls{utc} time, all th
     \State {Initialize} agentIP(s)
     \State \textbf{function} {$read\_and\_upload\_processData(agentIP)$}
         \State \qquad \textbf{do run in parallel}
-            \State \qquad \qquad $createClientThread(agentIP)$       
-    \State \textbf{function} {$createClientThread(agentIP)$}
+            \State \qquad \qquad $create\_client\_thread(agentIP)$       
+    \State \textbf{function} {$create\_client\_thread(agentIP)$}
         \State \qquad Establish a \gls{tcp} connection with \gls{ra}
+        \State \qquad \qquad $process\_data(clientSocket)$    
+    \State \textbf{function} $process\_data(clientSocket)$
+        \State \qquad \qquad {$data = read\_data(clientSocket)$}  
+        \State \qquad \qquad {$process\_data\_upload\_and\_download(data)$}  
+    \State \textbf{function} {$read\_data(clientSocket)$}
+        \State \qquad Establish a \gls{tcp} connection with \gls{ra}    
     \State \textbf{Main:}
         \State \qquad \textbf{for} agentIP in IPs \textbf{do}
         \State \qquad \qquad {$read\_and\_upload\_processData(agentIP)$}
-        \State \qquad Initialize start position
-        \State \qquad Establish a \gls{tcp} connection with \gls{dt} agent  
-        \State \qquad Start robot motion and record robot state
-        \State \qquad Send robot state to \gls{dt} agent 
         \State \textbf{End}
     \end{algorithmic}
 \end{breakablealgorithm}
