@@ -20,7 +20,7 @@ Eventually the methodologies of using python WebSocket for \gls{mas} and RESTful
 
 % decribe the conceptual diagram
 
-The figure.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based on the \gls{ra} design patterns in Wannagat’s architecture, with the focus on communication between agents, planning and decision making inside each agent. The \gls{cda} here is identical to \gls{ams} of Wanagat, which should also be counted as an agent instead of a management system. The five modules within an agent are: 
+The fig.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based on the \gls{ra} design patterns in Wannagat’s architecture, with the focus on communication between agents, planning and decision making inside each agent. The \gls{cda} here is identical to \gls{ams} of Wanagat, which should also be counted as an agent instead of a management system. The five modules within an agent are: 
 \begin{itemize}
 \item Planning Module,
 \item Control Module,
@@ -30,7 +30,7 @@ The figure.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} ba
 \end{itemize}
 
 for both Coordinator agent or a \gls{ra}.
-Based on these five modules, the task to be executed in an agent should also be categorized into 5 parts. The following table shows some tasks of each module based on the general requirements of a smart factory.
+Based on these five modules, the task to be executed in an agent should also be categorized into 5 parts. The following tab.\ref{tab:designPatterns} shows some tasks of each module based on the general requirements of a smart factory.
 
 
 
@@ -92,7 +92,7 @@ could be retrieved by querying other agents\end{tabular}  \\
 \label{fig: NSConceptual}}
 \end{figure}
 
-In order to emulate network environments for agent's communication testing and development of the \gls{mas}, the internal packets routing between agents in a single Linux device should be avoided. A common way to visualize the network to do performance testing is to use namespaces for network emulation. The trick is that a process running within a given namespace will see only the network interfaces, including virtual interfaces, forwarding tables, etc., that exist in that namespace. The applications under test should serve as a switch and each packet should be routed through these interfaces. The Figure.\ref{fig: NSConceptual} shows that, each namespace is assigned with a virtual ethernet interface, starting with the name eth, which is configured with an individual IP address. Each time a script gets called, it is running under a namespace with its own IP address. In exercise, if a packet is sent from Namespace 1 to Namespace 3 and then back, it is routed by the switch intead of bridges between namespaces, which are not configured here in order to avoid internal routing.
+In order to emulate network environments for agent's communication testing and development of the \gls{mas}, the internal packets routing between agents in a single Linux device should be avoided. A common way to visualize the network to do performance testing is to use namespaces for network emulation. The trick is that a process running within a given namespace will see only the network interfaces, including virtual interfaces, forwarding tables, etc., that exist in that namespace. The applications under test should serve as a switch and each packet should be routed through these interfaces. The fig.\ref{fig: NSConceptual} shows that, each namespace is assigned with a virtual ethernet interface, starting with the name eth, which is configured with an individual IP address. Each time a script gets called, it is running under a namespace with its own IP address. In exercise, if a packet is sent from Namespace 1 to Namespace 3 and then back, it is routed by the switch intead of bridges between namespaces, which are not configured here in order to avoid internal routing.
 
 \subsection{OSI model and comparison between sockets relevant protocol layers}
 %figure conceptual MAS
@@ -102,7 +102,7 @@ In order to emulate network environments for agent's communication testing and d
 \caption{Conceptual diagram of Namespaces creation\label{fig: OSI}}
 \end{figure}
 
-Figure. \ref{fig: OSI} shows the famous OSI-Model with 7 abstraction layers with Transport layer and application layers most relevant to sockets. 
+Fig.\ref{fig: OSI} shows the famous OSI-Model with 7 abstraction layers with Transport layer and application layers most relevant to sockets. 
 TCP and UDP are typical transport layer protocols and they provide an end-to-end data transport between two devices while the application layer protocols like HTTP or Websocket establish a communication between applications within devices. 
 Although the application layer protocols still utilize TCP/UDP sockets to transport stream data, they defined additional "rules" to specify structure, content, and semantics of the messages transport through sockets. 
 In the following tables, a comparison between protocols in different layers provide a more straight forward overview of their pro and cons in different contents.
@@ -192,7 +192,7 @@ should be performed. In one word, WebSocket is chosen to be the application laye
 \item Secure with wss.
 \end{enumerate}
 
-Figure.\ref{fig: MsgConceptual} shows the differences between bi-directional full duplex and other message patterns like Request-Response and Publish-Subscribe, in the context of data transfer. 
+Fig.\ref{fig: MsgConceptual} shows the differences between bi-directional full duplex and other message patterns like Request-Response and Publish-Subscribe, in the context of data transfer. 
 For the \gls{mqtt}, publisher publish (send) a message within a topic to the broker (server), while subscriber subscribes (receive) the message from the broker within the same topic. 
 For response, a new topic needed to be started, but there is no guarantee that the original publisher is listening, which is a drawback for send-and-receive patterns of \gls{mas}. 
 
@@ -544,7 +544,7 @@ Under the same condition, the message transfer routine with RESTful API will pos
 \caption{Conceptual diagram of MAS\label{fig: DTConceptual}}
 \end{figure}
 
-The figure \ref{fig: DTConceptual} shows the workflow of \gls{dt} agent updating global \gls{dt}.
+The fig.\ref{fig: DTConceptual} shows the workflow of \gls{dt} agent updating global \gls{dt}.
 The process begins from the left hand side of the graph. The \gls{dt} agent receives process data constantly from robots, including steady state data. 
 After the separating the sticky packets from \gls{tcp} socket, the process data will be parsed and uploaded one by one to the \gls{ms} Azure Digital Twin cloud. 
 All the updates of the digital twin instances in cloud will be shown in \gls{ms} Azure Digital Twin Explorer temporarily and stored in Azure Event Hubs concurrently. 
@@ -580,8 +580,9 @@ The NTP setup of linux system are:
 Since the cloud system clock is already synchronized with \gls{utc} time, all the tests and calculations results are based on UTC time. 
 
 \subsection{Pseudo-Code of \gls{rcp} and \gls{dt} agent workflow in C++ and C\#}
-%pseudo code for RCP
 
+
+%pseudo code for RCP
 \begin{breakablealgorithm}
     \caption{Pseudo-Code of \gls{rcp} workflow}
     \label{alg:RCPPseudoCode}
@@ -592,7 +593,7 @@ Since the cloud system clock is already synchronized with \gls{utc} time, all th
         \State \qquad Start robot motion and record robot state
         \State \qquad {$send\_message(robotState, clientSocket)$}
     \State \textbf{function} {$send\_message(msg, clientSocket)$}
-        \State \qquad 
+        \State \qquad send robot state to \gls{dt} agent
     \State \textbf{Main:}
     \State \qquad Instantiate robot
     \State \qquad Initialize start position
@@ -602,6 +603,8 @@ Since the cloud system clock is already synchronized with \gls{utc} time, all th
     \end{algorithmic}
 \end{breakablealgorithm}
 
+
+%pseudo code for DTAgent
 \begin{breakablealgorithm}
     \caption{Pseudo-Code of \gls{dt} agent workflow}
     \label{alg:DTAgentPseudoCode}
@@ -616,7 +619,7 @@ Since the cloud system clock is already synchronized with \gls{utc} time, all th
         \State \qquad {$data = read\_data(clientSocket)$}  
         \State \qquad {$process\_data\_upload\_and\_download(data)$}    
     \State \textbf{function} {$read\_data(clientSocket)$}
-        \State \qquad receive and store data
+        \State \qquad receive and store robot state data
         \State \qquad \textbf{return} data
     \State \textbf{function} {$process\_data\_upload\_and\_download(data)$}
         \State \qquad separate sticky packets with delimiter
