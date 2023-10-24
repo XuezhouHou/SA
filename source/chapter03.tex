@@ -586,7 +586,7 @@ In the \gls{rcp} workflow, the robot arm is controled by a set of predefined fun
 Each time when a new state is recorded, it should be sent to the \gls{dt} agent immediately through the established \gls{tcp} socket.
 As for the \gls{dt} agent side, it should be started before \gls{rcp}, and listen to the socket to receive data stream once connected.
 One issue of using \gls{tcp} is that, packets do not arrive one by one but stuck to each other.
-This issue can be solved by separating them with delimiter.  
+This issue can be solved by using delimiter for packets separation.  
 
 
 
@@ -597,7 +597,7 @@ This issue can be solved by separating them with delimiter.
     \begin{algorithmic}
     \State {Import} socket, franka
     \State {Initialize} DTAgentIP
-    \State \textbf{function} {$get\_rState\_and\_send(clientSocket)$}
+    \State \textbf{function} {$get\_rstate\_and\_send(clientSocket)$}
         \State \qquad Start robot motion and record robot state
         \State \qquad {$send\_message(robotState, clientSocket)$}
     \State \textbf{function} {$send\_message(msg, clientSocket)$}
@@ -606,7 +606,7 @@ This issue can be solved by separating them with delimiter.
     \State \qquad Instantiate robot
     \State \qquad Initialize start position
     \State \qquad Establish a \gls{tcp} connection with \gls{dt} agent  
-    \State \qquad {$get\_rState\_and\_send(clientSocket)$}
+    \State \qquad {$get\_rstate\_and\_send(clientSocket)$}
     \State \textbf{End}
     \end{algorithmic}
 \end{breakablealgorithm}
