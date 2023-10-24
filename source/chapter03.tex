@@ -415,17 +415,17 @@ Finally the message will be either processed further or sent directly to the rec
         \State \textbf{\qquad \qquad \qquad if} {message is json} \textbf{then}
         \State \textbf \qquad \qquad \qquad \qquad parse json message and retrieve recipient
         \State \textbf \qquad \qquad \qquad \qquad store agent messages in messageQueue  
-        \State \textbf \qquad \qquad \qquad \qquad processJsonMessage(recipient, jsonMsg)
+        \State \textbf \qquad \qquad \qquad \qquad $process\_jsonMessage(recipient, jsonMsg)$
         \State \textbf{\qquad \qquad \qquad else}  
         \State \textbf \qquad \qquad \qquad \qquad retrieve recipient from string message
         \State \textbf \qquad \qquad \qquad \qquad store agent messages in messageQueue  
-        \State \textbf \qquad \qquad \qquad \qquad processMessage(recipient, stringMsg)
+        \State \textbf \qquad \qquad \qquad \qquad $process\_message(recipient, stringMsg)$
         
-        \State \textbf{\qquad function} $processMessage(recipient, stringMsg)$   
+        \State \textbf{\qquad function} $process\_message(recipient, stringMsg)$   
         \State \textbf \qquad \qquad prioritize messages from priorityDict and store in messageQueue 
         \State \textbf \qquad \qquad handle messages with higher priority first   
         \State \textbf \qquad \qquad send stringMsg to recipient 
-        \State \textbf{\qquad function} $processJsonMessage(recipient, jsonMsg)$   
+        \State \textbf{\qquad function} $process\_jsonMessage(recipient, jsonMsg)$   
         \State \textbf \qquad \qquad prioritize messages from priorityDict and store in messageQueue
         \State \textbf \qquad \qquad handle messages with higher priority first 
         \State \textbf \qquad \qquad send jsonMsg to recipient
@@ -581,36 +581,51 @@ Since the cloud system clock is already synchronized with \gls{utc} time, all th
 
 \subsection{Pseudo-Code of \gls{rcp} and \gls{dt} agent workflow in C++ and C\#}
 %pseudo code for RCP
-\begin{minipage}{0.49\textwidth}
-\begin{breakablealgorithm}[H]
-    \caption{Pseudo-Code of \gls{rcp} in RCP-DTAgent workflow}
+
+\begin{breakablealgorithm}
+    \caption{Pseudo-Code of \gls{rcp} workflow}
     \label{alg:RCPPseudoCode}
     \begin{algorithmic}
+    \State {Import} socket, franka
+    \State {Initialize} DTAgentIP
+    \State \textbf{function} {$get\_rState\_and\_send(clientSocket)$}
+        \State \qquad Start robot motion and record robot state
+        \State \qquad {$send\_message(robotState, clientSocket)$}
+    \State \textbf{function} {$send\_message(msg, clientSocket)$}
+        \State \qquad 
     \State \textbf{Main:}
     \State \qquad Instantiate robot
     \State \qquad Initialize start position
     \State \qquad Establish a \gls{tcp} connection with \gls{dt} agent  
-    \State \qquad Start robot motion and record robot state
-    \State \qquad Send robot state to DTAgent 
-    \State \qquad End
+    \State \qquad {$get\_rState\_and\_send(clientSocket)$}
+    \State \textbf{End}
     \end{algorithmic}
 \end{breakablealgorithm}
-\end{minipage}
-\hfill
-\begin{minipage}{0.49\textwidth}
-    \begin{breakablealgorithm}[H]
-        \caption{Pseudo-Code of \gls{dt} agent in RCP-DTAgent workflow}
-        \label{alg:DTAgentPseudoCode}
-        \begin{algorithmic}
-        \State Instantiate robot
-        \State Initialize start position
-        \State Establish a \gls{tcp} connection with \gls{dt} agent  
-        \State Start robot motion and record robot state
-        \State Send robot state to \gls{dt} agent 
-        \State End
-        \end{algorithmic}
-    \end{breakablealgorithm}
-    \end{minipage}
+
+\begin{breakablealgorithm}
+    \caption{Pseudo-Code of \gls{dt} agent workflow}
+    \label{alg:DTAgentPseudoCode}
+    \begin{algorithmic}
+    \State {Import} socket, AzureDigitalTwin
+    \State {Initialize} agentIP(s)
+    \State \textbf{function} {$read\_and\_upload\_processData(agentIP)$}
+        \State \qquad \textbf{do run in parallel}
+            \State \qquad \qquad $create\_client\_thread(agentIP)$       
+    \State \textbf{function} {$create\_client\_thread(agentIP)$}
+        \State \qquad Establish a \gls{tcp} connection with \gls{ra}
+        \State \qquad \qquad $process\_data(clientSocket)$    
+    \State \textbf{function} $process\_data(clientSocket)$
+        \State \qquad \qquad {$data = read\_data(clientSocket)$}  
+        \State \qquad \qquad {$process\_data\_upload\_and\_download(data)$}  
+    \State \textbf{function} {$read\_data(clientSocket)$}
+        \State \qquad Establish a \gls{tcp} connection with \gls{ra}    
+    \State \textbf{Main:}
+        \State \qquad \textbf{for} agentIP in IPs \textbf{do}
+        \State \qquad \qquad {$read\_and\_upload\_processData(agentIP)$}
+        \State \textbf{End}
+    \end{algorithmic}
+\end{breakablealgorithm}
+
 
 
 \subsection{MS Azure Digital Twin}
