@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.10.22)  24 OCT 2023 15:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2023.10.22)  24 OCT 2023 15:38
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -2292,9 +2292,8 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `\gls' on input line 582.
 
-)
-Package cleveref Info: loaded `english' language definitions on input line 100.
- [19]
+Package cleveref Info: loaded `english' language definitions on input line 634.
+[19])
 Package cleveref Info: loaded `english' language definitions on input line 100.
  [20]
 \openout2 = `source/chapter04.aux'.
@@ -2384,17 +2383,17 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 66554 strings out of 480080
- 1498243 string characters out of 5891144
- 2395202 words of memory out of 5000000
- 83200 multiletter control sequences out of 15000+600000
- 557660 words of font info for 136 fonts, out of 8000000 for 9000
+ 66555 strings out of 480080
+ 1498256 string characters out of 5891144
+ 2395140 words of memory out of 5000000
+ 83201 multiletter control sequences out of 15000+600000
+ 559345 words of font info for 137 fonts, out of 8000000 for 9000
  83 hyphenation exceptions out of 8191
  106i,18n,131p,1917b,2457s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/ly1/texnansi.enc}</usr/share/texlive/texmf-dist/fonts/type1/bitstrea/charter/bchb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/bitstrea/charter/bchr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/bitstrea/charter/bchri8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7t.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb>
-Output written on main.pdf (39 pages, 804212 bytes).
+Output written on main.pdf (39 pages, 803970 bytes).
 PDF statistics:
- 712 PDF objects out of 1000 (max. 8388607)
+ 710 PDF objects out of 1000 (max. 8388607)
  146 named destinations out of 1000 (max. 500000)
  294 words of extra memory for PDF output out of 10000 (max. 10000000)
 

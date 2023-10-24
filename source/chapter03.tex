@@ -608,20 +608,23 @@ Since the cloud system clock is already synchronized with \gls{utc} time, all th
     \begin{algorithmic}
     \State {Import} socket, AzureDigitalTwin
     \State {Initialize} agentIP(s)
-    \State \textbf{function} {$read\_and\_upload\_processData(agentIP)$}
+    \State \textbf{function} {$read\_and\_upload\_download\_processData(agentIP)$}
         \State \qquad \textbf{do run in parallel}
             \State \qquad \qquad $create\_client\_thread(agentIP)$       
     \State \textbf{function} {$create\_client\_thread(agentIP)$}
         \State \qquad Establish a \gls{tcp} connection with \gls{ra}
-        \State \qquad \qquad $process\_data(clientSocket)$    
-    \State \textbf{function} $process\_data(clientSocket)$
-        \State \qquad \qquad {$data = read\_data(clientSocket)$}  
-        \State \qquad \qquad {$process\_data\_upload\_and\_download(data)$}  
+        \State \qquad {$data = read\_data(clientSocket)$}  
+        \State \qquad {$process\_data\_upload\_and\_download(data)$}    
     \State \textbf{function} {$read\_data(clientSocket)$}
-        \State \qquad Establish a \gls{tcp} connection with \gls{ra}    
+        \State \qquad receive and store data
+        \State \qquad \textbf{return} data
+    \State \textbf{function} {$process\_data\_upload\_and\_download(data)$}
+        \State \qquad separate sticky packets with delimiter
+        \State \qquad upload processed data to Azure \gls{dt} in json patch
+        \State \qquad download twin after data update 
     \State \textbf{Main:}
         \State \qquad \textbf{for} agentIP in IPs \textbf{do}
-        \State \qquad \qquad {$read\_and\_upload\_processData(agentIP)$}
+        \State \qquad \qquad {$read\_and\_upload\_download\_processData(agentIP)$}
         \State \textbf{End}
     \end{algorithmic}
 \end{breakablealgorithm}
