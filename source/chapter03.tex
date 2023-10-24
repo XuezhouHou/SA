@@ -585,7 +585,8 @@ In the following alg.\ref{alg:RCPPseudoCode} and \ref{alg:DTAgentPseudoCode}, th
 In the \gls{rcp} workflow, the robot arm is controled by a set of predefined functions with a possibility to record the current states. 
 Each time when a new state is recorded, it should be sent to the \gls{dt} agent immediately through the established \gls{tcp} socket.
 As for the \gls{dt} agent side, it should be started before \gls{rcp}, and listen to the socket to receive data stream once connected.
-After the packets 
+One issue of using \gls{tcp} is that, packets do not arrive one by one but stuck to each other.
+This issue can be solved by separating them with delimiter.  
 
 
 
