@@ -581,36 +581,49 @@ Since the cloud system clock is already synchronized with \gls{utc} time, all th
 
 \subsection{Pseudo-Code of \gls{rcp} and \gls{dt} agent workflow in C++ and C\#}
 %pseudo code for RCP
-\begin{minipage}{0.49\textwidth}
-\begin{breakablealgorithm}[H]
-    \caption{Pseudo-Code of \gls{rcp} in RCP-DTAgent workflow}
+
+\begin{breakablealgorithm}
+    \caption{Pseudo-Code of \gls{rcp} workflow}
     \label{alg:RCPPseudoCode}
     \begin{algorithmic}
+    \State {Import} socket, franka
+    \State {Initialize} DTAgentIP
+    \State \textbf{function} {$get\_rState\_and\_send(clientSocket)$}
+        \State \qquad Start robot motion and record robot state
+        \State \qquad {$send\_message(robotState, cliencSocket)$}
+    \State \textbf{function} {$send\_message(msg, cliencSocket)$}
+        \State \qquad 
     \State \textbf{Main:}
     \State \qquad Instantiate robot
     \State \qquad Initialize start position
     \State \qquad Establish a \gls{tcp} connection with \gls{dt} agent  
-    \State \qquad Start robot motion and record robot state
-    \State \qquad Send robot state to DTAgent 
-    \State \qquad End
+    \State \qquad {$get\_rState\_and\_send(clientSocket)$}
+    \State \textbf{End}
     \end{algorithmic}
 \end{breakablealgorithm}
-\end{minipage}
-\hfill
-\begin{minipage}{0.49\textwidth}
-    \begin{breakablealgorithm}[H]
-        \caption{Pseudo-Code of \gls{dt} agent in RCP-DTAgent workflow}
-        \label{alg:DTAgentPseudoCode}
-        \begin{algorithmic}
-        \State Instantiate robot
-        \State Initialize start position
-        \State Establish a \gls{tcp} connection with \gls{dt} agent  
-        \State Start robot motion and record robot state
-        \State Send robot state to \gls{dt} agent 
-        \State End
-        \end{algorithmic}
-    \end{breakablealgorithm}
-    \end{minipage}
+
+\begin{breakablealgorithm}
+    \caption{Pseudo-Code of \gls{dt} agent workflow}
+    \label{alg:DTAgentPseudoCode}
+    \begin{algorithmic}
+    \State {Import} socket, AzureDigitalTwin
+    \State {Initialize} agentIP(s)
+    \State \textbf{function} {$read\_and\_upload\_processData(agentIP)$}
+        \State \qquad \textbf{do run in parallel}
+            \State \qquad \qquad $createClientThread(agentIP)$       
+    \State \textbf{function} {$createClientThread(agentIP)$}
+        \State \qquad Establish a \gls{tcp} connection with \gls{ra}
+    \State \textbf{Main:}
+        \State \qquad \textbf{for} agentIP in IPs \textbf{do}
+        \State \qquad \qquad {$read\_and\_upload\_processData(agentIP)$}
+        \State \qquad Initialize start position
+        \State \qquad Establish a \gls{tcp} connection with \gls{dt} agent  
+        \State \qquad Start robot motion and record robot state
+        \State \qquad Send robot state to \gls{dt} agent 
+        \State \textbf{End}
+    \end{algorithmic}
+\end{breakablealgorithm}
+
 
 
 \subsection{MS Azure Digital Twin}
