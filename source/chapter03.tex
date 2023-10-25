@@ -2,7 +2,7 @@
 \chapter{Methodology}\label{chap: Meth}%
 This chapter describes the methodologies of general \gls{mas} design. 
 The general \gls{mas} is distributed into internal (\ref{chap: Meth-Internal}) and external (\ref{chap: Meth-External}) parts,  
-with a \gls{mas} for \gls{cda} and \gls{ra} as an internal and \gls{dt} agent as an external system. 
+with a \gls{mas} for \gls{cda} and \gls{ra} as an internal and \gls{dta} as an external system. 
 These two systems are decoupled from each other but still under the concept of agent based operation system. 
 \section{Internal}\label{chap: Meth-Internal}
 In this section, the design pattern for \gls{mas} is chosen and the tasks of each module within is discussed.
@@ -29,7 +29,7 @@ The fig.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based
     \item Communication Interface
 \end{itemize}
 
-for both Coordinator agent or a \gls{ra}.
+for both \gls{cda} or a \gls{ra}.
 Based on these five modules, the task to be executed in an agent should also be categorized into 5 parts. The following tab.\ref{tab:designPatterns} shows some tasks of each module based on the general requirements of a smart factory.
 
 
@@ -90,7 +90,7 @@ could be retrieved by querying other agents\end{tabular}  \\
 
 In order to emulate network environments for agent's communication testing and development of the \gls{mas}, the internal packets routing between agents in a single Linux device should be avoided. A common way to visualize the network to do performance testing is to use namespaces for network emulation. The trick is that a process running within a given namespace will see only the network interfaces, including virtual interfaces, forwarding tables, etc., that exist in that namespace. The applications under test should serve as a switch and each packet should be routed through these interfaces. The fig.\ref{fig: NSConceptual} shows that, each namespace is assigned with a virtual ethernet interface, starting with the name eth, which is configured with an individual IP address. Each time a script gets called, it is running under a namespace with its own IP address. In exercise, if a packet is sent from Namespace 1 to Namespace 3 and then back, it is routed by the switch intead of bridges between namespaces, which are not configured here in order to avoid internal routing.
 
-\subsection{OSI model and comparison between sockets relevant protocol layers}
+\subsection{\gls{osi} model and comparison between sockets relevant protocol layers}
 %figure conceptual MAS
 \begin{figure}[htbp]
 \includegraphics[width=0.8\textwidth]{figures/OSI.pdf}
@@ -98,7 +98,7 @@ In order to emulate network environments for agent's communication testing and d
 \caption{Conceptual diagram of Namespaces creation\label{fig: OSI}}
 \end{figure}
 
-Fig.\ref{fig: OSI} shows the famous OSI-Model with 7 abstraction layers with Transport layer and application layers most relevant to sockets. 
+Fig.\ref{fig: OSI} shows the famous \gls{osi} model with 7 abstraction layers with Transport layer and application layers most relevant to sockets. 
 TCP and UDP are typical transport layer protocols and they provide an end-to-end data transport between two devices while the application layer protocols like HTTP or Websocket establish a communication between applications within devices. 
 Although the application layer protocols still utilize TCP/UDP sockets to transport stream data, they defined additional "rules" to specify structure, content, and semantics of the messages transport through sockets. 
 In the following tables, a comparison between protocols in different layers provide a more straight forward overview of their pro and cons in different contents.
@@ -176,14 +176,14 @@ To get a closer look of the tab.\ref{tab: applicationlayer}, a horizontal compar
     \item and \gls{mqtt}
 \end{itemize}
 
-should be performed. In one word, WebSocket is chosen to be the application layer protocols for MAS communication, while \gls{tcp} socket for the \gls{dt} agent design, which will be further discussed in the next chapter. Here are the reasons of the choice of WebSocket: 
+should be performed. In one word, WebSocket is chosen to be the application layer protocols for MAS communication, while \gls{tcp} socket for the \gls{dta} design, which will be further discussed in the next chapter. Here are the reasons of the choice of WebSocket: 
 
 \begin{itemize}
-    \item Bi-directional, full duplex, real time communication between server and clients, no re-connection needed. Suitable for continuous data transfer.
-    \item Small overhead after connection establishment to reduce latency (\gls{http}).
-    \item Stateful, store the information of the client's state under connection.
-    \item High flexibility, adaptability and scalability.
-    \item Secure with wss.
+    \item Bi-directional, full duplex, real time communication between server and clients, no re-connection needed, suitable for continuous data transfer
+    \item Small overhead after connection establishment to reduce latency (\gls{http})
+    \item Stateful, store the information of the client's state under connection
+    \item High flexibility, adaptability and scalability
+    \item Secure with wss
 \end{itemize}
 
 Fig.\ref{fig: MsgConceptual} shows the differences between bi-directional full duplex and other message patterns like Request-Response and Publish-Subscribe, in the context of data transfer. 
@@ -214,11 +214,11 @@ The reasons of choosing application layer protocols over transport layer protoco
     \item Header with agent relevant information
     \item Security and authentication
     \end{itemize}
-However, unlike for \gls{mas} design, the architecture of \gls{dt} agent is more straightforward and the basic \gls{tcp} socket is chosen for the more to one server-client communication. 
+However, unlike for \gls{mas} design, the architecture of \gls{dta} is more straightforward and the basic \gls{tcp} socket is chosen for the more to one server-client communication. 
 The details will be discussed later in section \ref{chap: Meth-External}.
 
 \subsection{Pseudo-Code of MAS workflow in WebSocket python}
-In algorithm\ref{alg: CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
+In algorithm \ref{alg: CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
 Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitives execution but the ability to do planning and decision making. 
 Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive()$ functions under the messageSender class.
 After getting responses from the agents, \gls{cda} should deicide whether to start processing by positive responses or retry the steps by negative responses.  
@@ -247,7 +247,7 @@ Finally the message will be either processed further or sent directly to the rec
 
    
 \begin{breakablealgorithm}
-\caption{Pseudo-Code for Coordinator agent in MAS workflow}
+\caption{Pseudo-Code for \gls{cda} in MAS workflow}
 \label{alg: CDAPseudoCode}
 \begin{algorithmic}[1]
 \State \textbf{Input:} custRequirement
@@ -312,7 +312,7 @@ Finally the message will be either processed further or sent directly to the rec
 
 %pseudo code for RA
 \begin{breakablealgorithm}
-    \caption{Pseudo-Code for Resource agent in MAS workflow}
+    \caption{Pseudo-Code for \gls{ra} in MAS workflow}
     \label{alg: RAPseudoCode}
     \begin{algorithmic}[1]
     \State {Import} WebSocket
@@ -391,7 +391,7 @@ Finally the message will be either processed further or sent directly to the rec
 
 %pseudo code for Server
 \begin{breakablealgorithm}
-    \caption{Pseudo-Code for Server in MAS workflow}
+    \caption{Pseudo-Code for \gls{ca} as a server in MAS workflow}
     \label{alg: ServerPseudoCode}
     \begin{algorithmic}[1]
         \State {Import} WebSocket
@@ -495,7 +495,7 @@ Under the same condition, the message transfer routine with RESTful API will pos
         \end{algorithm}
 
     \begin{algorithm}
-        \caption{Pseudo-Code for server in one to one communication workflow}
+        \caption{Pseudo-Code for a server in one to one communication workflow}
         \label{alg: apiServerPseudoCode}
         \begin{algorithmic}[1]
         \State {Import} flask
@@ -530,7 +530,7 @@ Under the same condition, the message transfer routine with RESTful API will pos
 \section{External} \label{chap: Meth-External}
 
 
-\subsection{Overview (conceptual diagram)}
+\subsection{Overview (conceptual diagram)}\label{chap: Overview-External}
 
 %figure conceptual DT
 \begin{figure}[htb]
@@ -540,17 +540,17 @@ Under the same condition, the message transfer routine with RESTful API will pos
 \caption{Conceptual diagram of MAS\label{fig: DTConceptual}}
 \end{figure}
 
-The fig.\ref{fig: DTConceptual} shows the workflow of \gls{dt} agent updating global \gls{dt}.
-The process begins from the left hand side of the graph. The \gls{dt} agent receives process data constantly from robots, including steady state data. 
-After the separating the sticky packets from \gls{tcp} socket, the process data will be parsed and uploaded one by one to the \gls{ms} Azure Digital Twin cloud. 
-All the updates of the \gls{dt} instances in cloud will be shown in \gls{ms} Azure \gls{dt} Explorer temporarily and stored in Azure Event Hubs concurrently. 
+The fig.\ref{fig: DTConceptual} shows the workflow of \gls{dta} updating global digital twin.
+The process begins from the left hand side of the graph. The \gls{dta} receives process data constantly from robots, including steady state data. 
+After the separating the sticky packets from \gls{tcp} socket, the process data will be parsed and uploaded one by one to the \gls{ms} Azure Digital Twins cloud. 
+All the updates of the digital twin instances in cloud will be shown in Azure Digital Twins Explorer temporarily and stored in Azure Event Hubs concurrently. 
 After that the history data could be ingested for further analysis in Azure Data Explorer. 
-The Azure Digital Twin Explorer here serves as a monitor of robot status while the Azure Data Explorer as a data analysis tool. 
+The Azure Digital Twins Explorer here serves as a monitor of robot status while the Azure Data Explorer as a data analysis tool. 
 Once the remote data update is successful, the data will be downloaded to local host immediately and may be further used as inputs of any other visualization purposes. 
 Within this upload and download cycle of data, the real time capability should also be maintained.  
 
 
-It is worth mentioning that, the process data is produced by robot motion which makes the \gls{dt} agent completely decoupled from the \gls{mas}. 
+It is worth mentioning that, the process data is produced by robot motion which makes the \gls{dta} completely decoupled from the \gls{mas}. 
 The advantages of the decoupling is that, even though there is a complete disorder of the \gls{mas}, the current robot states will be recorded and updated in remote, 
 which is beneficial for data acquisition and monitoring. 
 
@@ -574,15 +574,15 @@ The NTP setup of linux system are:
 
 Since the cloud system clock is already synchronized with \gls{utc} time, all the tests and calculations results are based on UTC time. 
 
-\subsection{Pseudo-Code of \gls{rcp} and \gls{dt} agent workflow in C++ and C\#}
+\subsection{Pseudo-Code of \gls{rcp} and \gls{dta} workflow in C++ and C\#}
 
-As mentioned at the beginning of this chapter, \gls{dt} agent should be completely decoupled from \gls{mas}. 
-In the following alg.\ref{alg:RCPPseudoCode} and \ref{alg:DTAgentPseudoCode}, the workflows of \gls{rcp} and \gls{dt} agent are listed separately.
+As mentioned at the beginning of this chapter, \gls{dta} should be completely decoupled from \gls{mas}. 
+In the following algorithm \ref{alg:RCPPseudoCode} and \ref{alg:DTAgentPseudoCode}, the workflows of \gls{rcp} and \gls{dta} are listed separately.
 In the \gls{rcp} workflow, the robot arm is controled by a set of predefined functions with a possibility to record the current states. 
-Each time when a new state is recorded, it should be sent to the \gls{dt} agent immediately through the established \gls{tcp} socket.
-As for the \gls{dt} agent side, it should be started before \gls{rcp}, and listen to the socket to receive data stream once connected.
-Each time when a new connection to a \gls{ra} is created, the \gls{dt} agent will create a new thread, to receive, process, upload and download data concurrently.
-One issue of using \gls{tcp} is that, packets do not arrive one by one but stuck to each other, which can be solved by using delimiter for packets separation.  
+Each time when a new state is recorded, it should be sent to the \gls{dta} immediately through the established \gls{tcp} socket.
+As for the \gls{dta} side, it should be started before \gls{rcp}, and listen to the socket to receive data stream once connected.
+Each time when a new connection to a \gls{ra} is created, the \gls{dta} will create a new thread, to receive, process, upload and download data concurrently.
+One issue of using \gls{tcp} is that, packets do not arrive one by one but stuck to each other, which is solved by using delimiter for packets separation.  
 
 
 
@@ -592,16 +592,16 @@ One issue of using \gls{tcp} is that, packets do not arrive one by one but stuck
     \label{alg:RCPPseudoCode}
     \begin{algorithmic}
     \State {Import} socket, franka
-    \State {Initialize} DTAgentIP
+    \State {Initialize} \gls{dta}\_IP
     \State \textbf{function} {$get\_rstate\_and\_send(clientSocket)$}
         \State \qquad Start robot motion and record robot state
         \State \qquad {$send\_message(robotState, clientSocket)$}
     \State \textbf{function} {$send\_message(msg, clientSocket)$}
-        \State \qquad send robot state to \gls{dt} agent
+        \State \qquad send robot state to \gls{dta} 
     \State \textbf{Main:}
     \State \qquad Instantiate robot
     \State \qquad Initialize start position
-    \State \qquad Establish a \gls{tcp} connection with \gls{dt} agent  
+    \State \qquad Establish a \gls{tcp} connection with \gls{dta}  
     \State \qquad {$get\_rstate\_and\_send(clientSocket)$}
     \State \textbf{End}
     \end{algorithmic}
@@ -610,15 +610,15 @@ One issue of using \gls{tcp} is that, packets do not arrive one by one but stuck
 
 %pseudo code for DTAgent
 \begin{breakablealgorithm}
-    \caption{Pseudo-Code of \gls{dt} agent workflow}
+    \caption{Pseudo-Code of \gls{dta} workflow}
     \label{alg:DTAgentPseudoCode}
     \begin{algorithmic}
     \State {Import} socket, AzureDigitalTwin
-    \State {Initialize} agentIP(s)
-    \State \textbf{function} {$read\_and\_upload\_download\_processData(agentIP)$}
+    \State {Initialize} \gls{rcp}\_IP(s)
+    \State \textbf{function} {$read\_and\_upload\_download\_processData(\gls{rcp}\_IP)$}
         \State \qquad \textbf{do run in parallel}
-            \State \qquad \qquad $create\_client\_thread(agentIP)$       
-    \State \textbf{function} {$create\_client\_thread(agentIP)$}
+            \State \qquad \qquad $create\_client\_thread(\gls{rcp}\_IP)$       
+    \State \textbf{function} {$create\_client\_thread(\gls{rcp}\_IP)$}
         \State \qquad Establish a \gls{tcp} connection with \gls{ra}
         \State \qquad {$data = read\_data(clientSocket)$}  
         \State \qquad {$process\_data\_upload\_and\_download(data)$}    
@@ -627,16 +627,62 @@ One issue of using \gls{tcp} is that, packets do not arrive one by one but stuck
         \State \qquad \textbf{return} data
     \State \textbf{function} {$process\_data\_upload\_and\_download(data)$}
         \State \qquad separate sticky packets with delimiter
-        \State \qquad upload processed data to Azure \gls{dt} in json patch
+        \State \qquad upload processed data to Azure Digital Twins in json patch
         \State \qquad download twin after data update 
     \State \textbf{Main:}
-        \State \qquad \textbf{for} agentIP in IPs \textbf{do}
-        \State \qquad \qquad {$read\_and\_upload\_download\_processData(agentIP)$}
+        \State \qquad \textbf{for} \gls{rcp}\_IP in IPs \textbf{do}
+        \State \qquad \qquad {$read\_and\_upload\_download\_processData(\gls{rcp}\_IP)$}
         \State \textbf{End}
     \end{algorithmic}
 \end{breakablealgorithm}
 
 
 
-\subsection{MS Azure Digital Twin}
-Azure Digital twin database setup
+\subsection{Azure Digital Twins}
+According to the workflow described in section \ref{chap: Overview-External}, 
+a stable and functional Azure Digital Twins platform should be set up to ensure
+the data flow, including Azure Digital Twins Explorer, Azure Event Hub and Azure
+Data Explorer. Azure Digital Twins instance is configured with a time series data 
+history connection. Other resources must also be created such as an Event Hubs 
+namespace, an event hub, Azure Data Explorer cluster, and a database. 
+After a connection, data is sent to an event hub which eventually forwards 
+the data to the Azure Data Explorer cluster and stored in a database.The history 
+data includes twin property updates, twin lifecycle events and relationship lifecycle 
+events, which can be later queried in Azure Data Explorer.
+\subsubsection{Setup}
+Here is the sequence of the basic setup in the Azure platform:
+\begin{enumerate}
+    \item Create Azure Event Hub namespace and add instance.
+    \item Create Azure Data Explorer cluster and add database.
+    \item Connect data history of the Event Hub instance to the digital twin instance.
+\end{enumerate}
+
+In order to verify whether the connection is successful, one can try updating the 
+digital twin instance and querying data from the Azure Data Explorer side. The query
+language is called \gls{kql}, which is powerful for patterns discovery, anomalies 
+and outliers identification, and statistical modeling (various graphs creation). 
+Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} code in the test: 
+
+\begin{algorithm}
+    \caption{\gls{kql}}
+    \label{alg: KQLCode}
+    \begin{algorithmic}
+        \State  AdtPropertyEvents 
+        \State {| where ID == 'PositionJoint2' and Key == 'value'}
+        \State {| where TimeStamp between (datetime(2023-08-29 11:00) .. datetime(2023-08-29 15:00))}
+        \State {| order by TimeStamp asc}
+        \State {| project TimeStamp, Id, Key, Value}
+    \end{algorithmic}
+\end{algorithm}
+
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/KQL_cut.jpg}
+    
+    \centering
+    \caption{Conceptual diagram of MAS\label{fig: KQL}}
+\end{figure}
+
+As shown in fig.\ref{fig: KQL}, by executing the code from the snippet, all the history data will be listed as a table 
+which can be downloaded to local later. 
+Additionaly, the data patterns can be further predicted by adding visual. 
