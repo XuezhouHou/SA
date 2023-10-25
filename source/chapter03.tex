@@ -33,48 +33,115 @@ for both \gls{cda} or a \gls{ra}.
 Based on these five modules, the task to be executed in an agent should also be categorized into 5 parts. The following tab.\ref{tab:designPatterns} shows some tasks of each module based on the general requirements of a smart factory.
 
 
+\begin{table}[p]
+    \setlist[itemize]{leftmargin=*, topsep=0pt, itemsep=2pt, parsep=0pt}
+    \caption{Wanagat's \gls{ra} design patterns with task related examples.}
+    \label{tab:designPatterns}
+    \small
+    \renewcommand{\arraystretch}{1.2} 
+    \setlength{\extrarowheight}{3pt}
+    \centering
+    \begin{tabularx}{\textwidth}{|Y|Z|W|}
+    \hline
+    \multicolumn{3}{|c|}{Wanagat's design patterns} \\ 
+    \hline
+    Module name & Task & Example \\ 
+    \hline
+    Planning Module &
+    \vspace{-10pt}    
+    \begin{itemize}
+        \item Task planning 
+        \item Decision making 
+        \item Resource allocation 
+        \item Sequencing 
+        \item Scheduling
+    \end{itemize} 
+    &  
+    \vspace{-10pt}   
+    \begin{itemize}
+        \item Break down tasks into smaller executable units
+        \item Decide which task should be assigned to which agent 
+        \item Allocate the agents with specific tasks 
+        \item Find the task execution sequence 
+        \item Calculate the execution time for each agent
+    \end{itemize} \\
+    \hline
+    
+    Control Module & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item Monitoring 
+        \item Adaptation 
+        \item Control and optimization 
+        \item Resource allocation 
+        \item Actuation
+    \end{itemize}
+    & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item Acquisition of robot states
+        \item Adapt the plans with current state (e.g., emergent stop) 
+        \item Control and optimize the robot's motion 
+        \item Allocate the agents with specific tasks 
+        \item Actuate the robot with outputs
+    \end{itemize} \\
+    \hline
+    
+    Knowledge Base & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item \gls{db}
+        \item Knowledge representation and reasoning 
+        \item Learning 
+        \item Knowledge sharing 
+    \end{itemize}
+    & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item Hierarchical, relational, non-relational and object oriented
+        \item Relational ontology \gls{db} system
+        \item Agent learns from the existing primitives and create new executable primitives for customer's changing requirements
+        \item Unfound primitives could be retrieved by querying other agents
+    \end{itemize} \\
+    \hline
 
-\begin{table}[]
-\caption{Wanagat's \gls{ra} design patterns with task related examples.}
-\label{tab:designPatterns}
-\renewcommand{\arraystretch}{1} 
-\setlength{\extrarowheight}{3pt}
+    Diagnosis Module & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item Fault detection 
+        \item Fault diagnosis 
+        \item Fault prediction 
+        \item Root cause analysis and classification
+    \end{itemize}
+    & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item Hierarchical, relational, non-relational and object oriented
+        \item Relational ontology \gls{db} system
+        \item Agent learns from the existing primitives and create new executable primitives for customer's changing requirements
+        \item Unfound primitives could be retrieved by querying other agents
+    \end{itemize} \\
+    \hline
 
-\begin{tabular}{|m{0.2\textwidth}|m{0.3\textwidth}|m{0.5\textwidth}|}
-\hline
-\multicolumn{3}{|c|}{ Wanagat's design patterns} \\ % Header with background color
-\hline
-Module name& Task &Example \\ 
-\hline
-\begin{tabular}[c]{@{}p{0.2\textwidth}@{}} Planning Module \end{tabular} & \begin{tabular}[c]{@{}p{0.3\textwidth}@{}} \textbullet\  Task planning \\ \textbullet\ Decision making \\ \textbullet\ Resource allocation \\ \textbullet\ Sequencing \\ \textbullet\ Scheduling\end{tabular} 
-& \begin{tabular}[c]{@{}p{0.5\textwidth}@{}} \textbullet\ Break down tasks into smaller executable units\\ \textbullet\ Decide which task should be assigned to which agent \\ \textbullet\ Allocate the agents with specific tasks \\ \textbullet\ Find the task execution sequence \\ \textbullet\ Calculate the execution time for each agent\end{tabular}  \\ 
-\hline
-
-\begin{tabular}[c]{@{}p{0.2\textwidth}@{}} Control Module \end{tabular}& \begin{tabular}[c]{@{}p{0.3\textwidth}@{}} \textbullet\ Monitoring \\ \textbullet\ Adaptation \\ \textbullet\ Control and optimization \\ \textbullet\ Resource allocation \\ \textbullet\ Actuation\end{tabular} 
-& \begin{tabular}[c]{@{}p{0.5\textwidth}@{}} \textbullet\ Acquisition of robot states\\ \textbullet\ Adapt the plans with
-current state, e.g.: emergent stop \\ \textbullet\ Control and optimize the robot’s motion \\ \textbullet\ Allocate the agents with specific tasks \\ \textbullet\ Actuate the robot with outputs\end{tabular}  \\ 
-\hline
-
-\begin{tabular}[c]{@{}p{0.2\textwidth}@{}}Knowledge Base \end{tabular} & \begin{tabular}[c]{@{}p{0.3\textwidth}@{}} \textbullet\ \gls{db} \\ \textbullet\ Knowledge representation and reasoning \\ \textbullet\ Learning \\ \textbullet\ Knowledge sharing\end{tabular} 
-& \begin{tabular}[c]{@{}p{0.5\textwidth}@{}} \textbullet\ Hierarchical, relational, non-relational and object oriented\\ \textbullet\ Relational ontology \gls{db} system \\ \textbullet\ Agent learns from the existing primitives
-and create new executable primitives for customer's changing
-requirements \\ \textbullet\ Unfound primitives
-could be retrieved by querying other agents\end{tabular}  \\ 
-\hline
-
-\begin{tabular}[c]{@{}p{0.2\textwidth}@{}} Diagnosis Module \end{tabular} & \begin{tabular}[c]{@{}p{0.3\textwidth}@{}} \textbullet\ Fault detection \\ \textbullet\ Fault diagnosis \\ \textbullet\ Root cause analysis and classification \\ \textbullet\ Fault prediction\end{tabular} 
-& \begin{tabular}[c]{@{}p{0.5\textwidth}@{}} \textbullet\ Monitor the time-series data to detect anomalies from robot states, e.g.: detect faulty joint values for abortion\\ \textbullet\ More complex analysis to diagnose faulty patterns with mathematical algorithms and models, or AI-based methods \\ \textbullet\ Find the reasons for anomalies and categorize them for patterns recognition \\ \textbullet\ Predict the system faults by learning the classification models\end{tabular}  \\ 
-\hline
-
-\begin{tabular}[c]{@{}p{0.2\textwidth}@{}} Communication Interface \end{tabular}& \begin{tabular}[c]{@{}p{0.3\textwidth}@{}} \textbullet\ Message parsing and encoding \\ \textbullet\ Connection establishment and maintenance \\ \textbullet\ Message handling \\ \textbullet\ Data security\end{tabular} 
-& \begin{tabular}[c]{@{}p{0.5\textwidth}@{}} \textbullet\ Encode and decode the messages in agent specific data type, or parse the data object to other types, e.g.: json\\ \textbullet\ Ensure the connection with other agents based on system requirements \\ \textbullet\ Filter messages with undesired data type or incomplete messages, and prioritize the incoming messages \\ \textbullet\ Ensure data integrity and confidentiality, by encrypting, decrypting and authenticating messages to avoid cyber attack\end{tabular}  \\ 
-\hline
-
-\end{tabular}
-
-\label{tab: designPatternsTable}
-\end{table}
-
+    Communication Interface & 
+    \vspace{-15pt}
+    \begin{itemize}
+        \item Message parsing and encoding
+        \item Connection establishment, maintenance
+        \item Message handling 
+        \item Data security
+    \end{itemize}
+    & 
+    \vspace{-15pt}
+    \begin{itemize}
+        \item Encode and decode the massages in agent specific data type, or  parse the data object to other types (e.g., json)
+        \item Ensure the connection with other agents based on system requirements
+        \item Filter messages with undesired data type or incomplete messages, prioritize the incoming messages
+        \item Ensure data integrity and confidentiality by encrypting, decrypting and authenticating messages
+    \end{itemize} \\
+    \hline
+    \end{tabularx}
+    \end{table}
 
 
 \subsection{Prerequisite}
