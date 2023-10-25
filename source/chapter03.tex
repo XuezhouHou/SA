@@ -166,7 +166,7 @@ In order to emulate network environments for agent's communication testing and d
 \begin{figure}[htbp]
 \includegraphics[width=0.8\textwidth]{figures/OSI.pdf}
 \centering
-\caption{Conceptual diagram of Namespaces creation\label{fig: OSI}}
+\caption{\gls{osi} model with example protocols \label{fig: OSI}}
 \end{figure}
 
 Fig.\ref{fig: OSI} shows the famous \gls{osi} model with 7 abstraction layers with Transport layer and application layers most relevant to sockets. 
@@ -767,14 +767,38 @@ which can be downloaded to local later.
 
 \section{Modularization}\label{chap: Meth-Modular}
 \subsection{From \gls{osi} model to \gls{tcp/ip} model}
-For the modularizaion purpose, the concentration should be shifted from the general 
-\gls{osi} model to the more abstract \gls{tcp/ip} model. 
+
+Despite the fact that \gls{tcp} being categorized as a transport layer protocol 
+according to the fig.\ref{fig: OSI}, the data transfer
+between different \gls{tcp} sockets should also go through all layers. 
+The reason is that, the \gls{tcp} socket will be operated by a program 
+using socket libraries, which is an operation under application layer. 
+The transport layer protocols does nothing but accepting data from session layer 
+in \gls{osi} model, and truncate it to smaller pieces to ensure a reliable and correct
+data transport. However, it will be too strict to consider delays in all seven 
+layers for modularization purposes. Therefore, the concentration should be 
+shifted from the general \gls{osi} model to the more abstract \gls{tcp/ip} model 
+as depicted in fig.\ref{fig: TCP_IP}. 
+
+
+The \gls{tcp/ip} model consists of four layers: application layer, tansport layer, 
+internet layer and network access layer, with each mapping different layers in 
+\gls{osi} model. As depicted in \gls{tcp/ip} model, 
+the application layer roughly contains the upper three layers while the network access layer 
+contains the physical and data link layer. The network layer is renamed as internet layer, 
+while transport layer remains the same. 
+
 \begin{figure}[htb]
     \includegraphics[width=\textwidth]{figures/TCP_IP.png}
     
     \centering
-    \caption{Snippet of Data Explorer\label{fig: KQL}}
+    \caption{\gls{tcp/ip} model with example protocols \label{fig: TCP_IP}}
 \end{figure}
 \subsection{Timing properties of data transfer w.r.t sockets in each layer of \gls{tcp/ip} model}
+Since \gls{tcp} socket and websocket are two sockets used in the implementation, 
+they can be taken as an example to explain the delay distribution in \gls{tcp/ip} model.
+
+
+
 
 \subsection{Visual notations based on \gls{tcp/ip} model}
