@@ -4,6 +4,10 @@ This chapter describes the methodologies of general \gls{mas} design.
 The general \gls{mas} is distributed into internal (\ref{chap: Meth-Internal}) and external (\ref{chap: Meth-External}) parts,  
 with a \gls{mas} for \gls{cda} and \gls{ra} as an internal and \gls{dta} as an external system. 
 These two systems are decoupled from each other but still under the concept of agent based operation system. 
+At the end, it concludes the timing properties for both 
+internal and external systems with protocols in 
+different layers and proposes an assumption of modularizing transport 
+delay with a visual notation.
 \section{Internal}\label{chap: Meth-Internal}
 In this section, the design pattern for \gls{mas} is chosen and the tasks of each module within is discussed.
 After that, the characteristics of transport layer protocols and application layers protocols are compared. 
@@ -528,6 +532,13 @@ Under the same condition, the message transfer routine with RESTful API will pos
         \end{algorithm}
 
 \section{External} \label{chap: Meth-External}
+As for the external \gls{dta} system, the data flow will be visualized in section \ref{chap: Overview-External}.
+After that, the \gls{ntp} setup for delay measurement between local devices and cloud will
+be explained in section \ref{chap: ntpsetup}. For a better understanding of the workflow, 
+the pseudo code of \gls{rcp} and \gls{dta} is provided in section \ref{chap: RCPDTAPseudo}. 
+Finally, the Azure Digital Twin platform set up for data ingestion will be explained
+in the last section.
+
 
 
 \subsection{Overview (conceptual diagram)}\label{chap: Overview-External}
@@ -556,8 +567,8 @@ which is beneficial for data acquisition and monitoring.
 
 
 
-\subsection{Prerequisite}
-\subsubsection{\gls{ntp} Setup}
+\subsection{Prerequisite} \label{chap: ntpsetup}
+\subsubsection{\gls{ntp} setup}
 In order to measure the delays between local host and cloud, the clock of both end must be synchronized. 
 Due to the nature of computer systems, the software clock might drift away from the "true" time (absolute \gls{utc} time) due to various reasons like system load, hardware imperfections, or even temperature changes.
 Therefore, before the measurement, the software clock of local host should be synchronized with the global clock using \gls{ntp}. 
@@ -574,7 +585,7 @@ The NTP setup of linux system are:
 
 Since the cloud system clock is already synchronized with \gls{utc} time, all the tests and calculations results are based on UTC time. 
 
-\subsection{Pseudo-Code of \gls{rcp} and \gls{dta} workflow in C++ and C\#}
+\subsection{Pseudo-Code of \gls{rcp} and \gls{dta} workflow in C++ and C\#}\label{chap: RCPDTAPseudo}
 
 As mentioned at the beginning of this chapter, \gls{dta} should be completely decoupled from \gls{mas}. 
 In the following algorithm \ref{alg:RCPPseudoCode} and \ref{alg:DTAgentPseudoCode}, the workflows of \gls{rcp} and \gls{dta} are listed separately.
@@ -668,8 +679,8 @@ Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} cod
     \label{alg: KQLCode}
     \begin{algorithmic}
         \State  AdtPropertyEvents 
-        \State {| where ID == 'PositionJoint2' and Key == 'value'}
-        \State {| where TimeStamp between (datetime(2023-08-29 11:00) .. datetime(2023-08-29 15:00))}
+        \State {| where ID == 'RadPositionJoint3' and Key == 'value'}
+        \State {| where TimeStamp between (datetime(2023-08-27 16:02) .. datetime(2023-08-27 19:00))}
         \State {| order by TimeStamp asc}
         \State {| project TimeStamp, Id, Key, Value}
     \end{algorithmic}
@@ -680,9 +691,23 @@ Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} cod
     \includegraphics[width=\textwidth]{figures/KQL_cut.jpg}
     
     \centering
-    \caption{Conceptual diagram of MAS\label{fig: KQL}}
+    \caption{Snippet of Data Explorer\label{fig: KQL}}
 \end{figure}
 
 As shown in fig.\ref{fig: KQL}, by executing the code from the snippet, all the history data will be listed as a table 
 which can be downloaded to local later. 
-Additionaly, the data patterns can be further predicted by adding visual. 
+
+
+\section{Modularization}\label{chap: Meth-Modular}
+\subsection{From \gls{osi} model to \gls{tcp/ip} model}
+For the modularizaion purpose, the concentration should be shifted from the general 
+\gls{osi} model to the more abstract \gls{tcp/ip} model. 
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/TCP_IP.png}
+    
+    \centering
+    \caption{Snippet of Data Explorer\label{fig: KQL}}
+\end{figure}
+\subsection{Timing properties of data transfer w.r.t sockets in each layer of \gls{tcp/ip} model}
+
+\subsection{Visual notations based on \gls{tcp/ip} model}
