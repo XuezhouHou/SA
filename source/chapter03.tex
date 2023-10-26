@@ -159,7 +159,22 @@ Based on these five modules, the task to be executed in an agent should also be 
 \label{fig: NSConceptual}}
 \end{figure}
 
-In order to emulate network environments for agent's communication testing and development of the \gls{mas}, the internal packets routing between agents in a single Linux device should be avoided. A common way to visualize the network to do performance testing is to use namespaces for network emulation. The trick is that a process running within a given namespace will see only the network interfaces, including virtual interfaces, forwarding tables, etc., that exist in that namespace. The applications under test should serve as a switch and each packet should be routed through these interfaces. The fig.\ref{fig: NSConceptual} shows that, each namespace is assigned with a virtual ethernet interface, starting with the name eth, which is configured with an individual IP address. Each time a script gets called, it is running under a namespace with its own IP address. In exercise, if a packet is sent from Namespace 1 to Namespace 3 and then back, it is routed by the switch intead of bridges between namespaces, which are not configured here in order to avoid internal routing.
+In order to emulate network environments for agent's communication testing 
+and development of the \gls{mas}, the internal packets routing between 
+agents in a single Linux device should be avoided. A common way to 
+visualize the network to do performance testing is to use namespaces 
+for network emulation. The trick is that a process running within a given 
+namespace will see only the network interfaces, including virtual 
+interfaces, forwarding tables, etc., that exist in that namespace. 
+The applications under test should serve as a switch and each packet 
+should be routed through these interfaces. The fig.\ref{fig: NSConceptual} 
+shows that, each namespace is assigned with a virtual ethernet interface, 
+starting with the name eth, which is configured with an individual IP 
+address. Each time a script gets called, it is running under a namespace 
+with its own IP address. In exercise, if a packet is sent from Namespace 1 
+to Namespace 3 and then back, it is routed by the switch intead of bridges 
+between namespaces, which are not configured here in order to avoid 
+internal routing.
 
 \subsection{\gls{osi} model and comparison between sockets relevant protocol layers}
 %figure conceptual MAS
@@ -799,6 +814,7 @@ while transport layer remains the same.
     \centering
     \caption{\gls{tcp/ip} model with example protocols \label{fig: TCP_IP}}
 \end{figure}
+
 \subsection{Timing properties of data transfer w.r.t sockets and visual notations based on \gls{tcp/ip} model}
 Since \gls{tcp} socket and WebSocket are operated in an application 
 and the packet transfer of both will go through all layers in \gls{tcp/ip} model, 
@@ -806,7 +822,7 @@ a set of visual notations should be able to modularize the delays in each layer.
 Thanks to the works of former researchers, there are already some graphical 
 tools developed for difference purposes. The graphical tools 
 can be roughly divided to two types, tools ideal for real world delay measurement 
-for example the famous Wireshark, OPNET and NS-3,  
+for example the famous Wireshark, OPNET and NS-3, 
 and tools suitable for modeling and visualization such as OpenModelica, 
 Matlab/Simulink and LabVIEW, etc.
 
