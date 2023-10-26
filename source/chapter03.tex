@@ -196,7 +196,6 @@ Because of the requirement of a reliable real time ordered data transfer with mi
     Stream type                    & Byte stream with no preserved boundaries & Message stream with preserved boundaries \\ \hline
     Connection type                & Connection oriented, three handshake & No connection needed \\ \hline
     Overhead                       & Larger than \gls{udp} & Very low   \\ \hline
-    Header size                    & 20-60 bytes     & 8 bytes    \\ \hline
     Sequence                       & Packets arrive in sequence & No sequencing for packets \\ \hline
     Retransmission of lost packets & Yes             & No         \\ \hline
     Speed                          & Slower than \gls{udp}, because of overhead and connection & Relative faster than \gls{tcp} \\ \hline
@@ -774,8 +773,9 @@ between different \gls{tcp} sockets should also go through all layers.
 The reason is that, the \gls{tcp} socket will be operated by a program 
 using socket libraries, which is an operation under application layer. 
 The transport layer protocols does nothing but accepting data from session layer 
-in \gls{osi} model, and truncate it to smaller pieces to ensure a reliable and correct
-data transport. However, it will be too strict to consider delays in all seven 
+in \gls{osi} model, and truncate it into smaller pieces to ensure a reliable and correct
+data transport. However, it will be too strict and complecated 
+to consider delays in all seven 
 layers for modularization purposes. Therefore, the concentration should be 
 shifted from the general \gls{osi} model to the more abstract \gls{tcp/ip} model 
 as depicted in fig.\ref{fig: TCP_IP}. 
@@ -794,11 +794,18 @@ while transport layer remains the same.
     \centering
     \caption{\gls{tcp/ip} model with example protocols \label{fig: TCP_IP}}
 \end{figure}
-\subsection{Timing properties of data transfer w.r.t sockets in each layer of \gls{tcp/ip} model}
-Since \gls{tcp} socket and websocket are two sockets used in the implementation, 
-they can be taken as an example to explain the delay distribution in \gls{tcp/ip} model.
+\subsection{Timing properties of data transfer w.r.t sockets and visual notations based on \gls{tcp/ip} model}
+Since \gls{tcp} socket and WebSocket are operated in an application 
+and the packet transfer of both will go through all layers in \gls{tcp/ip} model, 
+a set of visual notations should be able to modularize the delays in each layer.
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/DSLConceptual.png}
+    
+    \centering
+    \caption{Conceptual diagram of a modularized general \gls{mas} based on \gls{dsl} \label{fig: DSLConceptual}}
+\end{figure}
+
+Thanks to the works of former researchers, there are already some graphical 
+tools developed. The most famous 
 
 
-
-
-\subsection{Visual notations based on \gls{tcp/ip} model}
