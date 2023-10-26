@@ -765,6 +765,11 @@ which can be downloaded to local later.
 
 
 \section{Modularization}\label{chap: Meth-Modular}
+In addition to the internal and external designs of a general \gls{mas}, 
+there are also some considerations of modularizing timing behaviors of the 
+system. In the following sections, the \gls{tcp/ip} model as well as 
+\gls{dsl} will be introduced and used as design basis of a modularized general 
+\gls{mas}. 
 \subsection{From \gls{osi} model to \gls{tcp/ip} model}
 
 Despite the fact that \gls{tcp} being categorized as a transport layer protocol 
@@ -798,14 +803,39 @@ while transport layer remains the same.
 Since \gls{tcp} socket and WebSocket are operated in an application 
 and the packet transfer of both will go through all layers in \gls{tcp/ip} model, 
 a set of visual notations should be able to modularize the delays in each layer.
+Thanks to the works of former researchers, there are already some graphical 
+tools developed for difference purposes. The graphical tools 
+can be roughly divided to two types, tools ideal for real world delay measurement 
+for example the famous Wireshark, OPNET and NS-3,  
+and tools suitable for modeling and visualization such as OpenModelica, 
+Matlab/Simulink and LabVIEW, etc.
+
+
+
+Although being out of scope of this thesis, the measurement of delay within 
+each layer of \gls{tcp/ip} model will be essential for the future investment.
+For instance, as depicted in figure \ref{fig: DSLConceptual}, the delay in 
+each layer is represented as a block, which can be later integrated in graphical tools.
+In this case, delay in a specific network layer will become comparable between
+different technologies based on either application or transport layer protocols,
+for example, \gls{tcp} socket and WebSocket. Apart from the network delay of
+communication between agents, as shown in the figure, there are also other 
+delay that can be modularized in the context of robot control. The robot 
+control systems introduce delay first in \gls{rci} by executing the commands, 
+and then a minor delay within the I/O module before activating the actuator.
+After each robot motion driven by the actuator, its current state will be sent 
+back to the \gls{cpu} by first going through the sensor, I/O module and \gls{rci} 
+again. 
+
+
+
+
+
+
+
 \begin{figure}[htb]
     \includegraphics[width=\textwidth]{figures/DSLConceptual.png}
     
     \centering
     \caption{Conceptual diagram of a modularized general \gls{mas} based on \gls{dsl} \label{fig: DSLConceptual}}
 \end{figure}
-
-Thanks to the works of former researchers, there are already some graphical 
-tools developed. The most famous 
-
-
