@@ -100,7 +100,7 @@ The latency reduction with an additional server according to
 fig.\ref{fig: proportional-servers-a} proves that, by introducing more servers 
 to the system, the limited productive resources should be better utilized 
 for frequent clients interactions. However, not as expected, the latency of 
-response messages from clientR is much larger in \ref{fig: proportional-servers-b},
+response messages from clientR is much larger in fig.\ref{fig: proportional-servers-b},
 which may also result from the CPU consumption. Since the send and receive 
 processes in websocket are operated separately, and because of the high 
 occupation of the CPU power when more than one server are running in the same 
@@ -110,13 +110,13 @@ increment of servers.
 
 \subsubsection{Increasing string message length}
 Another important test should be done to verify the influence of packet size (i.e., 
-message length) to the system performance. According to the formula of packet 
-transmission time which is: 
+message length) to the system performance, according to the formula of packet 
+transmission time: 
 \begin{equation}
     Transmission $ $ delay = Packet $ $ size/Bandwidth
 \end{equation}
 
-If the bandwidth is unchanged, the transmission time with an increasing packet 
+If the bandwidth is determined, the transmission time with an increasing packet 
 size should be linear. In the fig.\ref{fig: proportional-stringsize}, comparisons 
 between different string message lengths varied from 1KB to 10MB are examined. 
 The linear dependency of latency and string size in both forward 
@@ -125,10 +125,10 @@ has verified the transmission time formula. It is also noticeable that the serve
 process time increases by the rising message byte number. In real world scenarios, 
 a large string message should be chunked into smaller pieces for communication, 
 which will significantly reduce the process time. For the purpose of system limit 
-inspection, a string with the size up to 100MB was also tested by showing system 
-timeout error, which already exceeds the server maximal processing capacity. 
-Instead of sending data chunks, using a json file to store the large message content 
-and retrieve the data later by deserialization will be an alternative. 
+inspection, a string with the size up to 100MB is also tested and resulting in 
+system timeout error, which already exceeds the server maximal 
+processing capacity. 
+
 
 \begin{figure}[htb]
     \begin{subfigure}[b]{0.49\textwidth}
@@ -159,11 +159,101 @@ and retrieve the data later by deserialization will be an alternative.
 \end{figure}
 
 \subsubsection{Increasing jsonified image message size}
-Other than string, images are also frequently tranported between different agents. 
-For systems with limited throughput and high demands, efficient data exchange is essential. 
+In addition to string, images are also frequently tranported between different agents. 
 However, unlike most string messages, image size could be significantly larger 
-and even up to over 100MB (raw images). 
-\subsection{Test results of WebSocket and RESTful API} \label{chap: Result-RestFUL_WS}
+and even up to over 100MB (raw images). Moreover, the agents ID or message priority 
+information should also be included in the message. Therefore, the image should 
+be first jsonified with necessary information and then sent to the server. 
+The tests for images are done similar to the string message, with an image size 
+varies from 1KB to 100MB. 
+
+
+In fig.\ref{fig: proportional-imagesize-a} and \ref{fig: proportional-imagesize-b} 
+again shows the linear dependency of latency and jsonified image size. 
+Although the image test results in a 
+transmisson time from 1KB to 10MB message length similar to string test, 
+there is a huge difference in terms of process time between both. By comparing the 
+fig.\ref{fig: proportional-stringsize-c} with \ref{fig: proportional-imagesize-c} 
+and fig.\ref{fig: proportional-stringsize-d} with \ref{fig: proportional-imagesize-d}, 
+the server process time of string messages is much higher than that for the 
+image message. Meanwhile, due to the additional overhead of json format, the network 
+delay of string messages is relative smaller than image messages. 
+
+
+A possible reason for the larger process time for string is that, a string message 
+received by server must be processed twice: splitting the message to extract the client 
+ID and recombining it for further transport. Meanwhile a jsonified image will only be 
+processed once to extract the client information and the original json file will be 
+futher transported directly.     
+\begin{figure}[htb]
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_json_image_messages_sending_time_of_100_tests_1KB_to_100MB.png}\hfill 
+        \caption{} \label{fig: proportional-imagesize-a}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_json_image_messages_receiving_time_of_100_tests_1KB_to_100MB.png}\hfill 
+        \caption{} \label{fig: proportional-imagesize-b}
+        \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/log_Average_json_image_messages_sending_time_of_100_tests_1KB_to_100MB.png}\hfill 
+        \caption{} \label{fig: proportional-imagesize-c}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/log_Average_json_image_messages_receiving_time_of_100_tests_1KB_to_100MB.png}\hfill 
+        \caption{} \label{fig: proportional-imagesize-d}
+    \end{subfigure}
+    \caption{Average delay of sending and receiving a jsonified image message varied from 1KB 
+    to 100MB for 100 times between 2 clients. (a) Messages clientS sent forward, 
+    (b) response messages from clientR, (c) Messages sent forward in log form 
+    and (d) response messages from clientR in log form. 
+    \label{fig: proportional-imagesize}}
+\end{figure}
+
+
+\subsection{Test results of WebSocket and \gls{http}} \label{chap: Result-RestFUL_WS}
+After testing the performance of the WebSocket based communication system, 
+it will be interesting to see whether the other application layer protocols with 
+different message transport mechanism will have a similar or completely different 
+performance under the same conditions. As demonstrated from the 
+fig.\ref{fig: MsgConceptual}, \gls{http} is designed for message 
+transfer in both directions, and therefore more comparable with WebSocket among the others. 
+A common interface for web service design based on \gls{http} is called RESTful API, 
+which supports more features than common \gls{http} API. As a result, RESTful API will 
+be used for the design of a similar architecture as WebSocket and 
+tested under the same condition of the WebSocket string test.
+
+
+\begin{figure}[htb]
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Rest_Average_string_messages_sending_time_of_100_tests.png}\hfill 
+        \caption{} \label{fig: proportional-rest-stringsize-a}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Rest_Average_string_messages_receiving_time_of_100_tests.png}\hfill 
+        \caption{} \label{fig: proportional-rest-stringsize-b}
+        \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Rest_log_Average_string_messages_sending_time_of_100_tests.png}\hfill 
+        \caption{} \label{fig: proportional-rest-stringsize-c}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Rest_log_Average_string_messages_receiving_time_of_100_tests.png}\hfill 
+        \caption{} \label{fig: proportional-rest-stringsize-d}
+    \end{subfigure}
+    \caption{RESTful API: Average delay of sending and receiving a string message varied from 1KB 
+    to 10MB for 100 times between 2 clients. (a) Messages clientS sent forward, 
+    (b) response messages from clientR, (c) Messages sent forward in log form 
+    and (d) response messages from clientR in log form. 
+    \label{fig: proportional-rest-stringsize}}
+\end{figure}
 
 \subsection{priority tests of WS server in diff. performance testing} \label{chap: Result-priority}
 
