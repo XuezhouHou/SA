@@ -54,14 +54,15 @@ distributing clients with more servers becomes a possible solution.
 \begin{figure}[htb]
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{figures/tests/Average_string_messages_sending_time_of_100_tests_of_diff_client_numbers.png}\hfill 
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_string_messages_sending_time_of_100_tests_of_diff_client_numbers.png}\hfill 
         \caption{} \label{fig: proportional-clients-a}
     \end{subfigure}
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{figures/tests/Average_string_messages_receiving_time_of_100_tests_of_diff_client_numbers.png}\hfill 
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_string_messages_receiving_time_of_100_tests_of_diff_client_numbers.png}\hfill 
         \caption{} \label{fig: proportional-clients-b}
         \end{subfigure}
+
     \caption{Average delay of sending a string message 100 times 
     to a clientR from 1, 10, 100 or 500 clients separately. (a) Messages sent forward, 
     and (b) response messages from clientR. 
@@ -81,12 +82,12 @@ can be made based on the results from fig.\ref{fig: proportional-servers}.
 \begin{figure}[htb]
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{figures/tests/Average_string_messages_sending_time_of_100_tests_diff_server_numbers.png}\hfill 
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_string_messages_sending_time_of_100_tests_diff_server_numbers.png}\hfill 
         \caption{} \label{fig: proportional-servers-a}
     \end{subfigure}
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{figures/tests/Average_string_messages_receiving_time_of_100_tests_diff_server_numbers.png}\hfill 
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_string_messages_receiving_time_of_100_tests_diff_server_numbers.png}\hfill 
         \caption{} \label{fig: proportional-servers-b}
         \end{subfigure}
     \caption{Average delay of sending a string message 100 times 
@@ -99,13 +100,69 @@ The latency reduction with an additional server according to
 fig.\ref{fig: proportional-servers-a} proves that, by introducing more servers 
 to the system, the limited productive resources should be better utilized 
 for frequent clients interactions. However, not as expected, the latency of 
-clientR sending response messages back is much larger in \ref{fig: proportional-servers-b}.
-The reason may be also relevant to the CPU consumption. Because of the high 
-occupation of the CPU power when more than one servers are running in the same 
-device, the loads between each process might be unbalanced. 
-But overall this should be further verified with more servers involved in the 
-future.
+response messages from clientR is much larger in \ref{fig: proportional-servers-b},
+which may also result from the CPU consumption. Since the send and receive 
+processes in websocket are operated separately, and because of the high 
+occupation of the CPU power when more than one server are running in the same 
+device, the loads between each process might be unbalanced and added up by the 
+increment of servers. 
 
+
+\subsubsection{Increasing string message length}
+Another important test should be done to verify the influence of packet size (i.e., 
+message length) to the system performance. According to the formula of packet 
+transmission time which is: 
+\begin{equation}
+    Transmission $ $ delay = Packet $ $ size/Bandwidth
+\end{equation}
+
+If the bandwidth is unchanged, the transmission time with an increasing packet 
+size should be linear. In the fig.\ref{fig: proportional-stringsize}, comparisons 
+between different string message lengths varied from 1KB to 10MB are examined. 
+The linear dependency of latency and string size in both forward 
+(fig.\ref{fig: proportional-stringsize-a}) and return message (fig.\ref{fig: proportional-stringsize-b}) 
+has verified the transmission time formula. It is also noticeable that the server 
+process time increases by the rising message byte number. In real world scenarios, 
+a large string message should be chunked into smaller pieces for communication, 
+which will significantly reduce the process time. For the purpose of system limit 
+inspection, a string with the size up to 100MB was also tested by showing system 
+timeout error, which already exceeds the server maximal processing capacity. 
+Instead of sending data chunks, using a json file to store the large message content 
+and retrieve the data later by deserialization will be an alternative. 
+
+\begin{figure}[htb]
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_string_messages_sending_time_of_100_tests_1KB_to_10MB.png}\hfill 
+        \caption{} \label{fig: proportional-stringsize-a}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_string_messages_receiving_time_of_100_tests_1KB_to_10MB.png}\hfill 
+        \caption{} \label{fig: proportional-stringsize-b}
+        \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/log_Average_string_messages_sending_time_of_100_tests_1KB_to_10MB.png}\hfill 
+        \caption{} \label{fig: proportional-stringsize-c}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/log_Average_string_messages_receiving_time_of_100_tests_1KB_to_10MB.png}\hfill 
+        \caption{} \label{fig: proportional-stringsize-d}
+    \end{subfigure}
+    \caption{Average delay of sending and receiving a string message varied from 1KB 
+    to 10MB for 100 times between 2 clients. (a) Messages clientS sent forward, 
+    (b) response messages from clientR, (c) Messages sent forward in log form 
+    and (d) response messages from clientR in log form. 
+    \label{fig: proportional-stringsize}}
+\end{figure}
+
+\subsubsection{Increasing jsonified image message size}
+Other than string, images are also frequently tranported between different agents. 
+For systems with limited throughput and high demands, efficient data exchange is essential. 
+However, unlike most string messages, image size could be significantly larger 
+and even up to over 100MB (raw images). 
 \subsection{Test results of WebSocket and RESTful API} \label{chap: Result-RestFUL_WS}
 
 \subsection{priority tests of WS server in diff. performance testing} \label{chap: Result-priority}
