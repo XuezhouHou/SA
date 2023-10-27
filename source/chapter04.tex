@@ -7,13 +7,41 @@ Again, the tests will also be divided into internal (\ref{chap: Result-Internal}
 and external (\ref{chap: Result-External}) part, referring to those in chapter \ref{chap: Meth}.
 
 \section{Internal}\label{chap: Result-Internal}
-For the internal \gls{mas}, several tests are performed on the one to one 
-agent communication. That means, only two agents are involved and the messages 
-will be passed through the \gls{ca} which is designed with WebSocket 
-and RESTful API separately in section \ref{chap: Result-RestFUL_WS}
-\subsection{Test results of WebSocket and RESTful API} \label{chap: Result-RestFUL_WS}
+For the internal \gls{mas}, multiple tests are performed on the agent 
+communication system. That means, the messages 
+will be passed through the \gls{ca} under WebSocket architecture. 
+Various tests will be done and the test results will be discussed later in section 
+\ref{chap: Result-WS}. 
+In addition to the performance testing of WebSocket architecture alone, 
+a comparison between WebSocket and RestFUL API will done to verify the feasibility 
+of WebSocket. 
+Finally, tests relevant to packets prioritization will be performed to close 
+the sections. 
 
-\subsection{Test results of WS in diff. performance testing, worst case scenarios} \label{chap: Result-WS}
+
+\subsection{Test results of WebSocket in various performance testing including worst case scenarios} \label{chap: Result-WS}
+
+After the construction a \gls{mas} under WebSocket, the speed, robustness, 
+reliability and application size of the system will be examined by 
+performance tests. 
+
+\subsubsection{Increasing client numbers}
+In real world, the number of clients will greatly influence the performance of 
+server. Assume that all agents serve as clients and \gls{ca} as a central server. 
+
+
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/DSLConceptual.png}
+    
+    \centering
+    \caption{Conceptual diagram of a modularized general \gls{mas} based on \gls{dsl} \label{fig: DSLConceptual}}
+\end{figure}
+
+
+
+
+\subsection{Test results of WebSocket and RESTful API} \label{chap: Result-RestFUL_WS}
 
 \subsection{priority tests of WS server in diff. performance testing} \label{chap: Result-priority}
 
