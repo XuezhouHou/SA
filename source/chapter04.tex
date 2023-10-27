@@ -28,17 +28,23 @@ performance tests.
 \subsubsection{Increasing client numbers}
 In real world, the number of clients will greatly influence the performance of 
 server. Assume that all agents serve as clients and \gls{ca} as a central server. 
-
+  
 
 
 \begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/DSLConceptual.png}
-    
     \centering
-    \caption{Conceptual diagram of a modularized general \gls{mas} based on \gls{dsl} \label{fig: DSLConceptual}}
+    \includegraphics[width=.49\textwidth]{figures/tests/Average_string_messages_sending_time_of_100_tests_of_diff_client_numbers.png}\hfill 
+    \includegraphics[width=.49\textwidth]{figures/tests/Average_string_messages_receiving_time_of_100_tests_of_diff_client_numbers.png}\hfill 
+    \caption{Average delay of sending a string message 100 times 
+    to a clientR from 1, 10, 100 or 500 clients separately. (a) Messages sent forward, 
+    and (b) response messages from clientR. 
+    \label{fig: proportional-clients}}
 \end{figure}
 
-
+By handling an increasing number of connection requests, and the growing demands 
+of data processing capacity, the total delay with or without process time can be 
+roughly described as an overall increasing process. However, it does not necessarily 
+need to be linear due to the following reasons:  
 
 
 \subsection{Test results of WebSocket and RESTful API} \label{chap: Result-RestFUL_WS}
