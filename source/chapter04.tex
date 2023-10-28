@@ -13,7 +13,7 @@ will be passed through the \gls{ca} under WebSocket architecture.
 Various tests will be done and the test results will be discussed later in section 
 \ref{chap: Result-WS}. 
 In addition to the performance testing of WebSocket architecture alone, 
-a comparison between WebSocket and RestFUL API will be done to verify the feasibility 
+a comparison between WebSocket and \gls{http} will be done to verify the feasibility 
 of WebSocket. 
 Finally, tests relevant to packets prioritization will be performed to close 
 the sections. 
@@ -108,7 +108,7 @@ device, the loads between each process might be unbalanced and added up by the
 increment of servers. 
 
 
-\subsubsection{Increasing string message length}
+\subsubsection{Increasing string message length}\label{chap: Result-Internal-string}
 Another important test should be done to verify the influence of packet size (i.e., 
 message length) to the system performance, according to the formula of packet 
 transmission time: 
@@ -124,7 +124,7 @@ The linear dependency of latency and string size in both forward
 has verified the transmission time formula. It is also noticeable that the server 
 process time increases by the rising message byte number. In real world scenarios, 
 a large string message should be chunked into smaller pieces for communication, 
-which will significantly reduce the process time. For the purpose of system limit 
+which will significantly reduce the process time consumption. For the purpose of system limit 
 inspection, a string with the size up to 100MB is also tested and resulting in 
 system timeout error, which already exceeds the server maximal 
 processing capacity. 
@@ -152,13 +152,13 @@ processing capacity.
         \caption{} \label{fig: proportional-stringsize-d}
     \end{subfigure}
     \caption{Average delay of sending and receiving a string message varied from 1KB 
-    to 10MB for 100 times between 2 clients. (a) Messages clientS sent forward, 
+    to 10MB for 100 times between 2 clients. (a) Messages clientSR sent forward, 
     (b) response messages from clientR, (c) Messages sent forward in log form 
-    and (d) response messages from clientR in log form. 
+    and (d) response messages from clientRS in log form. 
     \label{fig: proportional-stringsize}}
 \end{figure}
 
-\subsubsection{Increasing jsonified image message size}
+\subsubsection{Increasing image message length}
 In addition to string, images are also frequently tranported between different agents. 
 However, unlike most string messages, image size could be significantly larger 
 and even up to over 100MB (raw images). Moreover, the agents ID or message priority 
@@ -207,9 +207,9 @@ futher transported directly.
         \caption{} \label{fig: proportional-imagesize-d}
     \end{subfigure}
     \caption{Average delay of sending and receiving a jsonified image message varied from 1KB 
-    to 100MB for 100 times between 2 clients. (a) Messages clientS sent forward, 
+    to 100MB for 100 times between 2 clients. (a) Messages clientSR sent forward, 
     (b) response messages from clientR, (c) Messages sent forward in log form 
-    and (d) response messages from clientR in log form. 
+    and (d) response messages from clientRS in log form. 
     \label{fig: proportional-imagesize}}
 \end{figure}
 
@@ -221,10 +221,11 @@ different message transport mechanism will have a similar or completely differen
 performance under the same conditions. As demonstrated from the 
 fig.\ref{fig: MsgConceptual}, \gls{http} is designed for message 
 transfer in both directions, and therefore more comparable with WebSocket among the others. 
-A common interface for web service design based on \gls{http} is called RESTful API, 
-which supports more features than common \gls{http} API. As a result, RESTful API will 
-be used for the design of a similar architecture as WebSocket and 
-tested under the same condition of the WebSocket string test.
+As a result, a \gls{http} based interface RESTful API is designed under the similar architecture 
+as WebSocket and tested under the same condition of the WebSocket string test in 
+section \ref{chap: Result-Internal-string}.
+
+
 
 
 \begin{figure}[htb]
@@ -255,7 +256,33 @@ tested under the same condition of the WebSocket string test.
     \label{fig: proportional-rest-stringsize}}
 \end{figure}
 
-\subsection{priority tests of WS server in diff. performance testing} \label{chap: Result-priority}
+
+
+
+
+\subsection{Test results of message prioritization of a WebSocket server in various 
+performance testing} \label{chap: Result-priority}
+Despite the consideration of speed, robustness, reliability and application size in an agent 
+communication system, the server which serves as a \gls{ca} should have addtional 
+functionalities rather than pure message transport. As listed in tab.\ref{tab:designPatterns}, 
+the \gls{ca} should focus on the design of a communication interface, which should be able to 
+process various messages with different data types (e.g., jsonified images), handle a large 
+number of agents connections and prioritize the incoming messages. In the following sections, 
+the performance of server handling message prioritization will be tested and further discussed.  
+\subsubsection{Measurgin method}
+In order to verify the prioritization mechanism of the server, a delay of 1s should be added to the 
+non-prioritized message processing. In the test, two kinds of messages are sent conccurently to the server, 
+the normal and the critical messages. If more than one message with different priority levels 
+enter the server simultaneously, the critical messages should be processed first. The add up of 
+delay also reflects the real world scenarios: if a critical message representing an emergent stop 
+or a task with higher priority in production comes in, every other processe in the server 
+should wait until the critical message is sent. 
+\subsubsection{String message priority test}
+The first string priority test is done for 10 clients. The following figure shows the \gls{rtt} 
+of non-prioritized and prioritized message transport. 
+
+
+\subsubsection{Image message priority test}
 
 \section{External}\label{chap: Result-External}
 
