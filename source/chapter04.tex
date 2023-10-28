@@ -152,9 +152,9 @@ processing capacity.
         \caption{} \label{fig: proportional-stringsize-d}
     \end{subfigure}
     \caption{Average delay of sending and receiving a string message varied from 1KB 
-    to 10MB for 100 times between 2 clients. (a) Messages clientSR sent forward, 
+    to 10MB for 100 times between 2 clients. (a) Messages clientS sent forward, 
     (b) response messages from clientR, (c) Messages sent forward in log form 
-    and (d) response messages from clientRS in log form. 
+    and (d) response messages from clientR in log form. 
     \label{fig: proportional-stringsize}}
 \end{figure}
 
@@ -207,9 +207,9 @@ futher transported directly.
         \caption{} \label{fig: proportional-imagesize-d}
     \end{subfigure}
     \caption{Average delay of sending and receiving a jsonified image message varied from 1KB 
-    to 100MB for 100 times between 2 clients. (a) Messages clientSR sent forward, 
+    to 100MB for 100 times between 2 clients. (a) Messages clientS sent forward, 
     (b) response messages from clientR, (c) Messages sent forward in log form 
-    and (d) response messages from clientRS in log form. 
+    and (d) response messages from clientR in log form. 
     \label{fig: proportional-imagesize}}
 \end{figure}
 
@@ -278,8 +278,23 @@ delay also reflects the real world scenarios: if a critical message representing
 or a task with higher priority in production comes in, every other processe in the server 
 should wait until the critical message is sent. 
 \subsubsection{String message priority test}
-The first string priority test is done for 10 clients. The following figure shows the \gls{rtt} 
-of non-prioritized and prioritized message transport. 
+The first string priority test is done for 10 clients. The following fig.\ref{fig: priority-10clients-a} 
+and \ref{fig: priority-10clients-b} shows the average \gls{rtt} 
+that a non-prioritized and prioritized message being sent forward and back separately for 100 times.
+
+
+\begin{sidewaysfigure}[htb]
+    \centering
+    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_non_priority.png}\hfill 
+    \caption{Average delay tests for \gls{rtt} of forward and return non-prioritized messages between 10 clients 
+    and clientR for 100 times.} \label{fig: priority-10clients-a}
+\end{sidewaysfigure}
+\begin{sidewaysfigure}[htb]
+    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_priority.png}\hfill 
+    \caption{Average delay tests for \gls{rtt} of forward and return prioritized messages between 10 clients 
+    and clientR for 100 times.} \label{fig: priority-10clients-b}
+\end{sidewaysfigure}
+
 
 
 \subsubsection{Image message priority test}
