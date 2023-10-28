@@ -1,4 +1,59 @@
-\chapter{Anhangname}%
-\Blindtext%
+\chapter{Appendices}\label{chap: append}
+\section{String message priority test}%
 %
 %
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}[b]{0.99\textwidth}
+    \includegraphics[width=\textwidth]{figures/appendix/priority_tests/log_violin_2clients_priority_client1.png}\hfill 
+    \caption{} \label{fig: priority-2clients-1}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.99\textwidth}
+        \includegraphics[width=\textwidth]{figures/appendix/priority_tests/log_violin_2clients_priority_client2.png}\hfill 
+        \caption{} \label{fig: priority-2clients-2}
+    \end{subfigure}
+    
+    
+    \caption{Tests for mean \gls{rtt} of forward and return prioritized messages between 2 clients 
+    and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}. (a) Client1 with normals messages, and (b) 
+    with critical messages} \label{fig: priority-2clients}
+\end{figure}
+
+
+
+\begin{sidewaysfigure}[htb]
+    \centering
+    \includegraphics[width=\textheight]{figures/appendix/priority_tests/log_violin_50clients_figure_1.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of forward and return prioritized messages between client1 to client10 
+    with clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}.} \label{fig: priority-50clients-a}
+\end{sidewaysfigure}
+
+\begin{sidewaysfigure}[htb]
+    \includegraphics[width=\textheight]{figures/appendix/priority_tests/log_violin_50clients_figure_2.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of forward and return prioritized messages between client11 to client20 
+    with clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}.} \label{fig: priority-50clients-b}
+\end{sidewaysfigure}
+
+\begin{sidewaysfigure}[htb]
+    \includegraphics[width=\textheight]{figures/appendix/priority_tests/log_violin_50clients_figure_3.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of forward and return prioritized messages between client21 to client30 
+    with clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}.} \label{fig: priority-50clients-c}
+\end{sidewaysfigure}
+
+\begin{sidewaysfigure}[htb]
+    \includegraphics[width=\textheight]{figures/appendix/priority_tests/log_violin_50clients_figure_4.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of forward and return prioritized messages between client31 to client40 
+    with clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}.} \label{fig: priority-50clients-d}
+\end{sidewaysfigure}
+
+\begin{sidewaysfigure}[htb]
+    \includegraphics[width=\textheight]{figures/appendix/priority_tests/log_violin_50clients_figure_5.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of forward and return prioritized messages between client41 to client50 
+    with clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}.} \label{fig: priority-50clients-e}
+\end{sidewaysfigure}
