@@ -179,7 +179,7 @@ internal routing.
 \subsection{\gls{osi} model and comparison between sockets relevant protocol layers}
 %figure conceptual MAS
 \begin{figure}[htbp]
-\includegraphics[width=0.8\textwidth]{figures/OSI.pdf}
+\includegraphics[width=0.8\textwidth]{figures/OSI.png}
 \centering
 \caption{\gls{osi} model with example protocols \label{fig: OSI}}
 \end{figure}
@@ -232,22 +232,22 @@ Because of the requirement of a reliable real time ordered data transfer with mi
     \caption{Characteristics of different technologies in application layer protocols}
     \label{tab: applicationlayer}
     \centering
-    \begin{tabular}{|m{0.13\textwidth}|m{0.2\textwidth}|m{0.2\textwidth}|m{0.2\textwidth}|m{0.2\textwidth}|}
+    \begin{tabular}{|m{0.15\textwidth}|m{0.25\textwidth}|m{0.25\textwidth}|m{0.25\textwidth}|}
     \hline
-    \multicolumn{5}{|c|}{\textbf{Application layer protocols}} \\ \hline
-    \textbf{Aspect} & \textbf{HTTP} & \textbf{WebSocket} & \textbf{RESTful API} & \textbf{MQTT} \\ \hline
-    Use cases & Web pages, images, videos, World Wide Web, etc & Such as chat applications, live gaming, etc & Web and mobile applications with data management requirement & Usually in IoT with limited bandwidth \\ \hline
-    Functionality & Request-response protocol based on TCP, foundation for both RESTful APIs and the initial connection in WebSockets & Bi-directional, real-time communication & Uses standard HTTP methods to perform CRUD (Create, Read, Update, Delete) & Lightweight message transport, runs over TCP \\ \hline
-    Security & Use SSL/TLS & ws (unsecured) and wss (secured with SSL/TLS) & Similar to HTTP, can be further secured using various authentication mechanisms like OAuth, JWT & Use TLS, like username/password authentication and optional message-level security \\ \hline
-    Message patterns & Request-Response & Full Duplex (send and receive independent) & Request-Response & Publish-Subscribe \\ \hline
-    Connection type & No connection needed & Persistent {connection} & No connection needed & Persistent connection \\ \hline
-    State & Stateless & Stateful & Stateless & Stateful \\ \hline
-    Overhead & Overhead for each request-response cycle, especially for new connections & After the initial handshake (HTTP), data frames are lightweight & Similar to HTTP, dependent on API design & Minimal message overhead \\ \hline
-    Realtime capability & Less Capable & Highly Suitable & Variable & Highly Suitable \\ \hline
-    Flexibility & Supported in all environments & Supported in most modern web browsers and many backend environments & Similar to HTTP & Highly flexible \\ \hline
-    Adaptability to dynamic changes & Relative lower (influenced by stateless nature) & High & Relative lower (influenced by stateless nature) & High \\ \hline
-    Capability of handling instability & Less capable, requires a stable connection for each request-response cycle & Less stable if connection disruptions happen frequently & Identical to HTTP & Capable, Ideal for remote locations with limited connectivity \\ \hline
-    Scalability & Less scalable, require more infrastructure support & Highly scalable, maintains connections for real-time interactions & similar to HTTP, dependent on API design & Highly scalable based on broker-client message transport \\ \hline
+    \multicolumn{4}{|c|}{\textbf{Application layer protocols}} \\ \hline
+    \textbf{Aspect} & \textbf{HTTP} & \textbf{WebSocket}  & \textbf{MQTT} \\ \hline
+    Use cases & Web pages, images, videos, World Wide Web, etc & Such as chat applications, live gaming, etc & Usually in IoT with limited bandwidth \\ \hline
+    Functionality & Request-response protocol based on TCP, foundation for both RESTful APIs and the initial connection in WebSockets & Bi-directional, real-time communication & Lightweight message transport, runs over TCP \\ \hline
+    Security & Use SSL/TLS & ws (unsecured) and wss (secured with SSL/TLS) & Use TLS, like username/password authentication and optional message-level security \\ \hline
+    Message patterns & Request-Response & Full Duplex (send and receive independent) & Publish-Subscribe \\ \hline
+    Connection type & No connection needed & Persistent {connection} & Persistent connection \\ \hline
+    State & Stateless & Stateful & Stateful \\ \hline
+    Overhead & Overhead for each request-response cycle, especially for new connections & After the initial handshake (HTTP), data frames are lightweight & Minimal message overhead \\ \hline
+    Realtime capability & Less Capable & Highly Suitable & Highly Suitable \\ \hline
+    Flexibility & Supported in all environments & Supported in most modern web browsers and many backend environments & Highly flexible \\ \hline
+    Adaptability to dynamic changes & Relative lower (influenced by stateless nature) & High & High \\ \hline
+    Capability of handling instability & Less capable, requires a stable connection for each request-response cycle & Less stable if connection disruptions happen frequently & Capable, Ideal for remote locations with limited connectivity \\ \hline
+    Scalability & Less scalable, require more infrastructure support & Highly scalable, maintains connections for real-time interactions & Highly scalable based on broker-client message transport \\ \hline
     \end{tabular}
 \end{sidewaystable}
 
@@ -257,7 +257,6 @@ To get a closer look of the tab.\ref{tab: applicationlayer}, a horizontal compar
 \begin{itemize}
     \item \gls{http}
     \item WebSocket
-    \item RESTful API
     \item and \gls{mqtt}
 \end{itemize}
 
@@ -276,7 +275,7 @@ For the \gls{mqtt}, publisher publish (send) a message within a topic to the bro
 For response, a new topic needed to be started, but there is no guarantee that the original publisher is listening, which is a drawback for send-and-receive patterns of \gls{mas}. 
 
 Relatively, the other three protocols will be considered as more appropriate. 
-For instance both HTTP and RESTful API run in request-response mechanism. 
+For instance \gls{http} runs in request-response mechanism. 
 A client posts (sends) messages to the server for the other client will get (receive) from it. 
 Whether the GET and POST method are successful or not, a response will be given back. With this mechanism, each time a message is going through the server, a new connection will be established and closed after responses are sent. 
 The inconsistent connection will consume more communication time and lead to higher latency. 
@@ -512,11 +511,15 @@ Finally the message will be either processed further or sent directly to the rec
 \end{breakablealgorithm}
 
 \subsection{Pseudo-Code of one to one agent communication workflow in RESTful API}
-A more comparable application layer protocol is RESTful API, which has the request-response mechanism with more addtional functionalities compared to \gls{http}. 
-Therefore RESTful API was considered as an alternative of communication protocol other than WebSocket. 
+A more comparable application layer protocol is \gls{http}, which has the request-response mechanism with more addtional functionalities compared to \gls{http}. 
+Therefore \gls{http} was considered as an alternative of communication protocol other than WebSocket. 
 However, based on some test results in chapter \ref{chap: Result}, WebSocket is 
 proved to be more appropriate.
-As a result, different from WebSocket, the design of RESTful API based system is only built for performance testing and comparison with WebSocket.
+As a result, different from WebSocket, the design of \gls{http} based system is only built 
+for performance testing and compared to WebSocket. In the methods below, RESTful API will be used 
+as a Web Service API, which is an interface to connect two devices over the internet based on 
+\gls{http} protocol. With the design based on RESTful API, the clients can communicate with each other 
+by using its standard \gls{crud} operations for example POST and GET to send and receive messages. 
 Therefore, the RESTful API system is simplified to be an one to one agent communication without other functionalities like decision making or message prioritization, etc.
 
 According to the pseudo code for agentSR (send and receive messages) and 
