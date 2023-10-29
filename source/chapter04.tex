@@ -341,7 +341,8 @@ while client50 will always have a smallest \gls{rtt}.
 
 \subsubsection{Image message priority test}
 The same tests are also done for image message transport. Slightly different 
-from string messages, the prioritization jsonified image file will be performed 
+from string messages, the prioritization jsonified image file (image size: 33.4KB) 
+will be performed 
 after deserialization. In the image priority test, client1 to client10 will send an 
 image to clientR, and receive a string message as response. In actual production,
 a confirm string message will be sent back if the image message is successfully received 
@@ -388,5 +389,8 @@ to \ref{fig: priority-50clients-image-e}.
 
 
 \section{External}\label{chap: Result-External}
+As for the delay measurement of the designed external \gls{dta} system, tests for the 
+upload and download are done separately, with different packet sizes as tuning parameters.
+
 
 \subsection{Test results of DTagents related to Azure Digital Twin} \label{chap: Result-DT}
