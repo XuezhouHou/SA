@@ -313,14 +313,14 @@ if the clients execution process is not synchronized and coordinated explicitly.
 
 \begin{sidewaysfigure}[htb]
     \centering
-    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_non_priority.png}\hfill 
-    \caption{Tests for mean \gls{rtt} of forward and return non-prioritized messages between 10 clients 
+    \includegraphics[width=\textheight]{figures/tests/priority_tests/violin_10clients_string_non_priority.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of forward and return non-prioritized string messages between 10 clients 
     and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
     respresent mean \gls{rtt}.} \label{fig: priority-10clients-a}
 \end{sidewaysfigure}
 \begin{sidewaysfigure}[htb]
-    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_priority.png}\hfill 
-    \caption{Tests for mean \gls{rtt} of forward and return prioritized messages between 10 clients 
+    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_string_priority.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of forward and return prioritized string messages between 10 clients 
     and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
     respresent mean \gls{rtt}.} \label{fig: priority-10clients-b}
 \end{sidewaysfigure}
@@ -329,18 +329,64 @@ if the clients execution process is not synchronized and coordinated explicitly.
 
 Together with the priority tests for 10 clients, there are similar tests performed in different scales. 
 In all these tests, the number of clients varies from 2, 10 to 50. The test results 
-of 2 clients can be found in \ref{chap: append} fig.\ref{fig: priority-2clients}, 
-and those for 50 clients in fig.\ref{fig: priority-50clients-a} to 
-\ref{fig: priority-50clients-e}. For the string message priority test with 2 clients, 
-it is clear the client1 that sends messages with lower priority results in 
+of 2 clients can be found in \ref{chap: append} fig.\ref{fig: priority-2clients-string}, 
+and those for 50 clients in fig.\ref{fig: priority-50clients-string-a} to 
+\ref{fig: priority-50clients-string-e}. For the string message priority test with 2 clients, 
+it is clear that client1 sends messages with lower priority results in 
 a much higher delay than client2 in both directions. As for the test with 50 clients, 
-the test result is similar to those in the test for 10 clients, with unbalanced 
-delays between different clients.  
+the test result is similar to those in the test for 10 clients. In the test, only the 
+last client will send a critical message, while the other 49 clients with a normal message. 
+This resulted in some clients being affected by the mechanism and greatly increasing delays, 
+while client50 will always have a smallest \gls{rtt}.
 
 \subsubsection{Image message priority test}
 The same tests are also done for image message transport. Slightly different 
-from string messages, the prioritization will be performed after the jsonified 
-image file is deserialized.
+from string messages, the prioritization jsonified image file will be performed 
+after deserialization. In the image priority test, client1 to client10 will send an 
+image to clientR, and receive a string message as response. In actual production,
+a confirm string message will be sent back if the image message is successfully received 
+by clientR. Therefore, this test can better reflect the time difference between 
+different messages types in the actual production process, since mostly the actual 
+string length will be much shorter than the image length. As shown in fig.\ref{fig: priority-10clients-c}, 
+it proves that either the data transmission time or the server process time of a image message 
+will be higher than a string message.
+
+
+\begin{sidewaysfigure}[htb]
+    \centering
+    \includegraphics[width=\textheight]{figures/tests/priority_tests/violin_10clients_image_non_priority.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of non-prioritized forward image messages and return string messages between 10 clients 
+    and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}.} \label{fig: priority-10clients-c}
+\end{sidewaysfigure}
+
+
+Another test (fig.\ref{fig: priority-10clients-d}) should be similar to the string message priority test (fig.\ref{fig: priority-10clients-b}), 
+with 2, 10 and 50 clients sending images and receiving string messages as response 
+from clientR. 
+All client1 to client9 send a normal image message and meanwhile 
+client10 sends a critical one to clientR. 
+In the test, all image messages and only a part of the response string messages 
+being sent trigger the prioritization mechanism.  In this, the latency for 
+the prioritized string messages is very similar to previous test results
+The reason might be that the larger the file size, the longer the transfer 
+and processing time will required. The larger message length of images 
+results in more data bytes 
+that needs to be processed simultaneously, which involves the a higher number of 
+message queuing and message prioritization in server. The same conclusion can be 
+also made for the tests for 2 and 50 clients in \ref{chap: append} fig.\ref{fig: priority-2clients-image} 
+to \ref{fig: priority-50clients-image-e}.
+
+
+\begin{sidewaysfigure}[htb]
+    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_image_priority.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of prioritized forward image messages and return string messages between 10 clients 
+    and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}.} \label{fig: priority-10clients-d}
+\end{sidewaysfigure}
+
+
+
 \section{External}\label{chap: Result-External}
 
 \subsection{Test results of DTagents related to Azure Digital Twin} \label{chap: Result-DT}
