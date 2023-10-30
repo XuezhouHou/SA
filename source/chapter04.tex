@@ -426,12 +426,12 @@ in the upper graph, which means, there are no major fluctuations or irregulariti
 in transmission speeds or times for the packets in \gls{tcp} sockets. 
 
 
-\begin{sidewaysfigure}[htb]
+\begin{figure}[htb]
     \includegraphics[width=\textwidth]{figures/tests/DT/Delay_SendReceive_JointGripper_Elbow.png}
     \centering
     \caption{Tests for different packet sizes w.r.t data transmission time between robots 
     and \gls{dta}. \label{fig: SR-JointGripper-Elbow}}
-\end{sidewaysfigure}
+\end{figure}
 
 Since each packet only takes a few milliseconds to be transported, the real time requirement 
 for production processes is again fullfilled. 
@@ -444,4 +444,92 @@ and \gls{ms} Azure Digital Twin Cloud in different packet lengths} \label{chap: 
 However, in the program, the biggest variance 
 on the total data transmission time is the \gls{rtt} from local devices to the global digital 
 twin. In addtion to the \gls{rtt}, the data upload and download time is also measured 
-separately, which has an opposite result as those in \cite{cainelli_performance_2023}. 
+separately, which has an opposite result as those from the other research\cite{cainelli_performance_2023}. 
+In the paper, the resulting uplink data transmission time is larger than the downlink data transmission 
+time. The difference between both tests is, the research team from Magdeburg 
+measured delay with logical links from a 5G standalone network and the industrial 5G devices, 
+whereas our test was based on data update times in the cloud. The latency 
+between data upload and update reflects the actual digital twin data update 
+patterns which includes additional process time in the cloud. Therefore we can 
+infer that the increased latency of data upload may be caused by the internal 
+Azure Digital Twin Model API for data update 
+(unclosed issue in \gls{ms} Q\&A\footnote{https://learn.microsoft.com/en-us/answers/questions/1328803/experiencing-slow-load-times-on-azure-digital-twin}).
+    
+
+It is worth mentioning that the data upload time from JointGripper and Elbow 
+has little to no difference, since the upload mechanism of Azure Digital Twin is limited 
+by sending twin values one after one. There is no such function to update more than 
+one twin simultaneously. In order to differentiate the upload speed, the patch size 
+of the to be updated twin values should vary. The fig.\ref{fig: UD-cycle-JointGripper} 
+again shows the cumulative delays with the same conclusion as in 
+fig.\ref{fig: SR-JointGripper-Elbow} and mean \gls{rtt} is slightly lower than 
+100ms, which is still under the real time requirements. As the packet for upload 
+and download will be routed to the cloud, which not only goes through 
+the internal 5G network but also the internet externally, which results in a much 
+higher latency. Compared with the tests results from \cite{cainelli_performance_2023}, 
+the internal twin update mechanisms can be optimized to further reduce the data 
+upload and download \gls{rtt}. 
+
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_UploadDownloadCycleTime_JointGripper.png}
+    \centering
+    \caption{Tests for \gls{rtt} of data upload and download for JointGripper. \label{fig: UD-cycle-JointGripper}}
+\end{figure}
+
+As mentioned, the data upload time is larger than the download time as depicted in 
+fig.\ref{fig: UD-sep-JointGripper}. The upload time of JointGripper values is 
+under 30ms while the download time results in about 70ms. Under the same conditions, 
+the differences of both values for Elbow are negligible with 
+only 1-2ms difference(see fig.\ref{fig: UD-cycle-Elbow} and 
+\ref{fig: UD-sep-Elbow}), due to the one after one twin upload mechanism. 
+
+
+
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_UploadDownload_JointGripper.png}
+    \centering
+    \caption{Tests for delays between \gls{dta} and digital twin update of JointGripper, 
+    and delays for twin value download. \label{fig: UD-sep-JointGripper}}
+\end{figure}
+
+
+To differentiate the upload speed based on packet size, two patches with 
+different sizes are introduced. Ideally, the small data patch with a size of 
+49 Bytes should induce a higher transmission speed than the large one with 
+554 Bytes, but the reality is quite different. The test results of all the 
+delay measurement for both patch sizes are presented as a violin plot in 
+fig.\ref{fig: UD-violin-patchsize}. As expected, the upload time of large 
+patches is less than small patches, while the result of download time is the 
+opposite. This results to a almost identical total \gls{rtt} of both. 
+The reasons can be, that each test is done at different time, which results in 
+a fluctuation related to the network traffic, cloud service loads, amount of 
+end users under the same 5G network and many more, which influence the data transmission 
+time even more than the patch sizes.
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/tests/DT/violin_patch_size.png}
+    \centering
+    \caption{Tests for \gls{rtt}, delays between \gls{dta} and digital twin 
+    update of JointGripper, and delays of twin value download for 
+    two different patch sizes. In the graph, s represents small patches 
+    and l for large patches.\label{fig: UD-violin-patchsize}}
+\end{figure}
+
+In genral, the data upload and download time between \gls{dta} and the cloud 
+is much higher than the field 
+level data transmission time under \gls{tcp} sockets. A fig.\ref{fig: SR-U-D-violin} shows 
+the variance and mean of those in a violin plot for a more intuitive observation. 
+Compared to the violin plot in fig.\ref{fig: UD-violin-patchsize}, the send and receive 
+processes always show a symmetric triangular shape, which indicates the 
+limited amount of sample data. As for the non-symmetric triangular shape of 
+the upload and download processes, this is probably because most of the data 
+points have the smallest values and the least data points with the largest value.
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/tests/DT/log_violin_Plot_3cat.png}
+    \centering
+    \caption{Tests for data transmission time from robot to \gls{dta}, 
+    delays between \gls{dta} and digital twin 
+    update of JointGripper, and delays for twin value download.\label{fig: SR-U-D-violin}} 
+\end{figure}
