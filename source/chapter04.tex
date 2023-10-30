@@ -220,9 +220,37 @@ fig.\ref{fig: MsgConceptual}, \gls{http} is designed for message
 transfer in both directions, and therefore more comparable with WebSocket among the others. 
 As a result, a \gls{http} based interface RESTful API is designed under the similar architecture 
 as WebSocket and tested under the same condition of the WebSocket string test in 
-section \ref{chap: Result-Internal-string}.
+section \ref{chap: Result-Internal-string}. By comparing 
+fig.\ref{fig: proportional-stringsize} with fig.\ref{fig: proportional-rest-stringsize}, 
+it is obvious that the process time of string messages is higher and 
+grows faster in a WebSocket server than RESTful API server. The difference may 
+results in the prioritization and data processing mechanisms in WebSocket server, 
+while RESTful API server is only designed with basic message POST and GET 
+mechanism. However, the data transmission time between both is more comparable. 
+First of all, both of them reflect the fit of the model with the coefficient 
+of determination closes to one, which is namely: 
 
 
+    \begin{align}
+        R^{2} &= 1-\frac{RSS}{TSS}\\
+        \text{Where} \nonumber\\
+        RSS & = \text{sum of squared residuals} \nonumber\\
+        TSS & = \text{total sum of squares}\nonumber
+    \end{align}
+
+meaning that the model fits the data well.
+
+
+
+
+
+Secondly, the transmission time of both is similar 
+with respect to the same string message length (RESTful has slightly higher latency), 
+with a difference of 0.01ms to few milliseconds, which grows over 
+message size.   
+
+Therefore, WebSocket is proven to be more appropriate for real time message 
+transfer, which is essential for an agent based system.
 
 
 \begin{figure}[htb]
@@ -263,13 +291,14 @@ section \ref{chap: Result-Internal-string}.
 
 \subsection{Test results of message prioritization of a WebSocket server in various 
 performance testing} \label{chap: Result-priority}
-Despite the consideration of speed, robustness, reliability and application size in an agent 
+Apart from the consideration of speed, robustness, reliability and application size in an agent 
 communication system, the server which serves as a \gls{ca} should have addtional 
 functionalities rather than pure message transport. As listed in tab.\ref{tab:designPatterns}, 
 the \gls{ca} should focus on the design of a communication interface, which should be able to 
 process various messages with different data types (e.g., jsonified images), handle a large 
 number of agents connections and prioritize the incoming messages. In the following sections, 
 the performance of server handling message prioritization will be tested and further discussed.  
+
 \subsubsection{Measurgin method}
 In order to verify the prioritization mechanism of the server, a delay of 1s should be added to the 
 non-prioritized message processing. In the test, two kinds of messages are sent conccurently to the server, 
@@ -278,28 +307,141 @@ enter the server simultaneously, the critical messages should be processed first
 delay also reflects the real world scenarios: if a critical message representing an emergent stop 
 or a task with higher priority in production comes in, every other processe in the server 
 should wait until the critical message is sent. 
+
 \subsubsection{String message priority test}
 The first string priority test is done for 10 clients. The following fig.\ref{fig: priority-10clients-a} 
-and \ref{fig: priority-10clients-b} shows the average \gls{rtt} 
+and \ref{fig: priority-10clients-b} shows the mean \gls{rtt} 
 that a non-prioritized and prioritized message being sent forward and back separately for 100 times.
+In fig.\ref{fig: priority-10clients-a}, the mean \gls{rtt} for client1 to client10 in both directions 
+varies from 0.63ms to 1.09ms, 
+which fullfills the near real time requirement(quote) for production process. 
+The fig.\ref{fig: priority-10clients-b} on the other hand, 
+presents the timing differences of normal messages as a group and critical messages as control group. 
+In the test, all clients deliver normal messages except for client10. That means, whenever a critical 
+message from client10 arrives, the server will pause the other processes for 1s and handle the 
+critical message immediately. In the test, the mean \gls{rtt} for client10 is less than 1ms. 
+In contrast, clients such as client1 through client5 and client9 experience 
+significantly higher RTTs, sometimes reaching several hundred milliseconds, which 
+has verified the assumption of message prioritization. It is worth mentioning that, due to the concurrent 
+nature of the asyncio package in the WebSocket server design, each client will be executed 
+one after another, different from parallel processing. That means, some messages may never be paused 
+if the clients execution process is not synchronized and coordinated explicitly. 
+
+\begin{sidewaysfigure}[htb]
+    \centering
+    \includegraphics[width=\textheight]{figures/tests/priority_tests/violin_10clients_string_non_priority.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of forward and return non-prioritized string messages between 10 clients 
+    and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}.} \label{fig: priority-10clients-a}
+\end{sidewaysfigure}
+\begin{sidewaysfigure}[htb]
+    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_string_priority.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of forward and return prioritized string messages between 10 clients 
+    and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}.} \label{fig: priority-10clients-b}
+\end{sidewaysfigure}
+
+
+
+Together with the priority tests for 10 clients, there are similar tests performed in different scales. 
+In all these tests, the number of clients varies from 2, 10 to 50. The test results 
+of 2 clients can be found in \ref{chap: append} fig.\ref{fig: priority-2clients-string}, 
+and those for 50 clients in fig.\ref{fig: priority-50clients-string-a} to 
+\ref{fig: priority-50clients-string-e}. For the string message priority test with 2 clients, 
+it is clear that client1 sends messages with lower priority results in 
+a much higher delay than client2 in both directions. As for the test with 50 clients, 
+the test result is similar to those in the test for 10 clients. In the test, only the 
+last client will send a critical message, while the other 49 clients with a normal message. 
+This resulted in some clients being affected by the mechanism and greatly increasing delays, 
+while client50 will always have a smallest \gls{rtt}.
+
+\subsubsection{Image message priority test}
+The same tests are also done for image message transport. Slightly different 
+from string messages, the prioritization jsonified image file (image size: 33.4KB) 
+will be performed 
+after deserialization. In the image priority test, client1 to client10 will send an 
+image to clientR, and receive a string message as response. In actual production,
+a confirm string message will be sent back if the image message is successfully received 
+by clientR. Therefore, this test can better reflect the time difference between 
+different messages types in the actual production process, since mostly the actual 
+string length will be much smaller than the image length. As shown in fig.\ref{fig: priority-10clients-c}, 
+it proves that either the data transmission time or the server process time of a image message 
+will be higher than a string message.
 
 
 \begin{sidewaysfigure}[htb]
     \centering
-    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_non_priority.png}\hfill 
-    \caption{Average delay tests for \gls{rtt} of forward and return non-prioritized messages between 10 clients 
-    and clientR for 100 times.} \label{fig: priority-10clients-a}
+    \includegraphics[width=\textheight]{figures/tests/priority_tests/violin_10clients_image_non_priority.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of non-prioritized forward image messages and return string messages between 10 clients 
+    and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}.} \label{fig: priority-10clients-c}
 \end{sidewaysfigure}
+
+
+Another test (fig.\ref{fig: priority-10clients-d}) should be similar to the string message priority test (fig.\ref{fig: priority-10clients-b}), 
+with 2, 10 and 50 clients sending images and receiving string messages as response 
+from clientR. 
+All client1 to client9 send a normal image message and meanwhile 
+client10 sends a critical one to clientR. 
+In the test, all image messages and only a part of the response string messages 
+being sent trigger the prioritization mechanism.  In this, the latency for 
+the prioritized string messages is very similar to previous test results
+The reason might be that the larger the file size, the longer the transfer 
+and processing time will required. The larger message length of images 
+results in more data bytes 
+that needs to be processed simultaneously, which involves the a higher number of 
+message queuing and message prioritization in server. The same conclusion can be 
+also made for the tests for 2 and 50 clients in \ref{chap: append} fig.\ref{fig: priority-2clients-image} 
+to \ref{fig: priority-50clients-image-e}.
+
+
 \begin{sidewaysfigure}[htb]
-    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_priority.png}\hfill 
-    \caption{Average delay tests for \gls{rtt} of forward and return prioritized messages between 10 clients 
-    and clientR for 100 times.} \label{fig: priority-10clients-b}
+    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_image_priority.png}\hfill 
+    \caption{Tests for mean \gls{rtt} of prioritized forward image messages and return string messages between 10 clients 
+    and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
+    respresent mean \gls{rtt}.} \label{fig: priority-10clients-d}
 \end{sidewaysfigure}
 
 
-
-\subsubsection{Image message priority test}
 
 \section{External}\label{chap: Result-External}
+As for the delay measurement of the external \gls{dta} system, tests for the 
+upload and download are done separately, with different packet sizes as tuning 
+parameters. 
 
-\subsection{Test results of DTagents related to Azure Digital Twin} \label{chap: Result-DT}
+
+\subsection{Test results of data transmission time in \gls{tcp} sockets between robots and \gls{dta} 
+in different packet lengths} \label{chap: Result-RCP-DTA}
+
+To better measure the influence of different packet lengths on transmission time from 
+a \gls{rcp} to \gls{dta} utilizing 
+\gls{tcp} sockets, 
+the packet length of JointGripper (joint and gripper of the robot arm) position values should 
+be larger than that of the Elbow (elbow of the robot arm), they are 151 and 80 Bytes respectively. 
+As depicted in 
+fig.\ref{fig: SR-JointGripper-Elbow}, the mean transmission time of JointGripper is larger 
+than Elbow, which verifies that larger files take longer to transfer. The cumulative delays of 
+both data lengths also show a linear growth relationship 
+in the upper graph, which means, there are no major fluctuations or irregularities 
+in transmission speeds or times for the packets in \gls{tcp} sockets. 
+
+
+\begin{sidewaysfigure}[htb]
+    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_SendReceive_JointGripper_Elbow.png}
+    \centering
+    \caption{Tests for different packet sizes w.r.t data transmission time between robots 
+    and \gls{dta}. \label{fig: SR-JointGripper-Elbow}}
+\end{sidewaysfigure}
+
+Since each packet only takes a few milliseconds to be transported, the real time requirement 
+for production processes is again fullfilled. 
+
+
+
+\subsection{Test results of data transmission time in \gls{tcp} sockets between \gls{dta} 
+and \gls{ms} Azure Digital Twin Cloud in different packet lengths} \label{chap: Result-DTA-DT}
+
+However, in the program, the biggest variance 
+on the total data transmission time is the \gls{rtt} from local devices to the global digital 
+twin. In addtion to the \gls{rtt}, the data upload and download time is also measured 
+separately, which has an opposite result as those in \cite{cainelli_performance_2023}. 
