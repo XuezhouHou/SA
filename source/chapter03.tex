@@ -638,7 +638,7 @@ in the last section.
 
 The fig.\ref{fig: DTConceptual} shows the workflow of \gls{dta} updating global digital twin.
 The process begins from the left hand side of the graph. The \gls{dta} receives process data constantly from robots, including steady state data. 
-After the separating the sticky packets from \gls{tcp} socket, the process data will be parsed and uploaded one by one to the \gls{ms} Azure Digital Twins cloud. 
+After the separating the sticky packets from \gls{tcp} socket, the process data will be parsed and uploaded one by one to the \gls{ms} Azure Digital Twins Cloud. 
 All the updates of the digital twin instances in cloud will be shown in Azure Digital Twins Explorer temporarily and stored in Azure Event Hubs concurrently. 
 After that the history data could be ingested for further analysis in Azure Data Explorer. 
 The Azure Digital Twins Explorer here serves as a monitor of robot status while the Azure Data Explorer as a data analysis tool. 

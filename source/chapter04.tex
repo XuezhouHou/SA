@@ -227,8 +227,24 @@ grows faster in a WebSocket server than RESTful API server. The difference may
 results in the prioritization and data processing mechanisms in WebSocket server, 
 while RESTful API server is only designed with basic message POST and GET 
 mechanism. However, the data transmission time between both is more comparable. 
-First of all, both of them reflect a linear dependency with the coefficient 
-of determination near one. Secondly, the transmission time of both is similar 
+First of all, both of them reflect the fit of the model with the coefficient 
+of determination closes to one, which is namely: 
+
+
+    \begin{align}
+        R^{2} &= 1-\frac{RSS}{TSS}\\
+        \text{Where} \nonumber\\
+        RSS & = \text{sum of squared residuals} \nonumber\\
+        TSS & = \text{total sum of squares}\nonumber
+    \end{align}
+
+meaning that the model fits the data well.
+
+
+
+
+
+Secondly, the transmission time of both is similar 
 with respect to the same string message length (RESTful has slightly higher latency), 
 with a difference of 0.01ms to few milliseconds, which grows over 
 message size.   
@@ -348,7 +364,7 @@ image to clientR, and receive a string message as response. In actual production
 a confirm string message will be sent back if the image message is successfully received 
 by clientR. Therefore, this test can better reflect the time difference between 
 different messages types in the actual production process, since mostly the actual 
-string length will be much shorter than the image length. As shown in fig.\ref{fig: priority-10clients-c}, 
+string length will be much smaller than the image length. As shown in fig.\ref{fig: priority-10clients-c}, 
 it proves that either the data transmission time or the server process time of a image message 
 will be higher than a string message.
 
@@ -390,7 +406,42 @@ to \ref{fig: priority-50clients-image-e}.
 
 \section{External}\label{chap: Result-External}
 As for the delay measurement of the external \gls{dta} system, tests for the 
-upload and download are done separately, with different packet sizes as tuning parameters.
+upload and download are done separately, with different packet sizes as tuning 
+parameters. 
 
 
-\subsection{Test results of DTagents related to Azure Digital Twin} \label{chap: Result-DT}
+\subsection{Test results of data transmission time in \gls{tcp} sockets between robots and \gls{dta} 
+in different packet lengths} \label{chap: Result-RCP-DTA}
+
+To better measure the influence of different packet lengths on transmission time from 
+a \gls{rcp} to \gls{dta} utilizing 
+\gls{tcp} sockets, 
+the packet length of JointGripper (joint and gripper of the robot arm) position values should 
+be larger than that of the Elbow (elbow of the robot arm), they are 151 and 80 Bytes respectively. 
+As depicted in 
+fig.\ref{fig: SR-JointGripper-Elbow}, the mean transmission time of JointGripper is larger 
+than Elbow, which verifies that larger files take longer to transfer. The cumulative delays of 
+both data lengths also show a linear growth relationship 
+in the upper graph, which means, there are no major fluctuations or irregularities 
+in transmission speeds or times for the packets in \gls{tcp} sockets. 
+
+
+\begin{sidewaysfigure}[htb]
+    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_SendReceive_JointGripper_Elbow.png}
+    \centering
+    \caption{Tests for different packet sizes w.r.t data transmission time between robots 
+    and \gls{dta}. \label{fig: SR-JointGripper-Elbow}}
+\end{sidewaysfigure}
+
+Since each packet only takes a few milliseconds to be transported, the real time requirement 
+for production processes is again fullfilled. 
+
+
+
+\subsection{Test results of data transmission time in \gls{tcp} sockets between \gls{dta} 
+and \gls{ms} Azure Digital Twin Cloud in different packet lengths} \label{chap: Result-DTA-DT}
+
+However, in the program, the biggest variance 
+on the total data transmission time is the \gls{rtt} from local devices to the global digital 
+twin. In addtion to the \gls{rtt}, the data upload and download time is also measured 
+separately, which has an opposite result as those in \cite{cainelli_performance_2023}. 
