@@ -410,16 +410,35 @@ test results of BMW use case}\label{chap: Result-Internal-Usecase}
 As listed earlier in form of pseudocode in section \ref{chap: Meth-WS-MAS}, 
 the \gls{mas} architecture is designed for all use cases. In the code, a complete 
 workflow from agents allocation to the sequenced based agents communication 
-is designed for a standard production process in real world.   
+is designed for a standard production process in real world. For a better 
+understanding of the workflow of both usecases, two diagrams are provided: 
+fig.\ref{fig: sequence-diagram} shows a general workflow for a general 
+use case diagram that can be applied to all use cases, 
+and fig.\ref{fig: Flowchart-usecase} shows the actual workflow of the 
+two use cases. 
+
+
+
 
 
 \begin{figure}[htb]
+    \centering
     \includegraphics[width=\textwidth]{figures/tests/usecase/SequenceUsecases.pdf}\hfill 
-    \caption{\gls{uml} general use case diagram of the \gls{mas} architecture.} \label{fig: sequence-diagram}
+    \caption{\gls{uml} general use case diagram of the \gls{mas} architecture.} 
+    \label{fig: sequence-diagram}
 \end{figure}
 
 
-
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/tests/usecase/Usecase_flow.pdf}\hfill 
+    \caption{Flowchart of BMW and Wittenstein use case of the \gls{mas} architecture. 
+    Blue containers: BMW use case, allocated agents are Storge agent, 
+    Transport agent MiR600, Wiring agent and Digital Twin agent respectively. 
+    Green Containers: Wittenstein use case, allocated agents are Storage agent, 
+    Transport agent MiR250, Assembly agent and Digital Twin agent respectively. 
+    Red container: Coordinator agent for both usecases.} 
+    \label{fig: Flowchart-usecase}
+\end{figure}
 
 
 
