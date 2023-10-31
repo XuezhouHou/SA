@@ -302,7 +302,7 @@ The reasons of choosing application layer protocols over transport layer protoco
 However, unlike for \gls{mas} design, the architecture of \gls{dta} is more straightforward and the basic \gls{tcp} socket is chosen for the more to one server-client communication. 
 The details will be discussed later in section \ref{chap: Meth-External}.
 
-\subsection{Pseudo-Code of MAS workflow in WebSocket python}
+\subsection{Pseudo-Code of MAS workflow in WebSocket python}\label{chap: Meth-WS-MAS}
 In algorithm \ref{alg: CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
 Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitives execution but the ability to do planning and decision making. 
 Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive()$ functions under the messageSender class.

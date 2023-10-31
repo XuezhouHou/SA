@@ -15,8 +15,10 @@ Various tests will be done and the test results will be discussed later in secti
 In addition to the performance testing of WebSocket architecture alone, 
 a comparison between WebSocket and \gls{http} will be done to verify the feasibility 
 of WebSocket. 
-Finally, tests relevant to packets prioritization will be performed to close 
-the sections. 
+After that, tests relevant to packets prioritization will be performed in 
+section \ref{chap: Result-priority}. 
+Finally, tests results of the WebSocket based \gls{mas} architecture under 
+BMW use case will be presented to close the sections.
 
 
 \subsection{Test results of WebSocket in various performance testing including worst case scenarios} \label{chap: Result-WS}
@@ -403,6 +405,33 @@ to \ref{fig: priority-50clients-image-e}.
 \end{sidewaysfigure}
 
 
+\subsection{Sequence diagrams of WebSocket based \gls{mas} architecture under two use cases and test 
+test results of BMW use case}\label{chap: Result-Internal-Usecase}
+As listed earlier in form of pseudocode in section \ref{chap: Meth-WS-MAS}, 
+the \gls{mas} architecture is designed for all use cases. In the code, a complete 
+workflow from agents allocation to the sequenced based agents communication 
+is designed for a standard production process in real world.   
+
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/tests/usecase/SequenceUsecases.pdf}\hfill 
+    \caption{\gls{uml} general use case diagram of the \gls{mas} architecture.} \label{fig: sequence-diagram}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \section{External}\label{chap: Result-External}
 As for the delay measurement of the external \gls{dta} system, tests for the 
@@ -522,10 +551,11 @@ is much higher than the field
 level data transmission time under \gls{tcp} sockets. A fig.\ref{fig: SR-U-D-violin} shows 
 the variance and mean of those in a violin plot for a more intuitive observation. 
 Compared to the violin plot in fig.\ref{fig: UD-violin-patchsize}, the send and receive 
-processes always show a symmetric triangular shape, which indicates the 
-limited amount of sample data. As for the non-symmetric triangular shape of 
-the upload and download processes, this is probably because most of the data 
-points have the smallest values and the least data points with the largest value.
+processes always show a symmetric triangular shape, suggesting a limited sample size. 
+Considering the non-symmetric triangular shape of 
+the uploading and downloading processes, 
+this is likely be attributed to the data points with a predominance at the lower extremum, 
+and the minimal presence at the upper extremum.
 \begin{figure}[htb]
     \includegraphics[width=\textwidth]{figures/tests/DT/log_violin_Plot_3cat.png}
     \centering
@@ -533,3 +563,4 @@ points have the smallest values and the least data points with the largest value
     delays between \gls{dta} and digital twin 
     update of JointGripper, and delays for twin value download.\label{fig: SR-U-D-violin}} 
 \end{figure}
+
