@@ -1,7 +1,7 @@
 \chapter{Appendices}\label{chap: append}
-\section{String message priority test}%
+\section{String message priority test}\label{chap: append-string-priority}
 %
-%
+%priority tests
 \begin{figure}[htb]
     \centering
     \begin{subfigure}[b]{0.99\textwidth}
@@ -60,7 +60,7 @@
 
 
 
-\section{Image message priority test}%
+\section{Image message priority test}\label{chap: append-image-priority}
 
 
 \begin{figure}[htb]
@@ -120,6 +120,55 @@
 \end{sidewaysfigure}
 
 
+
+
+%use cases
+\section{Use case based test}\label{chap: append-UC}
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/appendix/usecase/violin_CoordinatorAgent_to_StorageAgent.png}
+    \centering
+    \caption{Test to measure \gls{rtt} and transmission time between \gls{cda} and 
+    StorageAgent for 100 times. The number in x-axis respresents the 
+    corresonding messages. \protect\ref{firstfootnote}}
+    \label{fig: violin-CDA-ST}
+\end{figure}
+
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/appendix/usecase/violin_CoordinatorAgent_to_WiringAgent.png}
+    \centering
+    \caption{Test to measure \gls{rtt} and transmission time between \gls{cda} and 
+    WiringAgent for 100 times. The number in x-axis respresents the 
+    corresonding messages. \protect\ref{firstfootnote}}
+    \label{fig: violin-CDA-WI}
+\end{figure}
+
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/appendix/usecase/violin_StorageAgent_to_TransportAgent_MiR600.png}
+    \centering
+    \caption{Test to measure \gls{rtt} and transmission time between StorageAgent and 
+    TransportAgent\_MiR600 for 100 times. The number in x-axis respresents the 
+    corresonding messages. \protect\ref{firstfootnote}}
+    \label{fig: violin-ST-T600}
+\end{figure}
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/appendix/usecase/violin_TransportAgent_MiR600_to_WiringAgent.png}
+    \centering
+    \caption{Test to measure \gls{rtt} and transmission time between TransportAgent\_MiR600 and 
+    WiringAgent for 100 times. The number in x-axis respresents the 
+    corresonding messages. \protect\ref{firstfootnote}}
+    \label{fig: violin-T600-WI}
+\end{figure}
+
+
+
+
+
+%DT
+\section{\gls{dta} test}\label{chap: append-DTagent}
 \begin{figure}[htb]
     \includegraphics[width=\textwidth]{figures/appendix/DT/Delay_UploadDownloadCycleTime_Elbow.png}\hfill 
     \caption{Tests for \gls{rtt} of data upload and download for Elbow.} \label{fig: UD-cycle-Elbow}
@@ -131,3 +180,9 @@
     \caption{Tests for delays between \gls{dta} and digital twin update of Elbow, 
     and delays for twin value download. \label{fig: UD-sep-Elbow}}
 \end{figure}
+
+
+
+
+%
+

@@ -347,7 +347,7 @@ if the clients execution process is not synchronized and coordinated explicitly.
 
 Together with the priority tests for 10 clients, there are similar tests performed in different scales. 
 In all these tests, the number of clients varies from 2, 10 to 50. The test results 
-of 2 clients can be found in \ref{chap: append} fig.\ref{fig: priority-2clients-string}, 
+of 2 clients can be found in \ref{chap: append-string-priority} fig.\ref{fig: priority-2clients-string}, 
 and those for 50 clients in fig.\ref{fig: priority-50clients-string-a} to 
 \ref{fig: priority-50clients-string-e}. For the string message priority test with 2 clients, 
 it is clear that client1 sends messages with lower priority results in 
@@ -393,7 +393,7 @@ and processing time will required. The larger message length of images
 results in more data bytes 
 that needs to be processed simultaneously, which involves the a higher number of 
 message queuing and message prioritization in server. The same conclusion can be 
-also made for the tests for 2 and 50 clients in \ref{chap: append} fig.\ref{fig: priority-2clients-image} 
+also made for the tests for 2 and 50 clients in \ref{chap: append-image-priority} fig.\ref{fig: priority-2clients-image} 
 to \ref{fig: priority-50clients-image-e}.
 
 
@@ -405,7 +405,7 @@ to \ref{fig: priority-50clients-image-e}.
 \end{sidewaysfigure}
 
 
-\subsection{Sequence diagrams of WebSocket based \gls{mas} architecture under two use cases and test 
+\subsection{Diagrams of WebSocket based \gls{mas} architecture under two use cases and test 
 test results of BMW use case}\label{chap: Result-Internal-Usecase}
 As listed earlier in form of pseudocode in section \ref{chap: Meth-WS-MAS}, 
 the \gls{mas} architecture is designed for all use cases. In the code, a complete 
@@ -418,7 +418,19 @@ and fig.\ref{fig: Flowchart-usecase} shows the actual workflow of the
 two use cases. 
 
 
-
+In the general use case diagram (fig.\ref{fig: sequence-diagram}), the 
+design for the \gls{mas} should be identical for all use cases except for 
+the availability check and primitive execution parts (production processes) 
+in the loop. The detailed 
+program execution sequence is already described in section \ref{chap: Meth-WS-MAS}, 
+something worth noting here is that, the sequence the production processes in the loop should 
+be relevant to use cases, namely the customer requirements. That means, the sequence 
+for tasks execution in the test should be more complex. Rather than a simple round trip 
+between three agents, sometimes the Transport agent can receive orders from Storage agent 
+and send orders to the Storage agent again to save time from the slow restocking of 
+supermarket cell. However, the workflow in fig.\ref{fig: Flowchart-usecase} may 
+it may be the best route in actual production based on its simplicity of agents 
+communication design.  
 
 
 \begin{figure}[htb]
@@ -436,19 +448,60 @@ two use cases.
     Transport agent MiR600, Wiring agent and Digital Twin agent respectively. 
     Green Containers: Wittenstein use case, allocated agents are Storage agent, 
     Transport agent MiR250, Assembly agent and Digital Twin agent respectively. 
-    Red container: Coordinator agent for both usecases.} 
+    Red container: \gls{cda} for both usecases.} 
     \label{fig: Flowchart-usecase}
 \end{figure}
 
 
 
+For both BMW and Wittenstein use cases, the primitives with the associated agents and execution sequence are 
+predefined. Although the program was designed based on two use cases, 
+only the timing behaviors of the BMW use case was tested based on their similarity. 
+The tab.\ref{tab: mean-usecase-time} shows the average \gls{rtt} and WebSocket 
+data transmission time of BMW use case. The test was conducted a total of 100 times, 
+but the number of messages 
+each agent sent to the others during the test varied greatly. 
+Due to the uneven amount of test data, 
+the test results 
+and average values can only be used as a reference to understand the data 
+transmission process in actual production. A more detailed data ditribution of each 
+message is presented as violin plot in fig.\ref{fig: violin-CDA-T600}. Together 
+with the rest of the test results with other agents 
+(see \ref{chap: append-UC} fig.\ref{fig: violin-CDA-ST} to \ref{fig: violin-T600-WI}), 
+it can be concluded that 
+the message transport in the system meets the real-time requirements, with the 
+largest messge size of 636 Bytes in maximal 10ms and the smallest in about 0.2ms. 
 
 
+\begin{table}[htbp]
+    \small
+    \centering
+    \caption{Average delays between agents with different string message length and 
+    different amount of messages.}
+    \label{tab: mean-usecase-time}
+    \begin{tabular}{|m{0.13\textwidth}|m{0.17\textwidth}|m{0.17\textwidth}|m{0.17\textwidth}|m{0.17\textwidth}|}
+    \hline
+    \multicolumn{5}{|c|}{\textbf{Average delays between agents (RTT/Transmission time)}}                                                            \\ \hline
+    \textbf{}                         & \textbf{Coordinator Agent}             & \textbf{Storage Agent}        & \textbf{Transport Agent MiR600}    & \textbf{Wiring Agent}\\ \hline
+    \textbf{Coordinator Agent}      & None                  & 1.029355ms /0.820172ms & 1.067170ms /0.849335ms  & 1.032151ms /0.817049ms \\ \hline
+    \textbf{Storage Agent}          & 0.998253ms /0.794590ms & None                  & 1.427890ms /1.158142ms  & None                  \\ \hline
+    \textbf{Transport Agent MiR600} & 1.055389ms /0.840291ms & 1.422970ms /1.150696ms & None                   & 1.668750ms /1.344250ms \\ \hline
+    \textbf{Wiring Agent}           & 0.988012ms /0.783014ms & None                  & 1.654000ms /1.361000ms  & None                  \\ \hline
+    \end{tabular}
+\end{table}
 
 
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{figures/tests/usecase/violin_CoordinatorAgent_to_TransportAgent_MiR600.png}\hfill 
+    \caption{Test to measure \gls{rtt} and transmission time between \gls{cda} and 
+    TransportAgent\_MiR600 for 100 times. The number in x-axis respresents the 
+    corresonding messages. \protect\ref{firstfootnote}}
+    \label{fig: violin-CDA-T600}
+\end{figure}
 
-
-
+%addtional for footnote in caption
+\footnotetext[1]{\label{firstfootnote}https://github.com/XuezhouHou/Websocket\_MAS/new\_MAS/output/plots/table4UCBMW.xlsx}
 
 
 
@@ -529,7 +582,7 @@ As mentioned, the data upload time is larger than the download time as depicted 
 fig.\ref{fig: UD-sep-JointGripper}. The upload time of JointGripper values is 
 under 30ms while the download time results in about 70ms. Under the same conditions, 
 the differences of both values for Elbow are negligible with 
-only 1-2ms difference(see fig.\ref{fig: UD-cycle-Elbow} and 
+only 1-2ms difference(see \ref{chap: append-DTagent} fig.\ref{fig: UD-cycle-Elbow} and 
 \ref{fig: UD-sep-Elbow}), due to the one after one twin upload mechanism. 
 
 
