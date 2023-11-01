@@ -1,30 +1,45 @@
 % !TeX spellcheck = en_US
 \chapter{Methodology}\label{chap: Meth}%
-This chapter describes the methodologies of general \gls{mas} design. 
-The general \gls{mas} is distributed into internal (\ref{chap: Meth-Internal}) and external (\ref{chap: Meth-External}) parts,  
-with a \gls{mas} for \gls{cda} and \gls{ra} as an internal and \gls{dta} as an external system. 
-These two systems are decoupled from each other but still under the concept of agent based operation system. 
+This chapter describes the methodologies of the general \gls{mas} design. 
+The general \gls{mas} is distributed into two parts: internal (section \ref{chap: Meth-Internal}) 
+and external (section \ref{chap: Meth-External}).  
+The internal system includes a \gls{mas} for the \gls{cda} and \gls{ra}, 
+while the external system involves the \gls{dta}. 
+Although these two systems are decoupled from each other, 
+they both follow the principles of an agent-based operating system. 
 At the end, it concludes the timing properties for both 
 internal and external systems with protocols in 
-different layers and proposes an assumption of modularizing transport 
-delay with a visual notation.
+different layers and suggests a way to represent 
+network latency modularly using visual notation of \gls{dsl}.
 \section{Internal}\label{chap: Meth-Internal}
-In this section, the design pattern for \gls{mas} is chosen and the tasks of each module within is discussed.
-After that, the characteristics of transport layer protocols and application layers protocols are compared. 
-Eventually the methodologies of using python WebSocket for \gls{mas} and RESTful API for one to one agent communication are listed in pseudocode. 
+This section discusses the selected design pattern for \gls{mas} along 
+with the responsibilities of each module within it.
+It then compares the features of transport layer protocols with those of 
+application layer protocols.
+Eventually the methods for using python WebSocket for \gls{mas} and 
+RESTful API for one to one agent communication are presented in form of pseudocode. 
 
 \subsection{Overview (conceptual diagram)}
 
 %figure conceptual MAS
 \begin{figure}[htb]
-\includegraphics[width=\textwidth]{figures/MAS_Conceptual_Diagram.png}
+\includegraphics[width=\textwidth]{figures/MAS_Conceptual_Diagram.pdf}
 \centering
 \caption{Conceptual diagram of MAS\label{fig: MASConceptual}}
 \end{figure}
 
 % decribe the conceptual diagram
 
-The fig.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based on the \gls{ra} design patterns in Wannagat’s architecture, with the focus on communication between agents, planning and decision making inside each agent. The \gls{cda} here is identical to \gls{ams} of Wanagat, which should also be counted as an agent instead of a management system. The five modules within an agent are: 
+Fig.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based 
+on the \gls{ra} design patterns 
+in Wannagat’s architecture\cite{cruz_salazar_cyber-physical_2019}, 
+focusing on communication between agents, 
+planning, and decision-making inside each agent. The \gls{cda} here is identical 
+to \gls{ams} of Wannagat’s architecture, which should also be considered an agent 
+instead of a management system. The five modules within an agent are:
+
+
+The five modules within an agent are: 
 \begin{itemize}
     \item Planning Module
     \item Control Module
@@ -33,8 +48,10 @@ The fig.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based
     \item Communication Interface
 \end{itemize}
 
-for both \gls{cda} or a \gls{ra}.
-Based on these five modules, the task to be executed in an agent should also be categorized into 5 parts. The following tab.\ref{tab:designPatterns} shows some tasks of each module based on the general requirements of a smart factory.
+for both \gls{cda} and \gls{ra}.
+Based on these five modules, the agents executing functions can be categorized into five parts. 
+The following tab.\ref{tab:designPatterns} shows 
+some functions of each module based on the general requirements of a smart factory.
 
 
 \begin{table}[p]
@@ -159,43 +176,58 @@ Based on these five modules, the task to be executed in an agent should also be 
 \label{fig: NSConceptual}}
 \end{figure}
 
-In order to emulate network environments for agent's communication testing 
-and development of the \gls{mas}, the internal packets routing between 
-agents in a single Linux device should be avoided. A common way to 
-visualize the network to do performance testing is to use namespaces 
-for network emulation. The trick is that a process running within a given 
-namespace will see only the network interfaces, including virtual 
-interfaces, forwarding tables, etc., that exist in that namespace. 
-The applications under test should serve as a switch and each packet 
-should be routed through these interfaces. The fig.\ref{fig: NSConceptual} 
-shows that, each namespace is assigned with a virtual ethernet interface, 
-starting with the name eth, which is configured with an individual IP 
-address. Each time a script gets called, it is running under a namespace 
-with its own IP address. In exercise, if a packet is sent from Namespace 1 
-to Namespace 3 and then back, it is routed by the switch intead of bridges 
-between namespaces, which are not configured here in order to avoid 
-internal routing.
+
+Before simulating network environments for agent communication testing 
+and development of the \gls{mas}, the internal packet routing between agents 
+in a single Linux device should be avoided. A common way to visualize 
+the network for performance testing is to use namespaces for network 
+emulation. The trick is that a process running within a given
+namespace will see only the network interfaces, including, for example, 
+virtual interfaces and forwarding tables, that exist in that namespace. 
+The applications under test should serve as a
+switch, and each packet should be routed through these interfaces. 
+Fig.\ref{fig: NSConceptual} shows that each namespace is assigned 
+a virtual ethernet interface, 
+starting with the name eth, along with an individual IP address. 
+Each time a script gets called, it runs under a namespace with its 
+IP address. In exercise, if a packet is sent from
+Namespace 1 to 3 and then back; it is routed by the switch instead of 
+bridges between namespaces to avoid internal routing.
 
 \subsection{\gls{osi} model and comparison between sockets relevant protocol layers}
 %figure conceptual MAS
 \begin{figure}[htbp]
-\includegraphics[width=0.8\textwidth]{figures/OSI.png}
+\includegraphics[width=0.8\textwidth]{figures/OSI.pdf}
 \centering
 \caption{\gls{osi} model with example protocols \label{fig: OSI}}
 \end{figure}
 
-Fig.\ref{fig: OSI} shows the famous \gls{osi} model with 7 abstraction layers with Transport layer and application layers most relevant to sockets. 
-TCP and UDP are typical transport layer protocols and they provide an end-to-end data transport between two devices while the application layer protocols like HTTP or Websocket establish a communication between applications within devices. 
-Although the application layer protocols still utilize TCP/UDP sockets to transport stream data, they defined additional "rules" to specify structure, content, and semantics of the messages transport through sockets. 
-In the following tables, a comparison between protocols in different layers provide a more straight forward overview of their pro and cons in different contents.
+
+
+Fig.\ref{fig: OSI} shows the famous OSI model with seven abstraction layers, with Transport and 
+application layers most relevant to sockets. TCP and UDP are typical transport layer 
+protocols, and they provide a mode of end-to-end data transport between two devices, 
+while the application layer protocols like HTTP or Websocket establish communication 
+between applications within devices. Although the application layer protocols still 
+utilize TCP/UDP sockets to transport stream data, they defined additional "rules" to 
+specify the structure, content, and semantics of the messages transported through 
+sockets. In the following tables, a comparison
+between protocols in different layers provide a more straightforward overview of 
+their pro and cons in different contents.
+
 
 
 \subsubsection{Transport layer protocols}
-Tab.\ref{tab: transportlayer} compares the typical transport layer protocols \gls{tcp} and \gls{udp} from different aspects.  
-\gls{tcp} provides reliable data transfer while \gls{udp} mainly focuses on transport speed and efficiency without reliability guarantee. 
-With the focus on speed and reliability, \gls{udp} on one hand offers a faster packet transfer, while on the other hand produces a network dependent packet loss rate and out-of-order packet sequence, compared to \gls{tcp}. 
-Because of the requirement of a reliable real time ordered data transfer with minimum to no packet loss in \gls{mas} communication, TCP is used as the base protocols of the design. 
 
+Tab.\ref{tab: transportlayer} compares the typical transport layer protocols \gls{tcp} 
+and \gls{udp} from different aspects. \gls{tcp} provides reliable data 
+transport, while \gls{udp} mainly focuses on transport speed and efficiency without a 
+reliability guarantee. With a focus on speed and reliability, UDP, on the one hand, 
+offers faster packet
+transport. On the other hand, it produces a network-dependent packet loss rate and 
+out-of-order packet sequence compared to TCP. Because of the requirement of a 
+reliable real-time ordered data transport with minimum to no packet loss in \gls{mas} 
+communication, \gls{tcp} is used as the base protocol of the design.
 
 \begin{table}[htbp]
     \small
@@ -251,8 +283,12 @@ Because of the requirement of a reliable real time ordered data transfer with mi
     \end{tabular}
 \end{sidewaystable}
 
-There are several protocols in application layers that are considered to be suitable for \gls{mas} communication, each with its own advantages and limits in different aspects according to tab.\ref{tab: applicationlayer}.
-To get a closer look of the tab.\ref{tab: applicationlayer}, a horizontal comparisons between different application layer protocols: 
+Several protocols in application layers are considered suitable for \gls{mas} 
+communication, each with advantages and limits in different aspects according to 
+ab.\ref{tab: applicationlayer}.
+To get a closer look at the tab.\ref{tab: applicationlayer}, a horizontal comparison 
+between different application layer protocols: 
+
 
 \begin{itemize}
     \item \gls{http}
@@ -260,28 +296,28 @@ To get a closer look of the tab.\ref{tab: applicationlayer}, a horizontal compar
     \item and \gls{mqtt}
 \end{itemize}
 
-should be performed. In one word, WebSocket is chosen to be the application layer protocols for MAS communication, while \gls{tcp} socket for the \gls{dta} design, which will be further discussed in the next chapter. Here are the reasons of the choice of WebSocket: 
+should be performed. In one word, WebSocket is chosen to be the application 
+layer protocol for MAS communication, while \gls{tcp} socket for the \gls{dta} 
+design, which will be further discussed in the next chapter. Here are the 
+reasons for the choice of WebSocket: 
+
 
 \begin{itemize}
-    \item Bi-directional, full duplex, real time communication between server and clients, no re-connection needed, suitable for continuous data transfer
+    \item Bi-directional, full duplex, real time communication between server and clients, no re-connection needed, suitable for continuous data transport
     \item Small overhead after connection establishment to reduce latency (\gls{http})
     \item Stateful, store the information of the client's state under connection
     \item High flexibility, adaptability and scalability
     \item Secure with wss
 \end{itemize}
 
-Fig.\ref{fig: MsgConceptual} shows the differences between bi-directional full duplex and other message patterns like Request-Response and Publish-Subscribe, in the context of data transfer. 
-For the \gls{mqtt}, publisher publish (send) a message within a topic to the broker (server), while subscriber subscribes (receive) the message from the broker within the same topic. 
-For response, a new topic needed to be started, but there is no guarantee that the original publisher is listening, which is a drawback for send-and-receive patterns of \gls{mas}. 
+Fig.\ref{fig: MsgConceptual} illustrates the differences between bi-directional full-duplex and other message patterns, such as Request-Response and Publish-Subscribe, in the context of data transport.
+For the \gls{mqtt}, the publisher publishes (sends) a message within a topic to the broker (server), while the subscriber subscribes (receives) the message from the broker within the same topic. 
+For response, a new topic needs to start, but there is no guarantee that the original publisher is listening, which is a drawback for send-and-receive patterns of \gls{mas}. 
 
-Relatively, the other three protocols will be considered as more appropriate. 
-For instance \gls{http} runs in request-response mechanism. 
-A client posts (sends) messages to the server for the other client will get (receive) from it. 
-Whether the GET and POST method are successful or not, a response will be given back. With this mechanism, each time a message is going through the server, a new connection will be established and closed after responses are sent. 
+Out of the four protocols, the other three are considered more appropriate. One such protocol is HTTP, which operates on a request-response mechanism. In this mechanism, a client sends messages to the server, and the other client receives them. Regardless of the success of the GET and POST methods, a response is always provided. For each message that goes through the server, a new connection is established, and it is closed after the responses are sent.
 The inconsistent connection will consume more communication time and lead to higher latency. 
-The ideal solution for that is the bi-directional and full duplex real time communication mechanism of WebSocket. 
-Basically the client sends a message to the server, after processing the data, the server will pass the message to the other client and receive response with the same logic. This allows simultaneous communication in both directions between clients, so that no re-connection in the message transfer cycle is necessary. The consistent server-client connection makes it possible to realize a continuous real time communication between agents. In the next section, a more detailed explanation of WebSocket mechanism for \gls{mas} design will be given.
-
+The WebSocket protocol, on the other hand, provides bi-directional and full duplex real-time communication, minimizing communication delays caused by inconsistent connections.
+The client sends a message to the server. After processing the data, the server will pass the message to the other client and receive a response with the same logic, which allows simultaneous communication in both directions between clients so that no re-connection in the message transport cycle is necessary. The consistent server-client connection makes it possible to realize continuous real-time communication between agents. In the next section, a more detailed explanation of the WebSocket mechanism for \gls{mas} design will be given.
 %figure conceptual application layer protocols
 \begin{figure}[htb]
 \includegraphics[width=0.8\textwidth]{figures/MessageConceptual.png}
@@ -291,7 +327,7 @@ protocols\label{fig: MsgConceptual}}
 \end{figure}
 
 \subsection{Transport layer protocols versus Application layer protocols}
-The reasons of choosing application layer protocols over transport layer protocols for \gls{mas} according to table \ref{tab: transportlayer} and \ref{tab: applicationlayer} are listed as following:
+The reasons of choosing application layer protocols over transport layer protocols for \gls{mas} according to tab.\ref{tab: transportlayer} and \ref{tab: applicationlayer} are listed as following:
 \begin{itemize}
     \item Semantic-rich message patterns
     \item Higher flexibility
@@ -304,32 +340,28 @@ The details will be discussed later in section \ref{chap: Meth-External}.
 
 \subsection{Pseudo-Code of MAS workflow in WebSocket python}\label{chap: Meth-WS-MAS}
 In algorithm \ref{alg: CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
-Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitives execution but the ability to do planning and decision making. 
-Under the Main, the production tasks are broken down into a set of sequenced primitives and then assigened to each allocated agent through one of the predefinded $send\_and\_receive()$ functions under the messageSender class.
-After getting responses from the agents, \gls{cda} should deicide whether to start processing by positive responses or retry the steps by negative responses.  
-Once the process starts, the \gls{cda} does nothing but wait for the inform messages from the allocated agents by using one of the $receive\_and\_send()$ functions under the messageReceiver class. 
-This allows \gls{cda} to have an overall control among the entire prodution process with the purpose of centralization of the distributed agent systems.  
+Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitive execution but the ability to do planning and decision-making. 
+Under the Main, the production tasks are broken down into a list of sequenced primitives and then assigned to each allocated agent through one of the predefined $send\_and\_receive()$ functions under the messageSender class.
+After getting responses from the agents, \gls{cda} should decide whether to start processing positive responses or retry the steps by negative responses.  
+Once the production process starts, the \gls{cda} assumes the role of a coordinator and waits for inform messages from the allocated agents. It does so by using one of the $receive\_and\_send()$ functions under the messageReceiver class. This allows the \gls{cda} to have overall control of the entire production process and centralize the distributed agent systems.
 
 
-As for the decentralization of \gls{mas}, the \gls{ra} should be able to react to \gls{cda} and do decision making for its own field level control.  
-Which means, \gls{cda} should only be informed about the status of the production process, while the exact processes should be done within \gls{ra} and the material flow should be informed between \gls{ras}. The combination of centralization and decentralization will save the resource power consumed by \gls{cda}, 
-while still maintains the management level control and decision making.  
-The algorithm \ref{alg: RAPseudoCode} shows the logic of a \gls{ra}. At the beginning, \gls{ra} waits for the connection and capability check from \gls{cda}, after that first agent in the list of $sequenced\_agent$ will listen to the starting message from \gls{cda}, 
-and other agents, will wait for the availability check and inform message of the last agent in the list. 
-After executing all primitives of its own, the \gls{ra} should check the availability and inform the starting point of next agent.  
-Once all primitives in the list are done, the last agent should inform the \gls{cda} about the end of processing.
+As for the decentralization of \gls{mas}, the \gls{ra} should be able to react to \gls{cda} and do the decision-making for its field-level control, which means \gls{cda} should only be informed about the status of the production process. In contrast, the exact processes should be done within \gls{ra}, and the material flow should be informed between \gls{ras}. The combination of centralization and decentralization will save the resource power consumed by \gls{cda}, 
+while still maintaining the management level control and decision-making.  
+The algorithm \ref{alg: RAPseudoCode} shows the logic of a \gls{ra}. At the beginning, \gls{ra} waits for the connection and capability check from \gls{cda}. After that, the first agent in the list of $sequenced\_agent$ will listen to the starting message from \gls{cda}. 
+Moreover, other agents will wait for the availability check and inform messages from the last agent on the list. 
+Once the \gls{ra} has completed its own primitives, it should check for the availability of the next agent and inform its starting point. 
+Once all primitives in the list are executed, the last agent should inform the \gls{cda} about the end of processing.
 
 
-Before the agents start to run, the WebSocket server program (algorithm \ref{alg: ServerPseudoCode}) must be started first, so that the messages from agents will be routed to it, which serves as a \gls{ca}.  
-The server runs asychronously and listen to incoming messages forever. 
-Which means, every time a new agent gets connected to the server, a new thread will be started and killed after the incoming message is processed and sent to the recipient agent. 
-All threads run concurrently and the maximal possible connection number is limited by the hardware and also the network bandwidth and latency. 
-After the server receives a message, it should first identify the message type to check whether it is in json or string format. 
-After that, it will either split the string or parse the json file to retrieve the recipient name, the priority and the message content. 
-Since all message handling processes run concurrently, there is a chance that multiple messages coming in the server and waiting for processing at the same time. 
-In order to rearrange them and handle the messages with higher priority first, all messages should be pushed to queue and the critical messages should be popped out first, after this the important and then normal messages. 
-Finally the message will be either processed further or sent directly to the recipient. 
-
+Before the agents start to run, the WebSocket server program (algorithm \ref{alg: ServerPseudoCode}) must be started first so that the messages from agents will be routed to it, which serves as a \gls{ca}.  
+The server runs asynchronously and listens to incoming messages forever, meaning that every time a new agent gets connected, a new thread will be started and killed after the incoming message is processed and sent to the recipient agent. 
+All threads run concurrently, and the hardware limits the maximum possible connection number and also the network bandwidth and latency. 
+After the server receives a message, it should identify the message type to check whether it is in JSON or string format. 
+After that, it will split the string or parse the JSON file to retrieve the recipient name, the priority, and the message content. 
+Since all message-handling processes run concurrently, there is a chance that multiple messages are coming into the server and waiting for processing at the same time. 
+In order to rearrange them and handle the messages with higher priority in advance, all messages should be pushed to the queue, and the critical messages should be popped out first. The critical messages have the highest priority, and after this, the important and then the normal messages. 
+Finally, the message will be processed further or sent directly to the recipient. 
    
 \begin{breakablealgorithm}
 \caption{Pseudo-Code for \gls{cda} in MAS workflow}
@@ -511,30 +543,17 @@ Finally the message will be either processed further or sent directly to the rec
 \end{breakablealgorithm}
 
 \subsection{Pseudo-Code of one to one agent communication workflow in RESTful API}
-A more comparable application layer protocol is \gls{http}, which has the request-response mechanism with more addtional functionalities compared to \gls{http}. 
-Therefore \gls{http} was considered as an alternative of communication protocol other than WebSocket. 
-However, based on some test results in chapter \ref{chap: Result}, WebSocket is 
-proved to be more appropriate.
-As a result, different from WebSocket, the design of \gls{http} based system is only built 
-for performance testing and compared to WebSocket. In the methods below, RESTful API will be used 
-as a Web Service API, which is an interface to connect two devices over the internet based on 
-\gls{http} protocol. With the design based on RESTful API, the clients can communicate with each other 
-by using its standard \gls{crud} operations for example POST and GET to send and receive messages. 
-Therefore, the RESTful API system is simplified to be an one to one agent communication without other functionalities like decision making or message prioritization, etc.
+A more comparable application layer protocol is \gls{http}, which has the request-response mechanism with more additional functionalities compared to \gls{http}. 
+Therefore, \gls{http} was considered an alternative communication protocol other than WebSocket. 
+However, based on some test results in chapter \ref{chap: Result}, WebSocket is more appropriate.
+As a result, different from WebSocket, the design of \gls{http} based system is only built for performance testing and compared to WebSocket. In the methods below, RESTful API will be used as a Web Service API, an interface to connect two devices over the internet based on \gls{http} protocol. With the design based on RESTful API, the clients can communicate with each other by using its standard \gls{crud} operations, for example, POST and GET, to send and receive messages. 
+Therefore, the RESTful API system is simplified to one-to-one agent communication without other functionalities like decision-making or message prioritization, among others.
 
-According to the pseudo code for agentSR (send and receive messages) and 
-agentRS (receive and send messages) in 
-algorithm \ref{alg: SRPseudoCode} and \ref{alg: RSPseudoCode}, and the server 
-in algorithm \ref{alg: apiServerPseudoCode}, 
-the basic mechanism is similar to the one designed for WebSocket. One major 
-difference is that, the connection will be closed after the message is sent 
-from the clientSR to clientRS.
-If the agentRS needs to send a response message back to inform the success, 
-re-connection is needed. 
-Instead of send and receive from WebSocket, agentSR first POST a request to the server to call the function $send\_message()$, 
+
+According to the pseudo-code for agentSR (send and receive messages) and agentRS (receive and send messages) in algorithm \ref{alg: SRPseudoCode} and \ref{alg: RSPseudoCode}, and the server in algorithm \ref{alg: apiServerPseudoCode}, the primary mechanism is similar to the one designed for WebSocket. One significant difference is that the connection will be closed after the message is sent from the clientSR to clientRS. If the agentRS needs to send a response message back to inform the success, re-connection is needed. 
+Instead of sending and receiving from WebSocket, agentSR first POST a request to the server to call the function $send\_message()$, 
 while agentRS GET a request to the server for the function call $get\_message()$, same for the reverse direction. 
-Under the same condition, the message transfer routine with RESTful API will possibly results in more latency than WebSocket, which will be verified later.
-  
+Under the same condition, the message transport routine with RESTful API may result in more latency than WebSocket, which will be verified later.
 \begin{algorithm}
     \caption{Pseudo-Code for agentSR in one to one communication workflow}
     \label{alg: SRPseudoCode}
@@ -617,12 +636,12 @@ Under the same condition, the message transfer routine with RESTful API will pos
         \end{algorithm}
 
 \section{External} \label{chap: Meth-External}
-As for the external \gls{dta} system, the data flow will be visualized in section \ref{chap: Overview-External}.
-After that, the \gls{ntp} setup for delay measurement between local devices and cloud will
-be explained in section \ref{chap: ntpsetup}. For a better understanding of the workflow, 
-the pseudo code of \gls{rcp} and \gls{dta} is provided in section \ref{chap: RCPDTAPseudo}. 
-Finally, the Azure Digital Twin platform set up for data ingestion will be explained
-in the last section.
+In section \ref{chap: Overview-External}, the data flow for the external 
+\gls{dta} system will be presented. Following that, section \ref{chap: ntpsetup} 
+will explain the \gls{ntp} setup used to measure delays between local devices and 
+the cloud. To better understand the workflow, the pseudo-code for both \gls{rcp} 
+and \gls{dta} will be provided in section \ref{chap: RCPDTAPseudo}. Lastly, the 
+final section will cover the setup of the Azure Digital Twin platform for data ingestion.
 
 
 
@@ -630,34 +649,42 @@ in the last section.
 
 %figure conceptual DT
 \begin{figure}[htb]
-\includegraphics[width=\textwidth]{figures/DT_Conceptual_Diagram.png}
+\includegraphics[width=\textwidth]{figures/DT_Conceptual_Diagram.pdf}
 
 \centering
 \caption{Conceptual diagram of MAS\label{fig: DTConceptual}}
 \end{figure}
 
-The fig.\ref{fig: DTConceptual} shows the workflow of \gls{dta} updating global digital twin.
-The process begins from the left hand side of the graph. The \gls{dta} receives process data constantly from robots, including steady state data. 
-After the separating the sticky packets from \gls{tcp} socket, the process data will be parsed and uploaded one by one to the \gls{ms} Azure Digital Twins Cloud. 
-All the updates of the digital twin instances in cloud will be shown in Azure Digital Twins Explorer temporarily and stored in Azure Event Hubs concurrently. 
-After that the history data could be ingested for further analysis in Azure Data Explorer. 
-The Azure Digital Twins Explorer here serves as a monitor of robot status while the Azure Data Explorer as a data analysis tool. 
-Once the remote data update is successful, the data will be downloaded to local host immediately and may be further used as inputs of any other visualization purposes. 
-Within this upload and download cycle of data, the real time capability should also be maintained.  
+The workflow of updating global digital twin through the \gls{dta} process is shown 
+in Figure \ref{fig: DTConceptual}. The process begins on the left-hand side of the 
+graph, where the \gls{dta} receives process data from robots, including steady-state 
+data. The process data is parsed and uploaded one by one to the Azure Digital Twins 
+platform after separating the sticky packets from the \gls{tcp} socket.
+All the updates of the digital twin instances in the cloud are temporarily displayed 
+in Azure Digital Twins Explorer and concurrently stored in Azure Event Hubs. The history 
+data can be ingested for further analysis in Azure Data Explorer. The Azure Digital Twins 
+Explorer serves as a robot status monitor, while Azure Data Explorer is a data analysis tool.
+Once the remote data update is successful, the data is immediately downloaded to the local 
+host and can be used as input for other visualization purposes. The real-time capability 
+of this upload and download cycle of data should also be maintained.
 
-
-It is worth mentioning that, the process data is produced by robot motion which makes the \gls{dta} completely decoupled from the \gls{mas}. 
-The advantages of the decoupling is that, even though there is a complete disorder of the \gls{mas}, the current robot states will be recorded and updated in remote, 
-which is beneficial for data acquisition and monitoring. 
+It is important to note that the process data is generated by robot movement, 
+which means that the \gls{dta} is completely independent of the \gls{mas}. This decoupling 
+offers a 
+significant advantage. Even if the \gls{mas} is in complete chaos, the robot's current status 
+will still be captured and updated remotely. This is advantageous for both data acquisition 
+and monitoring purposes.
 
 
 
 \subsection{Prerequisite} \label{chap: ntpsetup}
 \subsubsection{\gls{ntp} setup}
-In order to measure the delays between local host and cloud, the clock of both end must be synchronized. 
-Due to the nature of computer systems, the software clock might drift away from the "true" time (absolute \gls{utc} time) due to various reasons like system load, hardware imperfections, or even temperature changes.
-Therefore, before the measurement, the software clock of local host should be synchronized with the global clock using \gls{ntp}. 
-The NTP setup of linux system are:  
+In order to measure the delays between the local host and cloud, the clock of both ends must be synchronized. 
+Due to the nature of computer systems, the software clock might drift away from the "true" time (absolute \gls{utc}) 
+due to various reasons like system load, hardware imperfections, or even temperature changes.
+Therefore, before the measurement, the software clock of the local host should be synchronized with the global 
+clock using \gls{ntp}. 
+The \gls{ntp} setup of the Linux system is as follows:  
 
 \begin{enumerate}
     \item System update and upgrade.
@@ -668,19 +695,22 @@ The NTP setup of linux system are:
     \item Check synchronization status (e.g.: reach, delay, offset and jitter, etc).
     \end{enumerate}
 
-Since the cloud system clock is already synchronized with \gls{utc} time, all the tests and calculations results are based on UTC time. 
+Since the cloud system clock is already synchronized with \gls{utc}, all the tests and calculations results are based on \gls{utc}. 
 
 \subsection{Pseudo-Code of \gls{rcp} and \gls{dta} workflow in C++ and C\#}\label{chap: RCPDTAPseudo}
 
-As mentioned at the beginning of this chapter, \gls{dta} should be completely decoupled from \gls{mas}. 
-In the following algorithm \ref{alg:RCPPseudoCode} and \ref{alg:DTAgentPseudoCode}, the workflows of \gls{rcp} and \gls{dta} are listed separately.
-In the \gls{rcp} workflow, the robot arm is controled by a set of predefined functions with a possibility to record the current states. 
-Each time when a new state is recorded, it should be sent to the \gls{dta} immediately through the established \gls{tcp} socket.
-As for the \gls{dta} side, it should be started before \gls{rcp}, and listen to the socket to receive data stream once connected.
-Each time when a new connection to a \gls{ra} is created, the \gls{dta} will create a new thread, to receive, process, upload and download data concurrently.
-One issue of using \gls{tcp} is that, packets do not arrive one by one but stuck to each other, which is solved by using delimiter for packets separation.  
-
-
+As previously mentioned in this chapter, it is important to completely separate the 
+\gls{dta} from the \gls{mas}. Algorithms \ref{alg:RCPPseudoCode} and 
+\ref{alg:DTAgentPseudoCode} list the workflows of \gls{rcp} and \gls{dta} separately. 
+In the \gls{rcp} workflow, the robot arm is controlled through predefined functions 
+that can record the current states. Each new state recorded must be immediately sent 
+to the \gls{dta} via the established \gls{tcp} socket. 
+On the \gls{dta} side, it must be started before the \gls{rcp} and listen to the 
+socket to receive the data stream once connected. Whenever a new connection to a 
+\gls{ra} is established, the \gls{dta} will create a new thread to receive, process, 
+upload and download data concurrently. 
+However, an issue with using \gls{tcp} is that packets do not arrive individually 
+but are stuck together. To solve this, delimiters are utilized for sticky packet separation.
 
 %pseudo code for RCP
 \begin{breakablealgorithm}
@@ -735,16 +765,18 @@ One issue of using \gls{tcp} is that, packets do not arrive one by one but stuck
 
 
 \subsection{Azure Digital Twins}
-According to the workflow described in section \ref{chap: Overview-External}, 
-a stable and functional Azure Digital Twins platform should be set up to ensure
-the data flow, including Azure Digital Twins Explorer, Azure Event Hub and Azure
-Data Explorer. Azure Digital Twins instance is configured with a time series data 
-history connection. Other resources must also be created such as an Event Hubs 
-namespace, an event hub, Azure Data Explorer cluster, and a database. 
-After a connection, data is sent to an event hub which eventually forwards 
-the data to the Azure Data Explorer cluster and stored in a database.The history 
-data includes twin property updates, twin lifecycle events and relationship lifecycle 
-events, which can be later queried in Azure Data Explorer.
+According to the workflow explained in section \ref{chap: Overview-External}, 
+it is crucial to establish a reliable and operational Azure Digital Twins platform 
+to ensure seamless data transfer. The platform should include Azure Digital Twins Explorer, 
+Azure Event Hub, and Azure Data Explorer. Additionally, the Azure Digital Twins 
+instance must be configured with a time-series data history connection. Other resources 
+must also be created, such as an Event Hubs namespace, an event hub, Azure Data Explorer 
+cluster, and a database. 
+After a connection, data is sent to an event hub, which eventually forwards the data to 
+the Azure Data Explorer cluster and stores it in a database. The history data includes 
+twin property updates, twin lifecycle events, and relationship lifecycle events, which 
+can be later queried in Azure Data Explorer.
+
 \subsubsection{Setup}
 Here is the sequence of the basic setup in the Azure platform:
 \begin{enumerate}
@@ -755,7 +787,7 @@ Here is the sequence of the basic setup in the Azure platform:
 
 In order to verify whether the connection is successful, one can try updating the 
 digital twin instance and querying data from the Azure Data Explorer side. The query
-language is called \gls{kql}, which is powerful for patterns discovery, anomalies 
+language is called \gls{kql}, which is powerful for pattern discovery, anomalies 
 and outliers identification, and statistical modeling (various graphs creation). 
 Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} code in the test: 
 
@@ -780,72 +812,69 @@ Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} cod
 \end{figure}
 
 As shown in fig.\ref{fig: KQL}, by executing the code from the snippet, all the history data will be listed as a table 
-which can be downloaded to local later. 
+which can be downloaded to the local devices later. 
 
 
 \section{Modularization}\label{chap: Meth-Modular}
 In addition to the internal and external designs of a general \gls{mas}, 
 there are also some considerations of modularizing timing behaviors of the 
 system. In the following sections, the \gls{tcp/ip} model as well as 
-\gls{dsl} will be introduced and used as design basis of a modularized general 
+\gls{dsl} will be introduced and used as the design basis of a modularized general 
 \gls{mas}. 
 \subsection{From \gls{osi} model to \gls{tcp/ip} model}
 
-Despite the fact that \gls{tcp} being categorized as a transport layer protocol 
-according to the fig.\ref{fig: OSI}, the data transfer
-between different \gls{tcp} sockets should also go through all layers. 
-The reason is that, the \gls{tcp} socket will be operated by a program 
-using socket libraries, which is an operation under application layer. 
-The transport layer protocols does nothing but accepting data from session layer 
-in \gls{osi} model, and truncate it into smaller pieces to ensure a reliable and correct
-data transport. However, it will be too strict and complecated 
-to consider delays in all seven 
-layers for modularization purposes. Therefore, the concentration should be 
-shifted from the general \gls{osi} model to the more abstract \gls{tcp/ip} model 
-as depicted in fig.\ref{fig: TCP_IP}. 
+Although TCP is classified as a transport layer protocol according to the 
+OSI model (fig.\ref{fig: OSI}), data transport between different TCP sockets 
+still involves all layers. This is because a program using socket libraries 
+operates the TCP socket, which is an operation under the application layer. 
+The transport layer protocols only accept data from the session layer in the 
+OSI model and break it down into smaller pieces to ensure reliable and correct 
+data transport. However, considering delays in all seven layers for modularization 
+purposes would be too strict and complicated. Therefore, the focus should be 
+shifted from the general OSI model to the more abstract TCP/IP model, as depicted 
+in fig.\ref{fig: TCP_IP}.
 
-
-The \gls{tcp/ip} model consists of four layers: application layer, tansport layer, 
-internet layer and network access layer, with each mapping different layers in 
-\gls{osi} model. As depicted in \gls{tcp/ip} model, 
-the application layer roughly contains the upper three layers while the network access layer 
-contains the physical and data link layer. The network layer is renamed as internet layer, 
-while transport layer remains the same. 
+The TCP/IP model consists of four layers: application layer, transport layer, 
+internet layer, and network access layer, with each mapping different layers in 
+the OSI model. As depicted in the TCP/IP model, the application layer roughly 
+contains the upper three layers, while the network access layer contains the 
+physical and data link layer. The network layer is renamed as the internet 
+layer, while the transport layer remains the same.
 
 \begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/TCP_IP.png}
+    \includegraphics[width=\textwidth]{figures/TCP_IP.pdf}
     
     \centering
     \caption{\gls{tcp/ip} model with example protocols \label{fig: TCP_IP}}
 \end{figure}
 
-\subsection{Timing properties of data transfer w.r.t sockets and visual notations based on \gls{tcp/ip} model}
-Since \gls{tcp} socket and WebSocket are operated in an application 
-and the packet transfer of both will go through all layers in \gls{tcp/ip} model, 
-a set of visual notations should be able to modularize the delays in each layer.
-Thanks to the works of former researchers, there are already some graphical 
-tools developed for difference purposes. The graphical tools 
-can be roughly divided to two types, tools ideal for real world delay measurement 
-for example the famous Wireshark, OPNET and NS-3, 
-and tools suitable for modeling and visualization such as OpenModelica, 
-Matlab/Simulink and LabVIEW, etc.
+\subsection{Timing properties of data transport w.r.t sockets and visual notations based on \gls{tcp/ip} model}
+When operating in an application, both TCP sockets and WebSockets transport packets 
+through all layers of the TCP/IP model. In order to better modularize delay, a set of 
+visual notations based on \gls{dsl} is created.
+Thanks to the works of former researchers, there are already some graphical tools 
+developed for different purposes. The graphical tools 
+can be roughly divided into two types: tools ideal for real-world delay measurement, 
+for example, the famous Wireshark, OPNET, and NS-3, 
+and tools suitable for modeling and visualization, such as OpenModelica, 
+Matlab/Simulink and LabVIEW.
 
 
 
-Although being out of scope of this thesis, the measurement of delay within 
-each layer of \gls{tcp/ip} model will be essential for the future investment.
+Although being out of the scope of this thesis, the measurement of delay within 
+each layer of \gls{tcp/ip} model will be essential for future investment.
 For instance, as depicted in figure \ref{fig: DSLConceptual}, the delay in 
-each layer is represented as a block, which can be later integrated in graphical tools.
-In this case, delay in a specific network layer will become comparable between
-different technologies based on either application or transport layer protocols,
-for example, \gls{tcp} socket and WebSocket. Apart from the network delay of
-communication between agents, as shown in the figure, there are also other 
-delay that can be modularized in the context of robot control. The robot 
-control systems introduce delay first in \gls{rci} by executing the commands, 
-and then a minor delay within the I/O module before activating the actuator.
-After each robot motion driven by the actuator, its current state will be sent 
-back to the \gls{cpu} by first going through the sensor, I/O module and \gls{rci} 
-again. 
+each layer is represented as a block based on \gls{dsl}, which can be later integrated 
+with graphical tools.
+In this case, delay in a specific network layer will become comparable between different 
+technologies based on either application or transport layer protocols, for example, 
+\gls{tcp} socket and WebSocket. Apart from the network delay of communication between 
+agents, as shown in the figure, there is also another delay that can be modularized in 
+the context of robot control. The robot control systems introduce delay first in \gls{rci} 
+by executing the commands and then a minor delay within the I/O module before activating 
+the actuator.
+After each robot motion driven by the actuator, its current state will be sent back to 
+the \gls{cpu} by first going through the sensor, I/O module, and \gls{rci} again. 
 
 
 
@@ -854,7 +883,7 @@ again.
 
 
 \begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/DSLConceptual.png}
+    \includegraphics[width=\textwidth]{figures/DSLConceptual.pdf}
     
     \centering
     \caption{Conceptual diagram of a modularized general \gls{mas} based on \gls{dsl} \label{fig: DSLConceptual}}
