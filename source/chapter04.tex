@@ -320,7 +320,7 @@ mean \gls{rtt} that a non-prioritized and prioritized message is being sent forw
 back separately for 100 times.
 Fig.\ref{fig: priority-10clients-a} shows the mean RTT for client1 to client10 in both 
 directions, which ranges from 0.63ms to 1.09ms. These figures meet the near real-time 
-requirement for the production process. On the other hand, fig.\ref{fig: priority-10clients-b} 
+requirement for the production process\cite{goos_capturing_1997}. On the other hand, fig.\ref{fig: priority-10clients-b} 
 illustrates the timing differences between normal messages as a group and critical messages 
 as a control group. In this test, all clients except client10 delivered normal messages. 
 The server paused other processes for 1s and handled the critical message immediately 
