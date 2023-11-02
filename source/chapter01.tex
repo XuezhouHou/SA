@@ -1,8 +1,13 @@
 % !TeX spellcheck = en_US
 \glsresetall%
 \chapter{Introduction}%
-%\gls{am} is the umbrella term for a variety of technologies, describing the automated process of manufacturing physical parts directly from virtual \gls{cad} models. %
-%\gls{pbflbp}, also known as \gls{sls}, as part of the \gls{am} process group
+This article is written to raise readers' interest in the necessity of 
+analyzing communication delays between each participant in a general 
+\gls{mas} based on two industry use cases in a more modular way. 
+Before getting deep into the actual work of the research, 
+a brief motivation followed by the research questions will be
+provided to guide this study.
+
 \section{Motivation}
 The requirements of modern industrial production has become more and more crucial, due to the increased complexity of interconnections of various different robots and automation systems during manufacturing. Different from the production mode of traditional factory, the concept of smart factory of Industry 4.0 has been developed to overcome the remaining issues such as high centralization of traditional control system, low scalability of production systems and processes, limited adaptability of new conditions and requirements with changing environments, hardness of real-time decision making, insufficient resource allocation and many more. Under this prerequisite, a \gls{mas} plays a crucial part to close the gaps. 
 
@@ -14,14 +19,32 @@ The precursor to modern \gls{mas} is \gls{dai}, which focuses on distributing a 
 
 
 \section{Research questions}
-RQ1: How can agents communicate with each other in \gls{mas}?
+RQ1: How to decentralize a general \gls{mas} from a traditional highly 
+centralized pattern to obtain a more efficient and real-time oriented agent-based 
+communication system?
 
+RQ2: How to measure the network delays of data exchanges between 
+different agents in \gls{mas}, as well as delays between \gls{dta} and the cloud 
+to retrieve end-to-end delays for each participant of the production system?
 
-RQ2: How to measure the delays of data exchanges between different \gls{ra} and delays of data upload/download within \gls{dta}?
-
-RQ3: How to modularize the delays with \gls{dsl}?
+RQ3: How to modularize the delays among the general \gls{mas} to improve the 
+predictability, scalability, accuracy, and troubleshooting possibilities for 
+each module?  
 
 
 
 \section{Outline}
-In this thesis, chapter 2 introduce the concepts and utilization of MAS, the Network communication principles and protocols, \gls{dsl} for \gls{cps} with the concentration of robotics, anda. Chapter 3 summarizes the state of art of all those concepts in chapter 2. After that, chapter 4 comes up with methodologies of building a \gls{mas} for communication and aa agent for data update and chapter 5 comes up with the implementation results of different test cases and two use cases for performance testing on the \gls{mas} anda agent.
+In this article, chapter 2 talks about the state of the art and 
+the unsolved issues in the current study of \gls{mas}, network 
+latency and how it is measured, current approaches of \gls{dsl} 
+based graphical modelings for \gls{cps}, and the Digital Twin with 
+its application in different fields. After that, chapter 3 explains 
+the methodologies applied to \gls{mas} and \gls{dta} programming, 
+followed by an assumption of modularizing network latency as well 
+as robot control delays. By utilizing the methods, programs are 
+designed for \gls{mas} and \gls{dta} based on two industrial use cases, 
+and tests for different. Further more, test cases and one use case are 
+performed in chapter 4, along with 
+the discussions for the results. Finally, the last chapter summarizes 
+all the general \gls{mas} related research in this article to make a 
+conclusion and to provide insights into future research directions.  
