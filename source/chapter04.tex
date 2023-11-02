@@ -316,17 +316,17 @@ the critical message is sent.
 \subsubsection{String message priority test}
 The first string priority test is performed for ten clients. The following 
 fig.\ref{fig: priority-10clients-a} and \ref{fig: priority-10clients-b} show the 
-mean \gls{rtt} that a non-prioritized and prioritized message is being sent forward and 
+mean \gls{owd} that a non-prioritized and prioritized message is being sent forward and 
 back separately for 100 times.
-Fig.\ref{fig: priority-10clients-a} shows the mean RTT for client1 to client10 in both 
+Fig.\ref{fig: priority-10clients-a} shows the mean \gls{owd} for client1 to client10 in both 
 directions, which ranges from 0.63ms to 1.09ms. These figures meet the near real-time 
 requirement for the production process\cite{goos_capturing_1997}. On the other hand, fig.\ref{fig: priority-10clients-b} 
 illustrates the timing differences between normal messages as a group and critical messages 
 as a control group. In this test, all clients except client10 delivered normal messages. 
 The server paused other processes for 1s and handled the critical message immediately 
-whenever a critical message from client10 arrived. The mean RTT for client10 was less 
+whenever a critical message from client10 arrived. The mean \gls{owd} for client10 was less 
 than 1ms, while clients such as client1 through client5 and client9 experienced 
-significantly higher RTTs, sometimes reaching several hundred milliseconds. This 
+significantly higher \gls{owd}, sometimes reaching several hundred milliseconds. This 
 verified the assumption of message prioritization. It is worth mentioning that the 
 asyncio package used in the WebSocket server design is concurrent. Therefore, each 
 client is executed one after another, rather than in parallel processing. As a result, 
@@ -336,15 +336,15 @@ and coordinated explicitly.
 \begin{sidewaysfigure}[htb]
     \centering
     \includegraphics[width=\textheight]{figures/tests/priority_tests/violin_10clients_string_non_priority.png}\hfill 
-    \caption{Tests for mean \gls{rtt} of forward and return non-prioritized string messages between 10 clients 
+    \caption{Tests for mean \gls{owd} of forward and return non-prioritized string messages between 10 clients 
     and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
-    respresent mean \gls{rtt}.} \label{fig: priority-10clients-a}
+    respresent mean \gls{owd}.} \label{fig: priority-10clients-a}
 \end{sidewaysfigure}
 \begin{sidewaysfigure}[htb]
     \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_string_priority.png}\hfill 
-    \caption{Tests for mean \gls{rtt} of forward and return prioritized string messages between 10 clients 
+    \caption{Tests for mean \gls{owd} of forward and return prioritized string messages between 10 clients 
     and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
-    respresent mean \gls{rtt}.} \label{fig: priority-10clients-b}
+    respresent mean \gls{owd}.} \label{fig: priority-10clients-b}
 \end{sidewaysfigure}
 
 
@@ -379,9 +379,9 @@ will be higher than that of a string message.
 \begin{sidewaysfigure}[htb]
     \centering
     \includegraphics[width=\textheight]{figures/tests/priority_tests/violin_10clients_image_non_priority.png}\hfill 
-    \caption{Tests for mean \gls{rtt} of non-prioritized forward image messages and return string messages between 10 clients 
+    \caption{Tests for mean \gls{owd} of non-prioritized forward image messages and return string messages between 10 clients 
     and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
-    respresent mean \gls{rtt}.} \label{fig: priority-10clients-c}
+    respresent mean \gls{owd}.} \label{fig: priority-10clients-c}
 \end{sidewaysfigure}
 
 
@@ -408,9 +408,9 @@ fig.\ref{fig: priority-2clients-image} to \ref{fig: priority-50clients-image-e}.
 
 \begin{sidewaysfigure}[htb]
     \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_image_priority.png}\hfill 
-    \caption{Tests for mean \gls{rtt} of prioritized forward image messages and return string messages between 10 clients 
+    \caption{Tests for mean \gls{owd} of prioritized forward image messages and return string messages between 10 clients 
     and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
-    respresent mean \gls{rtt}.} \label{fig: priority-10clients-d}
+    respresent mean \gls{owd}.} \label{fig: priority-10clients-d}
 \end{sidewaysfigure}
 
 
@@ -460,7 +460,7 @@ production based on its simplicity of agent communication design.
 \end{figure}
 The primitives, agents and execution sequence for both BMW and Wittenstein use cases 
 are predefined. However, only the timing behaviors of the BMW use case are tested due 
-to similarity. The average \gls{rtt} and WebSocket data transmission time of the BMW 
+to similarity. The average \gls{owd} and WebSocket data transmission time of the BMW 
 use case are presented in Table \ref{tab: mean-usecase-time}. The test was conducted 
 100 times, but the number of messages exchanged among agents varied greatly. Therefore, 
 the test results and average values can only be used as a reference to understand the 
@@ -480,7 +480,7 @@ the real-time requirements, with the largest message size of 636 Bytes taking a 
     \label{tab: mean-usecase-time}
     \begin{tabular}{|m{0.13\textwidth}|m{0.17\textwidth}|m{0.17\textwidth}|m{0.17\textwidth}|m{0.17\textwidth}|}
     \hline
-    \multicolumn{5}{|c|}{\textbf{Average delays between agents (RTT/Transmission time)}}                                                            \\ \hline
+    \multicolumn{5}{|c|}{\textbf{Average delays between agents (\gls{owd}/Transmission time)}}                                                            \\ \hline
     \textbf{}                         & \textbf{Coordinator Agent}             & \textbf{Storage Agent}        & \textbf{Transport Agent MiR600}    & \textbf{Wiring Agent}\\ \hline
     \textbf{Coordinator Agent}      & None                  & 1.029355ms /0.820172ms & 1.067170ms /0.849335ms  & 1.032151ms /0.817049ms \\ \hline
     \textbf{Storage Agent}          & 0.998253ms /0.794590ms & None                  & 1.427890ms /1.158142ms  & None                  \\ \hline
@@ -493,7 +493,7 @@ the real-time requirements, with the largest message size of 636 Bytes taking a 
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{figures/tests/usecase/violin_CoordinatorAgent_to_TransportAgent_MiR600.png}\hfill 
-    \caption{Test to measure \gls{rtt} and transmission time between \gls{cda} and 
+    \caption{Test to measure \gls{owd} and transmission time between \gls{cda} and 
     TransportAgent\_MiR600 for 100 times. The number in x-axis respresents the 
     corresonding messages. \protect\ref{firstfootnote}}
     \label{fig: violin-CDA-T600}
@@ -541,7 +541,7 @@ requirement for production processes is again fulfilled.
 and \gls{ms} Azure Digital Twin platform across various packet lengths} \label{chap: Result-DTA-DT}
 
 However, in the program, the most considerable variance 
-the total data transmission time is the \gls{rtt} from local devices to the global digital 
+the total data transmission time is the \gls{rtt} between local devices and the global digital 
 twin. In addition to the \gls{rtt}, the data upload and download time is also measured 
 separately, which has an opposite result as those from the other research\cite{cainelli_performance_2023}. 
 In the paper, the resulting uplink data transmission time is larger than the downlink 

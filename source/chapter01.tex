@@ -9,10 +9,86 @@ a brief motivation followed by the research questions will be
 provided to guide this study.
 
 \section{Motivation}
-The requirements of modern industrial production has become more and more crucial, due to the increased complexity of interconnections of various different robots and automation systems during manufacturing. Different from the production mode of traditional factory, the concept of smart factory of Industry 4.0 has been developed to overcome the remaining issues such as high centralization of traditional control system, low scalability of production systems and processes, limited adaptability of new conditions and requirements with changing environments, hardness of real-time decision making, insufficient resource allocation and many more. Under this prerequisite, a \gls{mas} plays a crucial part to close the gaps. 
+The requirements of modern industrial production have become more and 
+more crucial due to the increased complexity of interconnections of 
+various robots and automation systems during manufacturing. Different 
+from the production mode of a traditional factory, the concept of a 
+smart factory of Industry 4.0 has been developed to overcome the 
+remaining issues, such as the high centralization of a traditional 
+control system, low scalability of production systems, and processes, 
+limited adaptability of new conditions and requirements with changing 
+environments, hardness of real-time decision making, insufficient resource 
+allocation and many more. Under this prerequisite, a \gls{mas} plays a crucial 
+part in closing the gaps. 
 
 
-The precursor to modern \gls{mas} is \gls{dai}, which focuses on distributing a single complex AI task to multiple machines and processors\cite{noauthor_jacques_nodate}. The concept of resource distribution/decentralization is inherited by \gls{mas} to handle more distributed and interconnected computing tasks and results in a more intelligent and autonomous agent based operation system, in which each agent can make decision independently to achieve its own goal while still tend to collaborate, negotiate and coordinate with other agents frequently, in order to improve the efficiency and quality of production workflow meanwhile reducing cost \cite{vogel-heuser_multi-agent_2020}. The capability of agents being able to interact with each other, perceive and adapt to the rapid changes in the environment makes it possible for \gls{mas} to solve comprehensive problems which a single agent cannot. 
+The precursor to modern \gls{mas} is \gls{dai}, which focuses on distributing a 
+single complex AI task to multiple machines and processors\cite{noauthor_jacques_nodate}, 
+which is nowadays classified into parallel AI, \gls{dps}, and \gls{mas}\cite{dorri_multi-agent_2018}. 
+With the focus on \gls{mas} in this article, it can be described as a combination of 
+autonomous agents and their environments. However, the complete decomposition of 
+the complex real-world system can be challenging, which leaves space for self-learning 
+and decision-making in a primitive level of agent autonomy\cite{reis_applications_2004}. 
+The concept of resource distribution/decentralization is inherited by \gls{mas} to 
+handle more distributed and interconnected computing tasks. It results in a more 
+intelligent and autonomous agent-based operation system in which each agent can make 
+decisions independently to achieve its own goal. At the same time, they still tend 
+to collaborate, negotiate, and coordinate with other agents frequently in order to 
+improve the efficiency and quality of production workflow meanwhile reducing 
+cost \cite{vogel-heuser_multi-agent_2020}. In a \gls{mas}, agents have the ability 
+to interact with one another, perceive their surroundings, and adapt to rapid changes 
+in the environment. This collective capability enables them to solve complex problems 
+that a single agent would not be able to handle alone. 
+
+% check from here with grammarly
+Effective communication between agents is crucial for the successful functioning of a 
+system\cite{georgeff_communication_1988}. According to the discussion of agent 
+communication\cite{vogel-heuser_multi-agent_2020}, in addition to the horizontal 
+communication between agents, the vertical Industry 4.0 communication between assets 
+and their mapped \gls{aas} can also be realized by agents to extend the domain 
+of \gls{mas}. \gls{aas} is a standard 
+that serves as the foundation of the Digital Twin implementation\cite{Redeker2021}. 
+To differentiate, \gls{aas} provides a data structure for Digital Twin, while Digital 
+Twin uses the data for real-time data representation, simulation, and analysis. 
+Based on a summation of timeline-based Digital Twin definitions until the year 
+2016\cite{negri_review_2017}, the concept of Digital Twin is defined as: \textit{"A 
+unified system model that can coordinate architecture, mechanical, electrical, 
+software, verification, and other discipline-specific models across the system 
+lifecycle, federating models in multiple vendor tools and configuration-controlled 
+repositories"}\cite{bajaj_architecture_2016}. Therefore, the research on agent-based 
+communication between physical assets and Digital Twin will be another focus of this 
+article. 
+
+
+When exploring Digital Twin and \gls{mas}, a network is the prerequisite for agent communication. 
+Resolving network delays during data exchange becomes more and more vital. The network 
+latency refers to the time it takes for a packet to travel across the network, from one end 
+to the other end, namely the netwotk communication delay. The network delay can be measured 
+as either \gls{rtt}, representing the time consumption of a packet travels from source and 
+back, or \gls{owd}, the one-way latency from source to 
+destination. One solution for \gls{owd} estimation is to halve the 
+\gls{rtt}\cite{abdou_accurate_2015} after calculating the \gls{rtt}\cite{karn_improving_nodate}. 
+The exact \gls{owd} value should be measured after synchronization based on \gls{ntp}\cite{abdou_accurate_2015}. 
+
+
+Not only the network delays influence the system performance, timing behaviors of other 
+entities for example the control delays, should also be considered for the \gls{mas} and 
+Digital Twin system.
+Just as a factory's production shifts from standalone operations to a distributed, 
+agent-based system, there is a parallel need to evolve the representation of timing 
+properties. Moving from a generic approach, it becomes essential to adopt a more 
+specific model, such as using a \gls{dsl} to ensure the resolution of problems 
+in the level of abstraction of the problem domain. The definition of \gls{dsl} model 
+can be formulated as follows: \textit{"\gls{dsl} is a programming language or executable 
+specification language
+that offers, through appropriate notations and abstractions, expressive power focused 
+on, and usually restricted to, a particular problem domain."}\cite{van_deursen_domain-specific_2000}
+
+In this article, all these concepts described above will be linked together to solve the 
+underlying research questions.
+
+
+
 
 
 
