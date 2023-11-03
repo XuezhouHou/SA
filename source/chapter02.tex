@@ -68,16 +68,27 @@ can either be measured by end-to-end methods or estimated with modeling
 approaches. Experiments have led to the consideration that \gls{tcp}-based 
 measurements offer a practical solution for evaluating the movement of 
 packets from end to end, along with a high packet retransmission rate 
-to avoid packet loss\cite{paxson_end--end_1999}. There are numbers of tools 
-developed for delay measurement.
+to avoid packet loss\cite{paxson_end--end_1999}. Benefits from 
+the development of the internet latency test tools, \gls{tcp} delay 
+performance can be evaluated by one of them. Wireshark, for example, is famous 
+for capturing network delay, where \gls{tcp} delay can be filtered in real 
+time\cite{dsouza_transmission_2020}.
 On top of the measured delay 
 that includes additional connection establishment time, 
 models can be built additionally to estimate 
 \gls{tcp}-based packet transmission latency. The model should be able to 
 represent both short and long \gls{tcp} flows\cite{luan_estimating_2019}. 
-Normally, measurement results are used to validate and calibrate the modeling 
-results, while the model can alarm the network issues. In the related work 
-for delay measurement of \gls{mas}, comparison between both are done\cite{vogel-heuser_delay_2023}.
+Typically, measurement results are used to validate and calibrate the modeling 
+results, while the model can alarm the network issues. The delay modeling tool 
+ns-3, for example, was used for modeling delays in a cyber-physical 
+testbed under 5G network\cite{adrah_real-time_2022}.
+In the related work 
+for delay measurement of \gls{mas}, a comparison between both are done\cite{vogel-heuser_delay_2023}.
+Certainly, there are also other tools designed for research for a more 
+precise and academic-oriented purpose. In the work of performance testing 
+of a 5G campus network, \gls{ftt} designed by ifak Magdeburg was used 
+for performance analysis of industrial communication networks\cite{cainelli_performance_2023}, 
+with its results later compared with those in this article.
 
 
 
