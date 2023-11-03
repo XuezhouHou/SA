@@ -5,19 +5,84 @@ discussed
 in this article, including \gls{mas}, Digital Twin, network latency, 
 and \gls{dsl} as a system modularization method. The article aims to 
 design a program to fulfill the real-time communication requirements 
-of specific use cases, in addition to studying the timing behaviors, 
-which builds on the works of leading researchers in the field.
+of specific use cases, in addition to studying the timing behaviors. 
+It builds on the works of leading researchers in the field.
 
 \section{MAS}
 
-Within the subfields of \gls{mas}, an agent can be identified as a software agent with no physical embodiment but only software to control physical assets for different purposes. "In agent-oriented software development, an agent is a delineable software unit with a defined goal. An agent tries to achieve this goal through autonomous behavior, continuously interacting with its environment and other agents" \cite{wagner_agentenunterstutztes_2008}. However, although not under discussion in this thesis, another interpretation of \gls{mas} can be a Multi-agent robot system that each agent represents an actual physical object such as an individual robot that participates in the complex task execution\cite{ota_multi-agent_2006}.   
+Within the subfields of \gls{mas}, an agent can be identified as a 
+software agent with no physical embodiment but only software to control 
+physical assets for different purposes. "In agent-oriented software 
+development, an agent is a delineable software unit with a defined goal. 
+An agent tries to achieve this goal through autonomous behavior, 
+continuously interacting with its environment and other agents" \cite{wagner_agentenunterstutztes_2008}. 
+However, although not under discussion in this thesis, another 
+interpretation of \gls{mas} can be a Multi-agent robot system that 
+each agent represents an actual physical object such as an individual 
+robot that participates in the complex task execution\cite{ota_multi-agent_2006}.   
 
 
-Defining \gls{mas} can be confusing, as different researchers approach it from various angles. For a more unambiguous interpretation of the concept, a general \gls{mas} can be divided into three views: the technical system that comprises robots, the automation control system characterized by sensors, actuators, networks, and robot control units, and the technical process that describes the production process of the product\cite{lauber_prozessautomatisierung_1999}\cite{wannagat_agent_nodate}. The focus of this thesis is mainly on the technical system, which can be interpreted as a union of robots in a smart factory, with less emphasis on the components or functions executed by each robot for a specific movement.
+Defining \gls{mas} can be confusing, as different researchers approach 
+it from various angles. For a more unambiguous interpretation of the 
+concept, a general \gls{mas} can be divided into three views: the 
+technical system that comprises robots, the automation control system 
+characterized by sensors, actuators, networks, and robot control units, 
+and the technical process that describes the production process of the 
+product\cite{lauber_prozessautomatisierung_1999}\cite{wannagat_agent_nodate}. 
+The focus of this thesis is mainly on the technical system, which can 
+be interpreted as a union of robots in a smart factory, with less 
+emphasis on the components or functions executed by each robot for 
+a specific movement.
 
-For further discretization of an agent, whether the agent is product, process, or resource-oriented, an appropriate agent architecture should be chosen according to different considerations. There are several of them that should be emphasized: \gls{ra}, \gls{ca}, and \gls{ams}. \gls{ra} is an agent at the field level representing a single robot. Different from the other agents, \gls{ra} should be able to combine the modules with physical entities by choosing an appropriate design pattern. Therefore, comparing design patterns in different production levels is done\cite{ocker_leveraging_2021}. The choice of an ideal design pattern should be limited for \gls{ra} in this research by comparing three relevant design patterns:  \gls{ra} pattern in Wannagat’s architecture, \gls{mfs} patterns in Fischer’s architecture self*-control MAS in Ryashentseva’s architecture. Among all,  Wannagat’s architecture is chosen as the appropriate design pattern for \gls{ra} for field level control, which consists of five modules: Planning Module, Knowledge Base, Control Module, Diagnosis Module, and communication interface. All modules are interconnected, meanwhile, with each connected to I/Os of a physical system and a communication interface to interact with other \gls{ras} or \gls{ams} through \gls{ca} \cite{cruz_salazar_cyber-physical_2019}. \gls{ams} and \gls{ca} should have different specifications in the same design pattern. \gls{ca}, for example, should be able to coordinate the message-based communication between the agents as a "mailbox" between them. In contrast, \gls{ams} plays an important role in the centralization and coordination of all other agents \cite{wannagat_entwicklung_2010}. 
+For further discretization of an agent, whether the agent is product, 
+process, or resource-oriented, an appropriate agent architecture should 
+be chosen according to different considerations. There are several of 
+them that should be emphasized: \gls{ra}, \gls{ca}, and \gls{ams}. 
+\gls{ra} is an agent at the field level representing a single robot. 
+Different from the other agents, \gls{ra} should be able to combine 
+the modules with physical entities by choosing an appropriate design 
+pattern. Therefore, comparing design patterns in different production 
+levels is done\cite{ocker_leveraging_2021}. The choice of an ideal 
+design pattern should be limited for \gls{ra} in this research by 
+comparing three relevant design patterns:  \gls{ra} pattern in Wannagat’s 
+architecture, \gls{mfs} patterns in Fischer’s architecture self*-control 
+MAS in Ryashentseva’s architecture. Among all,  Wannagat’s architecture 
+is chosen as the appropriate design pattern for \gls{ra} for field level 
+control, which consists of five modules: Planning Module, Knowledge Base, 
+Control Module, Diagnosis Module, and communication interface. 
+All modules are interconnected, meanwhile, with each connected to 
+I/Os of a physical system and a communication interface to interact 
+with other \gls{ras} or \gls{ams} through \gls{ca} \cite{cruz_salazar_cyber-physical_2019}. 
+\gls{ams} and \gls{ca} should have different specifications in the 
+same design pattern. \gls{ca}, for example, should be able to coordinate 
+the message-based communication between the agents as a "mailbox" 
+between them. In contrast, \gls{ams} plays an important role in the 
+centralization and coordination of all other agents \cite{wannagat_entwicklung_2010}. 
+
+
+
+
 \section{Network communication}
+According to early studies on network delays, the \gls{rtt} and \gls{owd} 
+can either be measured by end-to-end methods or estimated with modeling 
+approaches. Experiments have led to the consideration that \gls{tcp}-based 
+measurements offer a practical solution for evaluating the movement of 
+packets from end to end, along with a high packet retransmission rate 
+to avoid packet loss\cite{paxson_end--end_1999}. There are numbers of tools 
+developed for delay measurement.
+On top of the measured delay 
+that includes additional connection establishment time, 
+models can be built additionally to estimate 
+\gls{tcp}-based packet transmission latency. The model should be able to 
+represent both short and long \gls{tcp} flows\cite{luan_estimating_2019}. 
+Normally, measurement results are used to validate and calibrate the modeling 
+results, while the model can alarm the network issues. In the related work 
+for delay measurement of \gls{mas}, comparison between both are done\cite{vogel-heuser_delay_2023}.
+
+
+
 \section{DSL}
+
 \section{Digital Twin}
 
 
