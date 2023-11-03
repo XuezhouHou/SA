@@ -44,7 +44,7 @@ that a single agent would not be able to handle alone.
 Effective communication between agents is crucial for the successful functioning of a 
 system\cite{georgeff_communication_1988}. According to the discussion of agent 
 communication\cite{vogel-heuser_multi-agent_2020}, in addition to the horizontal 
-communication between agents, the vertical Industry 4.0 communication between assets 
+communication between agents, the vertical communication between assets 
 and their mapped \gls{aas} can also be realized by agents to extend the domain 
 of \gls{mas}. \gls{aas} is a standard 
 that serves as the foundation of the Digital Twin implementation\cite{Redeker2021}. 
@@ -66,13 +66,13 @@ latency refers to the time it takes for a packet to travel across the network, f
 to the other end, namely the netwotk communication delay. The network delay can be measured 
 as either \gls{rtt}, representing the time consumption of a packet travels from source and 
 back, or \gls{owd}, the one-way latency from source to 
-destination. One solution for \gls{owd} estimation is to halve the 
-\gls{rtt}\cite{abdou_accurate_2015} after calculating the \gls{rtt}\cite{karn_improving_nodate}. 
+destination. One solution for \gls{owd} estimation\cite{abdou_accurate_2015} is 
+to halve the calculated \gls{rtt}\cite{karn_improving_nodate}. 
 The exact \gls{owd} value should be measured after synchronization based on \gls{ntp}\cite{abdou_accurate_2015}. 
 
 
 Not only the network delays influence the system performance, timing behaviors of other 
-entities for example the control delays, should also be considered for the \gls{mas} and 
+entities for example the system control delays, should also be considered for the \gls{mas} and 
 Digital Twin system.
 Just as a factory's production shifts from standalone operations to a distributed, 
 agent-based system, there is a parallel need to evolve the representation of timing 
@@ -83,9 +83,15 @@ can be formulated as follows: \textit{"\gls{dsl} is a programming language or ex
 specification language
 that offers, through appropriate notations and abstractions, expressive power focused 
 on, and usually restricted to, a particular problem domain."}\cite{van_deursen_domain-specific_2000}
+Compared with \gls{gpl}, \gls{dsl} tends to solve a problem in a more efficient 
+and optimitzed way within a specific domain, making it easier for domain experts 
+with limited programming experiences to work with it.  
 
-In this article, all these concepts described above will be linked together to solve the 
-underlying research questions.
+With the development of automation in industrial production, more studies 
+should be done to move the production processes from a traditional, highly 
+centralized mode to a decentralized, interconnected pattern, along with 
+a higher system modularization possibility. 
+
 
 
 
@@ -103,7 +109,11 @@ RQ2: How to measure the network delays of data exchanges between
 different agents in \gls{mas}, as well as delays between \gls{dta} and the cloud 
 to retrieve end-to-end delays for each participant of the production system?
 
-RQ3: How to modularize the delays among the general \gls{mas} to improve the 
+RQ3: How to design a communication based \gls{mas} for two industrial use 
+cases that can be applied to other use cases with different production 
+requirements? 
+
+RQ4: How to modularize the delays among the general \gls{mas} to improve the 
 predictability, scalability, accuracy, and troubleshooting possibilities for 
 each module?  
 
