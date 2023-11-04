@@ -93,6 +93,32 @@ with its results later compared with those in this article.
 
 
 \section{DSL}
+To analyze and optimize the network communication performance, a deeper 
+inspection of the network latency is needed. \gls{dsl} has, so far, reached 
+some improvements in simplifying the design, presentation, and execution of 
+network performance testing for many applications, including server-client applications 
+based on hand-coded C, which minimizes the overhead produced by the compiler by 
+comparing C and the designed \gls{dsl} based toolset under worst-case scenarios.
+A level higher will be the agent-based \gls{dsl} that also includes network-based 
+agent communication. The consideration of designing a \gls{dsl} framework 
+for agent development has been discussed\cite{judith_domain_2013}. Another 
+research for fulfilling real-time requirements for safety-critical and 
+security-critical engineering has also adapted the \gls{dsl}, which aims to 
+modularize the whole \gls{iot} system into a four-level architecture\cite{sklyar_domain_2022}. 
+
+
+
+Another notable field for \gls{dsl} is the robotics. Unlike being widely 
+used in industrial automation for modeling hard real-time constraints with 
+a set of symbols that capture delays from networks and devices, I/O interfaces, 
+and industrial controllers\cite{hujo_toward_2022}, \gls{dsl} for robotics is still 
+under development due to its higher level of complexity and flexibility in 
+robot control. RobotML \gls{dsl}\cite{hutchison_robotml_2012} is one of those developed based on Port and Connector to
+capture the concept of an interaction between robot systems, including 
+Robot, SensorSystem, ActuatorSystem, and LocalizationSystem, with its toolchain 
+provided\cite[fig.5]{hutchison_robotml_2012}.
+
+
 
 \section{Digital Twin}
 
