@@ -8,7 +8,7 @@ Before getting deep into the actual work of the research,
 a brief motivation followed by the research questions will be
 provided to guide this study.
 
-\section{Motivation}
+\section{Motivation}\label{chap: Motivation}
 The requirements of modern industrial production have become more and 
 more crucial due to the increased complexity of interconnections of 
 various robots and automation systems during manufacturing. Different 
@@ -50,6 +50,17 @@ of \gls{mas}. \gls{aas} is a standard
 that serves as the foundation of the Digital Twin implementation\cite{redeker_towards_2021}. 
 To differentiate, \gls{aas} provides a data structure for Digital Twin, while Digital 
 Twin uses the data for real-time data representation, simulation, and analysis. 
+The concept of digital twin was first introduced by Michael 
+Grieves \cite{flumerfelt_complex_2019}, who also introduce the 
+famous \gls{plm} model \cite{greengard_digital_nodate}to 
+explain the role of a in the product lifecycle. Data from engineering, 
+design and manufacture should be digitalized to represent physical 
+assets. Some common understandings of engineering data could be 
+for example simulation for performance testing. Or may be design data 
+that builds a visual representation of CAD data of plants and robots, 
+and manufacture data that helps to inspect changes of production for 
+process optimization. The digitalization of the physical asset 
+throughout the entire lifecycle should be summarized as Digital Twin.
 Based on a summation of timeline-based Digital Twin definitions until the year 
 2016\cite{negri_review_2017}, the concept of Digital Twin is defined as: \textit{"A 
 unified system model that can coordinate architecture, mechanical, electrical, 
@@ -101,19 +112,19 @@ a higher system modularization possibility.
 
 
 \section{Research questions}
-RQ1: How to decentralize a general \gls{mas} from a traditional highly 
+\textbf{RQ1}: How to decentralize a general \gls{mas} from a traditional highly 
 centralized pattern to obtain a more efficient and real-time oriented agent-based 
 communication system?
 
-RQ2: How to measure the network delays of data exchanges between 
+\textbf{RQ2}: How to measure the network delays of data exchanges between 
 different agents in \gls{mas}, as well as delays between \gls{dta} and the cloud 
 to retrieve end-to-end delays for each participant of the production system?
 
-RQ3: How to design a communication based \gls{mas} for two industrial use 
+\textbf{RQ3}: How to design a communication based \gls{mas} for two industrial use 
 cases that is also adaptable for other use cases with different production 
 requirements? 
 
-RQ4: How to modularize the delays among the general \gls{mas} to improve the 
+\textbf{RQ4}: How to modularize the delays among the general \gls{mas} to improve the 
 predictability, scalability, accuracy, and troubleshooting possibilities for 
 each module?  
 

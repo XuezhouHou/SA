@@ -92,7 +92,7 @@ with its results later compared with those in this article.
 
 
 
-\section{DSL}
+\section{\gls{dsl}}
 To analyze and optimize the network communication performance, a deeper 
 inspection of the network latency is needed. \gls{dsl} has, so far, reached 
 some improvements in simplifying the design, presentation, and execution of 
@@ -113,7 +113,18 @@ used in industrial automation for modeling hard real-time constraints with
 a set of symbols that capture delays from networks and devices, I/O interfaces, 
 and industrial controllers\cite{hujo_toward_2022}, \gls{dsl} for robotics is still 
 under development due to its higher level of complexity and flexibility in 
-robot control. RobotML \gls{dsl}\cite{hutchison_robotml_2012} is one of those developed based on Port and Connector to
+robot control. The \gls{dsl} based visualization tools are mostly developed 
+to be applied to an open-source robotics middleware suite such as \gls{ros}. 
+For example, \gls{rviz} is a \gls{dsl} based 3D 
+visualization tool for \gls{ros} that can visualize the robot model and 
+capture sensor/actuator information. Movelt, also designed for \gls{ros}, 
+provides a set of visual notations that represent the robot kinematics, 
+motion planning, and many more. It also allows users to capture the 
+timing behaviors of the bounding I/Os. Other middleware tools have been 
+developed, but most are hardware and software-dependent. RobotML, a 
+Robotic Modeling Language, is designed for cross-platform robotic 
+software development\cite{hutchison_robotml_2012}. It is developed 
+based on Port and Connector to
 capture the concept of an interaction between robot systems, including 
 Robot, SensorSystem, ActuatorSystem, and LocalizationSystem, with its toolchain 
 provided\cite[fig.5]{hutchison_robotml_2012}.
@@ -126,11 +137,23 @@ provided\cite[fig.5]{hutchison_robotml_2012}.
 Apart from the agents that are responsible for internal production 
 processes, \gls{dta} plays a crucial part in collecting data from the 
 production and storing it externally to create a digital replica of the 
-physical entities or systems. The concept of digital twin was first introduced by Michael Grieves \cite{flumerfelt_complex_2019}, who also introduce the famous \gls{plm} conceptual diagram \cite{greengard_digital_nodate}to explain the role of a in the product lifecycle. Data from engineering, design and manufacture should be digitalized to represent physical assets. Some common understandings of a of engineering data could be for example simulation for performance testing. Or may be design data that builds a visual representation of CAD data of plants and robots, and manufacture data that helps to inspect changes of production for process optimization. However, none of these combines all data from \gls{plm} model for a digital overview of the whole factory. They can be described as local a, which should be extended to the concept of global a, by summarizing the data in a cloud platform and visualizing it with a real-time 3D graphics collaboration platform. 
+physical entities or systems. As described in section \ref{chap: Motivation}, 
+Digital Twin is a digital mapping of physical entities. Former work for this 
+project has already provided a foundation for the Digital Twin 
+structure\cite{hofgen_architecture_2023}. 
+The work mainly focuses on the realization of an \gls{aas} based Digital Twin system, 
+with an automated Digital Twin creation and socket-based communication between 
+different layers from the Digital Twin architecture reference 
+model\cite[fig.5]{aheleroff_digital_2021}. 
 
 
-
-With all these different types of agents following the same workflow, it is fascinating to investigate how data exchanges can be realized in a real-time behavior. Which is the main topic throughout the whole thesis.
 
 
 \section{Research gap}
+
+According to current research, there are various implementations of \gls{mas} in 
+different fields. However, there have been limited efforts to standardize and 
+modularize the \gls{mas}. In addition, a cloud-based resource digitization should also 
+be considered and implemented in the \gls{mas}. In general, the \gls{mas} should be designed 
+with a high level of modularization based on \gls{dsl}.
+
