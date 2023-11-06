@@ -639,7 +639,7 @@ In section \ref{chap: Overview-External}, the data flow for the external
 will explain the \gls{ntp} setup used to measure delays between local devices and 
 the cloud. To better understand the workflow, the pseudo-code for both \gls{rcp} 
 and \gls{dta} will be provided in section \ref{chap: RCPDTAPseudo}. Lastly, the 
-final section will cover the setup of the Azure Digital Twin platform for data ingestion.
+final section will cover the setup of the Azure \gls{dt} platform for data ingestion.
 
 
 
@@ -653,14 +653,14 @@ final section will cover the setup of the Azure Digital Twin platform for data i
 \caption{Conceptual diagram of MAS\label{fig: DTConceptual}}
 \end{figure}
 
-The workflow of updating global digital twin through the \gls{dta} process is shown 
+The workflow of updating global \gls{dt} through the \gls{dta} process is shown 
 in Figure \ref{fig: DTConceptual}. The process begins on the left-hand side of the 
 graph, where the \gls{dta} receives process data from robots, including steady-state 
-data. The process data is parsed and uploaded one by one to the Azure Digital Twins 
+data. The process data is parsed and uploaded one by one to the Azure \gls{dt} 
 platform after separating the sticky packets from the \gls{tcp} socket.
-All the updates of the digital twin instances in the cloud are temporarily displayed 
-in Azure Digital Twins Explorer and concurrently stored in Azure Event Hubs. The history 
-data can be ingested for further analysis in Azure Data Explorer. The Azure Digital Twins 
+All the updates of the \gls{dt} instances in the cloud are temporarily displayed 
+in Azure \gls{dt} Explorer and concurrently stored in Azure Event Hubs. The history 
+data can be ingested for further analysis in Azure Data Explorer. The Azure \gls{dt} 
 Explorer serves as a robot status monitor, while Azure Data Explorer is a data analysis tool.
 Once the remote data update is successful, the data is immediately downloaded to the local 
 host and can be used as input for other visualization purposes. The real-time capability 
@@ -751,7 +751,7 @@ but are stuck together. To solve this, delimiters are utilized for sticky packet
         \State \qquad \textbf{return} data
     \State \textbf{function} {$process\_data\_upload\_and\_download(data)$}
         \State \qquad separate sticky packets with delimiter
-        \State \qquad upload processed data to Azure Digital Twins in json patch
+        \State \qquad upload processed data to Azure \gls{dt} in json patch
         \State \qquad download twin after data update 
     \State \textbf{Main:}
         \State \qquad \textbf{for} \gls{rcp}\_IP in IPs \textbf{do}
@@ -762,11 +762,11 @@ but are stuck together. To solve this, delimiters are utilized for sticky packet
 
 
 
-\subsection{Azure Digital Twins}
+\subsection{Azure \gls{dt}}
 According to the workflow explained in section \ref{chap: Overview-External}, 
-it is crucial to establish a reliable and operational Azure Digital Twins platform 
-to ensure seamless data transfer. The platform should include Azure Digital Twins Explorer, 
-Azure Event Hub, and Azure Data Explorer. Additionally, the Azure Digital Twins 
+it is crucial to establish a reliable and operational Azure \gls{dt} platform 
+to ensure seamless data transfer. The platform should include Azure \gls{dt} Explorer, 
+Azure Event Hub, and Azure Data Explorer. Additionally, the Azure \gls{dt} 
 instance must be configured with a time-series data history connection. Other resources 
 must also be created, such as an Event Hubs namespace, an event hub, Azure Data Explorer 
 cluster, and a database. 
@@ -780,11 +780,11 @@ Here is the sequence of the basic setup in the Azure platform:
 \begin{enumerate}
     \item Create Azure Event Hub namespace and add instance.
     \item Create Azure Data Explorer cluster and add database.
-    \item Connect data history of the Event Hub instance to the digital twin instance.
+    \item Connect data history of the Event Hub instance to the \gls{dt} instance.
 \end{enumerate}
 
 In order to verify whether the connection is successful, one can try updating the 
-digital twin instance and querying data from the Azure Data Explorer side. The query
+\gls{dt} instance and querying data from the Azure Data Explorer side. The query
 language is called \gls{kql}, which is powerful for pattern discovery, anomalies 
 and outliers identification, and statistical modeling (various graphs creation). 
 Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} code in the test: 

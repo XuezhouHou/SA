@@ -2,7 +2,7 @@
 \chapter{State of the art}%
 This chapter presents the state-of-the-art approaches on various topics 
 discussed 
-in this article, including \gls{mas}, Digital Twin, network latency, 
+in this article, including \gls{mas}, \gls{dt}, network latency, 
 and \gls{dsl} as a system modularization method. The article aims to 
 design a program to fulfill the real-time communication requirements 
 of specific use cases, in addition to studying the timing behaviors. 
@@ -12,10 +12,10 @@ It builds on the works of leading researchers in the field.
 
 Within the subfields of \gls{mas}, an agent can be identified as a 
 software agent with no physical embodiment but only software to control 
-physical assets for different purposes. "In agent-oriented software 
+physical assets for different purposes. \textit{"In agent-oriented software 
 development, an agent is a delineable software unit with a defined goal. 
 An agent tries to achieve this goal through autonomous behavior, 
-continuously interacting with its environment and other agents" \cite{wagner_agentenunterstutztes_2008}. 
+continuously interacting with its environment and other agents"}\cite{wagner_agentenunterstutztes_2008}. 
 However, although not under discussion in this thesis, another 
 interpretation of \gls{mas} can be a Multi-agent robot system that 
 each agent represents an actual physical object such as an individual 
@@ -71,24 +71,57 @@ packets from end to end, along with a high packet retransmission rate
 to avoid packet loss\cite{paxson_end--end_1999}. Benefits from 
 the development of the internet latency test tools, \gls{tcp} delay 
 performance can be evaluated by one of them. Wireshark, for example, is famous 
-for capturing network delay, where \gls{tcp} delay can be filtered in real 
-time\cite{dsouza_transmission_2020}.
-On top of the measured delay 
-that includes additional connection establishment time, 
-models can be built additionally to estimate 
-\gls{tcp}-based packet transmission latency. The model should be able to 
-represent both short and long \gls{tcp} flows\cite{luan_estimating_2019}. 
-Typically, measurement results are used to validate and calibrate the modeling 
-results, while the model can alarm the network issues. The delay modeling tool 
-ns-3, for example, was used for modeling delays in a cyber-physical 
-testbed under 5G network\cite{adrah_real-time_2022}.
-In the related work 
-for delay measurement of \gls{mas}, a comparison between both are done\cite{vogel-heuser_delay_2023}.
+for capturing network delay in transport layer, where \gls{tcp} delay 
+can be filtered in real time\cite{dsouza_transmission_2020}. Besides, 
+application and presentation layer delays can also be measured by Wireshark and 
+other Program 
+specific profiling tools\cite{heger_application_2017}. Furthermore, 
+traceroute or ping can be ultilized 
+for network layer delay collections along with the router logs\cite{Deri2003}. 
+Finally, it will be challenging to measure 
+data link and physical layer delays, which can be either tracked by hardware 
+such as \gls{nic}, or calculated based on the characteristics 
+of the physical medium. The work of \cite{Fezeu2023} for example, 
+presents a comprehensive 
+in-depth measurement study of mmWave 5G latency performance on the physical layer 
+based on a commercial 5G tool.   
 Certainly, there are also other tools designed for research for a more 
 precise and academic-oriented purpose. In the work of performance testing 
 of a 5G campus network, \gls{ftt} designed by ifak Magdeburg was used 
 for performance analysis of industrial communication networks\cite{cainelli_performance_2023}, 
 with its results later compared with those in this article.
+
+
+On top of the measured delay 
+that includes additional connection establishment and process time, 
+models can be built additionally to estimate delays over different layers in 
+\gls{osi} model, to bridge the gap between experiments and simulations. 
+Studies including those for instance the modeling of \gls{tcp}-based 
+packet transmission latency that enables both short and 
+long \gls{tcp} flows\cite{luan_estimating_2019}. In the book \cite{wehrle2010modeling}, 
+both lower and higher layer wireless modeling tools and methods are introduced. 
+Accordingly, common tools and methods for network simulation are: ns-3 Network Simulator, OMNeT++, 
+IKR simulation Library and Open WNS. For the lower layer modeling, accurate simulation 
+of physical layers can be operated, with the packet domain physical layer simulation 
+model given as an example. Another lower layer modeling approach should be focused on 
+link layers, including \gls{mac} and logical link control. As for the higher layer 
+modeling, modeling of the network layer and routing protocols, modeling 
+transport layer protocols and the modeling of application traffics are described. 
+The combination of lower and higher layers results in the discrete modeling 
+of the \gls{osi} model, with their performances tested in different use cases. 
+
+
+
+
+By comparing both estimated and measured delays, a number of insightful 
+conclusions made and the corresonding actions can be taken to improve 
+the network design.
+In the related work for delay measurement of \gls{mas}, 
+a comparison between actual and modeling 
+delays has been performed\cite{vogel-heuser_delay_2023}, which leads to the 
+consideration of integrating \gls{dsl} as further development methods.
+
+
 
 
 
@@ -131,19 +164,19 @@ provided\cite[fig.5]{hutchison_robotml_2012}.
 
 
 
-\section{Digital Twin}
+\section{\gls{dt}}
 
 
 Apart from the agents that are responsible for internal production 
 processes, \gls{dta} plays a crucial part in collecting data from the 
 production and storing it externally to create a digital replica of the 
 physical entities or systems. As described in section \ref{chap: Motivation}, 
-Digital Twin is a digital mapping of physical entities. Former work for this 
-project has already provided a foundation for the Digital Twin 
+\gls{dt} is a digital mapping of physical entities. Former work for this 
+project has already provided a foundation for the \gls{dt} 
 structure\cite{hofgen_architecture_2023}. 
-The work mainly focuses on the realization of an \gls{aas} based Digital Twin system, 
-with an automated Digital Twin creation and socket-based communication between 
-different layers from the Digital Twin architecture reference 
+The work mainly focuses on the realization of an \gls{aas} based \gls{dt} system, 
+with an automated \gls{dt} creation and socket-based communication between 
+different layers from the \gls{dt} architecture reference 
 model\cite[fig.5]{aheleroff_digital_2021}. 
 
 

@@ -702,24 +702,7 @@ Journal Abbreviation: Agent-supported engineering of industrial plants},
 
 
 
-%external without paper
-@InProceedings{Schneider2014,
-author="Schneider, Sven
-and Hochgeschwender, Nico
-and Kraetzschmar, Gerhard K.",
-editor="Brugali, Davide
-and Broenink, Jan F.
-and Kroeger, Torsten
-and MacDonald, Bruce A.",
-title="Structured Design and Development of Domain-Specific Languages in Robotics",
-booktitle="Simulation, Modeling, and Programming for Autonomous Robots",
-year="2014",
-publisher="Springer International Publishing",
-address="Cham",
-pages="231--242",
-abstract="Robot programming is an interdisciplinary and knowledge-intensive task. All too often, knowledge of the different robotics domains remains implicit. Although, this is slowly changing with the rising interest in explicit knowledge representations through domain-specific languages (DSL), very little is known about the DSL design and development processes themselves. To this end, we present and discuss the reverse-engineered process from the development of our Grasp Domain Definition Language (GDDL), a declarative DSL for the explicit specification of grasping problems. An important finding is that the process comprises similar building blocks as existing software development processes, like the Unified Process.",
-isbn="978-3-319-11900-7"
-}
+
 
 
 
@@ -797,4 +780,137 @@ isbn="978-3-319-11900-7"
 	year = {2023},
 	pages = {1--8},
 	file = {059_Architecture_of_a_Versatile_Digital_Twin_with_Socket-Based_Communication_and_Azure_DT.pdf:/home/xuezhou/Documents/SA/Arbeitsvorbereitung/Zotero_paper/059_Architecture_of_a_Versatile_Digital_Twin_with_Socket-Based_Communication_and_Azure_DT.pdf:application/pdf},
+}
+
+
+@inproceedings{collina_internet_2014,
+	address = {Livorno, Italy},
+	title = {Internet of {Things} application layer protocol analysis over error and delay prone links},
+	isbn = {978-1-4799-5893-1},
+	url = {http://ieeexplore.ieee.org/document/6934573/},
+	doi = {10.1109/ASMS-SPSC.2014.6934573},
+	abstract = {Internet of Things (IoT) application layer protocols are gaining popularity in a wide range of scenarios, where lowcost, low-power or resource constrained devices are present. The most diffused protocols are the Constrained Application Protocol (CoAP) and MQTT. In order to ensure message delivery, CoAP features a retransmission mechanism based on exponential back-off and a ﬁnite number of retransmissions, while MQTT relies on TCP. In remote areas lacking ﬁxed terrestrial network infrastructure, the only available Internet access technology is often represented by wireless or satellite links, usually affected by losses and signiﬁcant delay. At this time, there is no information about MQTT and CoAP performance over high delay links in the literature. The goal of this paper is to provide a quantitative performance analysis of the mentioned IoT protocols over various conditions of offered trafﬁc, packet loss probability and delay. Our ﬁndings show that, with default protocol parameters, MQTT offers better performance in terms of throughput in any of the considered scenarios. As far as latency is concerned, CoAP slightly outperforms MQTT in case of low offered trafﬁc, low loss probability and high delay. We suggest to tune CoAP parameters in order to cope with high trafﬁc and high loss probability: the new parameters result in improved latency and throughput in those conditions.},
+	language = {en},
+	urldate = {2023-11-06},
+	booktitle = {2014 7th {Advanced} {Satellite} {Multimedia} {Systems} {Conference} and the 13th {Signal} {Processing} for {Space} {Communications} {Workshop} ({ASMS}/{SPSC})},
+	publisher = {IEEE},
+	author = {Collina, Matteo and Bartolucci, Marco and Vanelli-Coralli, Alessandro and Corazza, Giovanni Emanuale},
+	month = sep,
+	year = {2014},
+	pages = {398--404},
+	file = {062_Internet_of_Things_application_layer_protocol_analysis_over_error_and_delay_prone_links.pdf:/home/xuezhou/Documents/SA/Arbeitsvorbereitung/Zotero_paper/062_Internet_of_Things_application_layer_protocol_analysis_over_error_and_delay_prone_links.pdf:application/pdf},
+}
+
+
+@inproceedings{heger_application_2017,
+	address = {L'Aquila Italy},
+	title = {Application {Performance} {Management}: {State} of the {Art} and {Challenges} for the {Future}},
+	isbn = {978-1-4503-4404-3},
+	shorttitle = {Application {Performance} {Management}},
+	url = {https://dl.acm.org/doi/10.1145/3030207.3053674},
+	doi = {10.1145/3030207.3053674},
+	abstract = {The performance of application systems has a direct impact on business metrics. For example, companies lose customers and revenue in case of poor performance such as high response times. Application performance management (APM) aims to provide the required processes and tools to have a continuous and up-to-date picture of relevant performance measures during operations, as well as to support the detection and resolution of performance-related incidents.},
+	language = {en},
+	urldate = {2023-11-06},
+	booktitle = {Proceedings of the 8th {ACM}/{SPEC} on {International} {Conference} on {Performance} {Engineering}},
+	publisher = {ACM},
+	author = {Heger, Christoph and Van Hoorn, André and Mann, Mario and Okanović, Dušan},
+	month = apr,
+	year = {2017},
+	pages = {429--432},
+	file = {063_Application Performance Management State of the Art and Challenges for the future.pdf:/home/xuezhou/Documents/SA/Arbeitsvorbereitung/Zotero_paper/063_Application Performance Management State of the Art and Challenges for the future.pdf:application/pdf},
+}
+
+
+@inproceedings{agrawal_trace_2016,
+	address = {Guwahati, India},
+	title = {Trace based application layer modeling in ns-3},
+	isbn = {978-1-5090-2361-5},
+	url = {http://ieeexplore.ieee.org/document/7561126/},
+	doi = {10.1109/NCC.2016.7561126},
+	abstract = {Ns-3 is a widely used as a the network simulator of choice by researchers. It contains many well tested and high quality models of network protocols. However, the application layer models of ns-3 are very simplistic, and do not capture all aspects of real life applications. As a result, there is often a huge gap between the results of real experiments and the corresponding simulations. This problem is particularly exacerbated for wireless simulations, where many networking phenomena like wireless channel contention crucially depend on the application trafﬁc characteristics. One way to bridge the gap between experiments and simulations is to incorporate knowledge from network traces into simulations. To this end, our work builds a trace-based application layer simulator in ns-3. Given a network trace collected from a user, our TraceReplay application layer model automatically generates trafﬁc that is faithful to the real application in the ns-3 simulator. TraceReplay infers and replays only application layer delays like user think times, lets the simulator control the lower layer phenomena. TraceReplay extracts application layer characteristics from a single trace, and replays this information across many users in simulation, by using suitable randomization. Our model is also generic enough to replay any application layer protocol. Validation of our simulation model shows that simulation results obtained using TraceReplay are signiﬁcantly different from those using other models, and are closer to experimental observations.},
+	language = {en},
+	urldate = {2023-11-06},
+	booktitle = {2016 {Twenty} {Second} {National} {Conference} on {Communication} ({NCC})},
+	publisher = {IEEE},
+	author = {Agrawal, Prakash and Vutukuru, Mythili},
+	month = mar,
+	year = {2016},
+	pages = {1--6},
+	file = {065_Trace based application layer modeling in ns-3.pdf:/home/xuezhou/Documents/SA/Arbeitsvorbereitung/Zotero_paper/065_Trace based application layer modeling in ns-3.pdf:application/pdf},
+}
+
+@book{wehrle2010modeling,
+  title={Modeling and tools for network simulation},
+  author={Wehrle, Klaus and G{\"u}nes, Mesut and Gross, James},
+  year={2010},
+  publisher={Springer Science \& Business Media}
+}
+
+
+
+
+
+
+
+
+%external without paper
+@InProceedings{Schneider2014,
+author="Schneider, Sven
+and Hochgeschwender, Nico
+and Kraetzschmar, Gerhard K.",
+editor="Brugali, Davide
+and Broenink, Jan F.
+and Kroeger, Torsten
+and MacDonald, Bruce A.",
+title="Structured Design and Development of Domain-Specific Languages in Robotics",
+booktitle="Simulation, Modeling, and Programming for Autonomous Robots",
+year="2014",
+publisher="Springer International Publishing",
+address="Cham",
+pages="231--242",
+abstract="Robot programming is an interdisciplinary and knowledge-intensive task. All too often, knowledge of the different robotics domains remains implicit. Although, this is slowly changing with the rising interest in explicit knowledge representations through domain-specific languages (DSL), very little is known about the DSL design and development processes themselves. To this end, we present and discuss the reverse-engineered process from the development of our Grasp Domain Definition Language (GDDL), a declarative DSL for the explicit specification of grasping problems. An important finding is that the process comprises similar building blocks as existing software development processes, like the Unified Process.",
+isbn="978-3-319-11900-7"
+}
+
+
+@InProceedings{Deri2003,
+author="Deri, Luca
+and Suin, Stefano",
+editor="Stadler, Rolf
+and Stiller, Burkhard",
+title="Ntop: Beyond Ping and Traceroute",
+booktitle="Active Technologies for Network and Service Management",
+year="1999",
+publisher="Springer Berlin Heidelberg",
+address="Berlin, Heidelberg",
+pages="271--283",
+abstract="The task of network management is becoming iiicreasingly complex due to the increasing mmber of networked computers running different operating systems and speaking various network protocols. Most of network monitoring and diagnostic tools such as ping and traceroute are suitable just for tackling simple connectivity problems. Complex network problems often need to be addressed using rather expensive management tools or probes affordable only by mid-large companies.",
+isbn="978-3-540-48100-3"
+}
+
+
+@InProceedings{Fezeu2023,
+author="Fezeu, Rostand A. K.
+and Ramadan, Eman
+and Ye, Wei
+and Minneci, Benjamin
+and Xie, Jack
+and Narayanan, Arvind
+and Hassan, Ahmad
+and Qian, Feng
+and Zhang, Zhi-Li
+and Chandrashekar, Jaideep
+and Lee, Myungjin",
+editor="Brunstrom, Anna
+and Flores, Marcel
+and Fiore, Marco",
+title="An In-Depth Measurement Analysis of 5G mmWave PHY Latency and Its Impact on End-to-End Delay",
+booktitle="Passive and Active Measurement",
+year="2023",
+publisher="Springer Nature Switzerland",
+address="Cham",
+pages="284--312",
+abstract="5G aims to offer not only significantly higher throughput than previous generations of cellular networks, but also promises millisecond (ms) and sub-millisecond (ultra-)low latency support at the 5G physical (PHY) layer for future applications. While prior measurement studies have confirmed that commercial 5G deployments can achieve up to several Gigabits per second (Gbps) throughput (especially with the mmWave 5G radio), are they able to deliver on the (sub) millisecond latency promise? With this question in mind, we conducted to our knowledge the first in-depth measurement study of commercial 5G mmWave PHY latency using detailed physical channel events and messages. Through carefully designed experiments and data analytics, we dissect various factors that influence 5G PHY latency of both downlink and uplink data transmissions, and explore their impacts on end-to-end delay. We find that while in the best cases, the 5G (mmWave) PHY-layer is capable of delivering ms/sub-ms latency (with a minimum of 0.09 ms for downlink and 0.76 ms for uplink), these happen rarely. A variety of factors such as channel conditions, re-transmissions, physical layer control and scheduling mechanisms, mobility, and application (edge) server placement can all contribute to increased 5G PHY latency (and thus end-to-end (E2E) delay). Our study provides insights to 5G vendors, carriers as well as application developers/content providers on how to better optimize or mitigate these factors for improved 5G latency performance.",
+isbn="978-3-031-28486-1"
 }

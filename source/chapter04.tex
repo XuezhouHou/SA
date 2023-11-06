@@ -454,9 +454,9 @@ production based on its simplicity of agent communication design.
     \includegraphics[width=\textwidth]{figures/tests/usecase/Usecase_flow.pdf}\hfill 
     \caption{Flowchart of BMW and Wittenstein use case of the \gls{mas} architecture. 
     Blue containers: BMW use case, allocated agents are Storge agent, 
-    Transport agent MiR600, Wiring agent and Digital Twin agent respectively. 
+    Transport agent MiR600, Wiring agent and \gls{dta} respectively. 
     Green Containers: Wittenstein use case, allocated agents are Storage agent, 
-    Transport agent MiR250, Assembly agent and Digital Twin agent respectively. 
+    Transport agent MiR250, Assembly agent and \gls{dta} respectively. 
     Red container: \gls{cda} for both usecases.} 
     \label{fig: Flowchart-usecase}
 \end{figure}
@@ -540,7 +540,7 @@ requirement for production processes is again fulfilled.
 
 
 \subsection{Test results of data transmission time in \gls{tcp} sockets between \gls{dta} 
-and \gls{ms} Azure Digital Twin platform across various packet lengths} \label{chap: Result-DTA-DT}
+and \gls{ms} Azure \gls{dt} platform across various packet lengths} \label{chap: Result-DTA-DT}
 
 However, in the program, the most considerable variance 
 the total data transmission time is the \gls{rtt} between local devices and the global digital 
@@ -550,14 +550,14 @@ In the paper, the resulting uplink data transmission time is larger than the dow
 data transmission time. The difference between both tests is the research team from 
 Magdeburg measured delay with logical links from a 5G standalone network and the industrial 
 5G devices. In contrast, our test was based on data update times in the cloud. The latency 
-between data upload and update reflects the actual digital twin data update patterns, 
+between data upload and update reflects the actual \gls{dt} data update patterns, 
 which includes additional process time in the cloud. Therefore, we can infer that the 
-increased latency of data upload may be caused by the internal Azure Digital Twin Model 
+increased latency of data upload may be caused by the internal Azure \gls{dt} Model 
 API for data update (an unclosed issue in \gls{ms} Q\&A\footnote{https://learn.microsoft.com/en-us/answers/questions/1328803/experiencing-slow-load-times-on-azure-digital-twin}).
     
 
 It is worth mentioning that the data upload time from JointGripper and Elbow has little to 
-no difference since the upload mechanism of Azure Digital Twin is limited by sending twin 
+no difference since the upload mechanism of Azure \gls{dt} is limited by sending twin 
 values one after one. There is only such function to update up to one twin simultaneously. 
 In order to differentiate the upload speed, the patch size of the to-be-updated twin values 
 should vary. The fig.\ref{fig: UD-cycle-JointGripper} again shows the cumulative delays 
@@ -580,7 +580,7 @@ fig.\ref{fig: UD-sep-JointGripper}. The average upload time of JointGripper valu
 while the download time results in about 70ms. Under the same conditions, the differences 
 between JointGripper and Elbow in both values for are negligible with only 1-2ms difference (see \ref{chap: append-DTagent} fig.\ref{fig: UD-cycle-Elbow} 
 and \ref{fig: UD-sep-Elbow}), due to the one after one twin upload mechanism. However, 
-the time spent connecting to the Digital Twin platform needs to be factored in 
+the time spent connecting to the \gls{dt} platform needs to be factored in 
 as well, which takes about 9400ms for JointGripper and 9600ms for Elbow. Although it 
 does not fulfill the real-time requirement, it is still counted for comparison 
 to the average download time.
@@ -591,7 +591,7 @@ to the average download time.
 \begin{figure}[htb]
     \includegraphics[width=\textwidth]{figures/tests/DT/Delay_UploadDownload_JointGripper.png}
     \centering
-    \caption{Tests for delays between \gls{dta} and digital twin update of JointGripper, 
+    \caption{Tests for delays between \gls{dta} and \gls{dt} update of JointGripper, 
     and delays for twin value download. \label{fig: UD-sep-JointGripper}}
 \end{figure}
 
@@ -612,7 +612,7 @@ even more than the patch sizes.
 \begin{figure}[htb]
     \includegraphics[width=\textwidth]{figures/tests/DT/violin_patch_size.png}
     \centering
-    \caption{Tests for \gls{rtt}, delays between \gls{dta} and digital twin 
+    \caption{Tests for \gls{rtt}, delays between \gls{dta} and \gls{dt} 
     update of JointGripper, and delays of twin value download for 
     two different patch sizes. In the graph, s represents small patches 
     and l for large patches.\label{fig: UD-violin-patchsize}}
@@ -631,7 +631,18 @@ and the minimal presence at the upper extremum.
     \includegraphics[width=\textwidth]{figures/tests/DT/log_violin_Plot_3cat.png}
     \centering
     \caption{Tests for data transmission time from robot to \gls{dta}, 
-    delays between \gls{dta} and digital twin 
+    delays between \gls{dta} and \gls{dt} 
     update of JointGripper, and delays for twin value download.\label{fig: SR-U-D-violin}} 
 \end{figure}
 
+
+It is worth mentioning that, among all the tests for data update 
+in the Azure \gls{dt} platform, there were several times that the 
+twin instances experienced an incorrect update time. In these cases, 
+the data update time is even earlier than the upload timestamp from the 
+local device, which is theoretically impossible. The reason could be 
+that the data update process in the cloud is operated internally but not necessarily in 
+the same processing unit. The asynchronous processing in different counterparts 
+can result in time synchronization issues. Also, the inaccuracy in the 
+time synchronization across the devices and cloud servers may cause data 
+inconsistency issues.
