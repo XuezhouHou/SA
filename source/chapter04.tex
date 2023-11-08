@@ -1,648 +1,919 @@
-\chapter{Implementation and discussion} \label{chap: Result}
-
-In this chapter, the results of the performance testing based on assumptions 
-and two industrial use cases to verify the feasibility of the methods presented 
-in chapter \ref{chap: Meth} will be discussed. The tests will be divided into 
-two parts: internal (section \ref{chap: Result-Internal}) and 
-external (section \ref{chap: Result-External}), as previously mentioned in 
-chapter \ref{chap: Meth}. Both of them are tested under a 5G Network in the lab.
-
-
-
-\section{Internal}\label{chap: Result-Internal}
-In the following sections, multiple tests are conducted on the agent communication system 
-of the internal \gls{mas}. These tests involve passing messages through the \gls{ca} under 
-WebSocket architecture. The results of these tests are discussed in 
-section \ref{chap: Result-WS}. In addition to testing the performance of WebSocket 
-architecture alone, a comparison between WebSocket and \gls{http} is done to verify 
-the feasibility of WebSocket. Packet prioritization tests will also be performed in 
-section \ref{chap: Result-priority}. Finally, the test results of the 
-WebSocket-based \gls{mas} architecture under the BMW use case are presented to 
-close the sections.
+% !TeX spellcheck = en_US
+\chapter{Methodology}\label{chap: Meth}%
+This chapter describes the methodologies of the general \gls{mas} design. 
+The general \gls{mas} is distributed into two parts: internal (section \ref{chap: Meth-Internal}) 
+and external (section \ref{chap: Meth-External}).  
+The internal system includes a \gls{mas} for the \gls{cda} and \gls{ra}, 
+while the external system involves the \gls{dta}. 
+Although these two systems are decoupled from each other, 
+they both follow the principles of an agent-based operating system. 
+At the end, it concludes the timing properties for both 
+internal and external systems with protocols in 
+different layers and suggests a way to represent 
+network latency modularly using visual notation of \gls{dsl}.
 
 
-\subsection{Test results of WebSocket in various performance testing including worst case scenarios} \label{chap: Result-WS}
 
-After the construction a \gls{mas} under WebSocket, the speed, robustness, 
-reliability and application size of the system will be examined by 
-performance tests. 
-
-\subsubsection{Increasing client numbers}
-In the real world, the number of clients will significantly influence the server's 
-performance. Assume all agents serve as clients and \gls{ca} as a central server. 
-By handling an increasing number of connection requests and the growing demands of 
-data processing capacity, the average total delay with or without process time can 
-be roughly described as an overall increasing pattern. However, it does not necessarily 
-need to be linear based on several reasons. In exercise, concurrent programming will 
-speed up the processing for a significant computation problem. As depicted in 
-fig.\ref{fig: proportional-clients}, the average process time from one to ten clients 
-decreases with better utilization of the \gls{cpu} power due to concurrent processing. 
-However, by further increasing the clients' number, the speedup will be limited 
-by \gls{cpu} cores number. Assume that a \gls{cpu} has eight cores, and each core 
-can handle two threads. It will have a total of 16 threads to perform tasks. In the 
-WebSocket-based \gls{mas} program, the asynchronous I/O framework asyncio is used 
-to handle the execution of the coroutine in order to utilize the threads' power 
-better.
-Therefore, asyncio is more suitable for larger computational tasks than synchronous 
-single-thread programming.
-
-It appears that there is a limit on the number of clients that the system can handle 
-to prevent it from breaking down. When a single server handles all clients, the 
-server experiences a timeout problem when the number of clients reaches 1000. 
-Therefore, distributing clients across more servers could be a possible solution 
-to this issue.
+\section{Centralization versus decentralization}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Internal}\label{chap: Meth-Internal}
+This section discusses the selected design pattern for \gls{mas} along 
+with the responsibilities of each module within it.
+It then compares the features of transport layer protocols with those of 
+application layer protocols.
+Eventually the methods for using python WebSocket for \gls{mas} and 
+RESTful API for one to one agent communication are presented in form of pseudocode. 
+
+\subsection{Overview (conceptual diagram)}
+
+%figure conceptual MAS
 \begin{figure}[htb]
-    \begin{subfigure}[b]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_string_messages_sending_time_of_100_tests_of_diff_client_numbers.png}\hfill 
-        \caption{} \label{fig: proportional-clients-a}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_string_messages_receiving_time_of_100_tests_of_diff_client_numbers.png}\hfill 
-        \caption{} \label{fig: proportional-clients-b}
-        \end{subfigure}
-
-    \caption{Average delay of sending a string message 100 times 
-    to a clientR from 1, 10, 100 or 500 clients separately. (a) Messages sent forward, 
-    and (b) response messages from clientR. 
-    \label{fig: proportional-clients}}
+\includegraphics[width=\textwidth]{figures/MAS_Conceptual_Diagram.pdf}
+\centering
+\caption{Conceptual diagram of MAS\label{fig: MASConceptual}}
 \end{figure}
 
+% decribe the conceptual diagram
 
-\subsubsection{Increasing server numbers}
-When 1000 clients are communicating with clientR, their messages will be split 
-into two or three groups and routed through different servers due to system 
-limitations. According to fig.\ref{fig: NSConceptual}, only a maximum of three 
-servers can be used for the test, as per the hardware configuration of the external 
-routing solutions. However, we can make some assumptions based on the results 
-shown in fig.\ref{fig: proportional-servers}.
+Fig.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based 
+on the \gls{ra} design patterns 
+in Wannagat’s architecture\cite{cruz_salazar_cyber-physical_2019}, 
+focusing on communication between agents, 
+planning, and decision-making inside each agent. The \gls{cda} here is identical 
+to \gls{ams} of Wannagat’s architecture, which should also be considered an agent 
+instead of a management system. The five modules within an agent are:
+
+\begin{itemize}
+    \item Planning Module
+    \item Control Module
+    \item Knowledge Base
+    \item Diagnosis Module
+    \item Communication Interface
+\end{itemize}
+
+for both \gls{cda} and \gls{ra}.
+Based on these five modules, the agents executing functions can be categorized into five parts. 
+The following tab.\ref{tab:designPatterns} shows 
+some functions of each module based on the general requirements of a smart factory.
 
 
-\begin{figure}[htb]
+\begin{table}[p]
+    \setlist[itemize]{leftmargin=*, topsep=0pt, itemsep=2pt, parsep=0pt}
+    \caption{Wanagat's \gls{ra} design patterns with task related examples.}
+    \label{tab:designPatterns}
+    \small
+    \renewcommand{\arraystretch}{1.2} 
+    \setlength{\extrarowheight}{3pt}
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/tests/proportional_tests/Average_string_messages_receiving_time_of_100_tests_diff_server_numbers.png}\hfill 
-    \caption{Average delay of sending a string message 100 times 
-    to a clientR from 1000 clients through 2 or 3 servers separately. 
-    \label{fig: proportional-servers}}
-\end{figure}
-
-Fig.\ref{fig: proportional-servers} indicates that introducing 
-additional servers to the system results in a reduction of latency. This means that 
-limited productive resources can be better utilized for frequent client interactions. 
-However, the latency of response messages from clientR is unexpectedly higher 
-in fig.\ref{fig: proportional-servers}. This could be due to high \gls{cpu} consumption. 
-When multiple servers are running on the same device, the send and receive processes 
-in the WebSocket are operated separately. Due to the high occupation of \gls{cpu} power, 
-the loads between each process might be unbalanced and added up by the increment of servers.
-
-\subsubsection{Increasing string message length}\label{chap: Result-Internal-string}
-To determine the effect of packet size (i.e., message length) on system performance, 
-it's important to conduct another significant test. The formula for packet transmission 
-time is given as:
-
-
-\begin{equation}
-    Transmission $ $ delay = Packet $ $ size/Bandwidth
-\end{equation}
-
-Assuming the bandwidth is constant, the transmission time should be linearly proportional 
-to an increasing packet size. In fig.\ref{fig: proportional-stringsize}, various string 
-message lengths ranging from 1KB to 10MB are compared, indicating the linear dependency 
-of latency and string size in both forward (fig.\ref{fig: proportional-stringsize-a}) 
-and return message (fig.\ref{fig: proportional-stringsize-b}). This confirms the 
-transmission time formula. Additionally, it's worth noting that the server's process 
-time increases with the size of the message bytes. In real-world scenarios, large string 
-messages should be broken down into smaller parts for communication, significantly 
-reducing process time consumption. To examine system limits, a string with a size of 
-up to 100MB is tested, resulting in a system timeout error that exceeds the server's 
-maximum processing capacity.
-
-\begin{figure}[htb]
-    \begin{subfigure}{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/log_Average_string_messages_sending_time_of_100_tests_1KB_to_10MB.png}
-        \caption{} \label{fig: proportional-stringsize-c}
-    \end{subfigure}
-    \begin{subfigure}{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/log_Average_string_messages_receiving_time_of_100_tests_1KB_to_10MB.png}
-        \caption{} \label{fig: proportional-stringsize-d}
-    \end{subfigure}
-
-    \begin{subfigure}{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_string_messages_sending_time_of_100_tests_1KB_to_10MB.png}
-        \caption{} \label{fig: proportional-stringsize-a}
-    \end{subfigure}
-    \begin{subfigure}{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_string_messages_receiving_time_of_100_tests_1KB_to_10MB.png} 
-        \caption{} \label{fig: proportional-stringsize-b}
-    \end{subfigure} 
-
-    \caption{Average delay of sending and receiving a string message varied from 1KB 
-    to 10MB for 100 times between 2 clients. (\subref{fig: proportional-stringsize-c}) Messages clientS sent forward, 
-    (\subref{fig: proportional-stringsize-d}) response messages from clientR, 
-    (\subref{fig: proportional-stringsize-a}) process time of massages sent forward 
-    and (\subref{fig: proportional-stringsize-b}) process time of massages respond. 
-    \label{fig: proportional-stringsize}}
-\end{figure}
-
-\subsubsection{Increasing image message length}
-In addition to string, images are also frequently transported between different agents. 
-However, unlike string messages, image sizes can be significantly larger, even up to over 
-100MB for raw images. In addition, the agent's ID or message priority information should 
-also be included in the message. Therefore, to send an image, it should be jsonified with 
-the necessary information and then sent to the server. 
-
-
-
-The tests for images are similar to those for string messages, with image size varying 
-from 1KB to 100MB. Fig.\ref{fig: proportional-imagesize-a} and \ref{fig: proportional-imagesize-b} 
-show the linear dependency of latency and jsonified image size. Although the transmission 
-time for 1KB to 10MB messages is similar to the string test, there is a significant 
-difference in process time between them. Comparing fig.\ref{fig: proportional-stringsize-c} 
-with \ref{fig: proportional-imagesize-c} and fig.\ref{fig: proportional-stringsize-d} 
-with \ref{fig: proportional-imagesize-d}, it is clear that the server process time for 
-string messages is much higher than that for image messages. Moreover, due to the 
-additional overhead of the JSON format, the network delay of string messages is 
-relatively minor compared to that of image messages. 
-
-
-
-
-One possible reason for the longer process time for string messages is that the server 
-ust process them twice: once to split the message to extract the client ID, and again 
-to recombine it for further transport. On the other hand, a jsonified image will only 
-be processed once to extract the client information, and the original JSON file will 
-be further transported directly.
-
-
-
-\begin{figure}[htb]
-        \centering
-    \begin{subfigure}{0.49\textwidth}
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/log_Average_json_image_messages_sending_time_of_100_tests_1KB_to_100MB.png}\hfill 
-        \caption{} \label{fig: proportional-imagesize-c}
-    \end{subfigure}
-    \begin{subfigure}{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/log_Average_json_image_messages_receiving_time_of_100_tests_1KB_to_100MB.png}\hfill 
-        \caption{} \label{fig: proportional-imagesize-d}
-    \end{subfigure}
-    \begin{subfigure}{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_json_image_messages_sending_time_of_100_tests_1KB_to_100MB.png}\hfill 
-        \caption{} \label{fig: proportional-imagesize-a}
-    \end{subfigure}
-    \begin{subfigure}{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Average_json_image_messages_receiving_time_of_100_tests_1KB_to_100MB.png}\hfill 
-        \caption{} \label{fig: proportional-imagesize-b}
-    \end{subfigure}
-
-    \caption{Average delay of sending and receiving a jsonified image message varied from 1KB 
-    to 100MB for 100 times between 2 clients. (\subref{fig: proportional-imagesize-c}) 
-    Messages clientS sent forward in log form, 
-    (\subref{fig: proportional-imagesize-d}) response messages from clientR in log form, 
-    (\subref{fig: proportional-imagesize-a}) process time of messages sent forward  
-    and (\subref{fig: proportional-imagesize-b}) process time of response messages from clientR. 
-    \label{fig: proportional-imagesize}}
-\end{figure}
-
-
-\subsection{Test results of WebSocket and \gls{http}} \label{chap: Result-RestFUL_WS}
-After testing the performance of the WebSocket-based communication system, it will be 
-interesting to see whether the other application layer protocols with different message 
-transport mechanisms will have a similar or completely different performance under the 
-same conditions. As demonstrated from fig.\ref{fig: MsgConceptual}, \gls{http} is designed 
-for message transport in both directions and, therefore, more comparable with WebSocket 
-among the others. As a result, a \gls{http} based interface RESTful API is designed under 
-a similar architecture as WebSocket and tested under the exact condition of the WebSocket 
-string test in section \ref{chap: Result-Internal-string}. By comparing 
-fig.\ref{fig: proportional-stringsize} with fig.\ref{fig: proportional-rest-stringsize}, 
-it is evident that the processing time of string messages is higher and grows faster in 
-a WebSocket server than in a RESTful API server. The difference may result in the 
-prioritization and data processing mechanisms in the WebSocket server. In contrast, 
-the RESTful API server is only designed with a simple message POST and GET mechanism. 
-However, the data transmission time between both is more comparable. First of all, 
-both of them reflect the fit of the model with the coefficient of determination close 
-to one, which is namely: 
-
-
-    \begin{align}
-        R^{2} &= 1-\frac{RSS}{TSS}\\
-        \text{Where} \nonumber\\
-        RSS & = \text{sum of squared residuals} \nonumber\\
-        TSS & = \text{total sum of squares}\nonumber
-    \end{align}
-
-meaning that the model fits the data well.
-
-
-
-
-
-Secondly, the transmission time of both is similar 
-for the same string message length (RESTful has slightly higher latency), with a difference 
-of 0.01ms to a few milliseconds, which grows over message size. 
-
-
-
-Therefore, WebSocket is proven more appropriate for real-time message transport, 
-essential for an agent-based system.
-
-
-\begin{figure}[htb]
-    \begin{subfigure}[b]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Rest_log_Average_string_messages_sending_time_of_100_tests.png}\hfill 
-        \caption{} \label{fig: proportional-rest-stringsize-c}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Rest_log_Average_string_messages_receiving_time_of_100_tests.png}\hfill 
-        \caption{} \label{fig: proportional-rest-stringsize-d}
-    \end{subfigure}
-
-    \begin{subfigure}[b]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Rest_Average_string_messages_sending_time_of_100_tests.png}\hfill 
-        \caption{} \label{fig: proportional-rest-stringsize-a}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.49\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{figures/tests/proportional_tests/Rest_Average_string_messages_receiving_time_of_100_tests.png}\hfill 
-        \caption{} \label{fig: proportional-rest-stringsize-b}
-    \end{subfigure}
+    \begin{tabularx}{\textwidth}{|Y|Z|W|}
+    \hline
+    \multicolumn{3}{|c|}{Wanagat's design patterns} \\ 
+    \hline
+    Module name & Task & Example \\ 
+    \hline
+    Planning Module &
+    \vspace{-10pt}    
+    \begin{itemize}
+        \item Task planning 
+        \item Decision making 
+        \item Resource allocation 
+        \item Sequencing 
+        \item Scheduling
+    \end{itemize} 
+    &  
+    \vspace{-10pt}   
+    \begin{itemize}
+        \item Break down tasks into smaller executable units
+        \item Decide which task should be assigned to which agent 
+        \item Allocate the agents with specific tasks 
+        \item Find the task execution sequence 
+        \item Calculate the execution time for each agent
+    \end{itemize} \\
+    \hline
     
-    \caption{RESTful API: Average delay of sending and receiving a string message varied from 1KB 
-    to 10MB for 100 times between 2 clients. (\subref{fig: proportional-rest-stringsize-c}) 
-    Messages clientS sent forward, 
-    (\subref{fig: proportional-rest-stringsize-d}) response messages from clientR, 
-    (\subref{fig: proportional-rest-stringsize-a}) process time of messages sent forward 
-    and (\subref{fig: proportional-rest-stringsize-b}) process time of messages respond. 
-    \label{fig: proportional-rest-stringsize}}
+    Control Module & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item Monitoring 
+        \item Adaptation 
+        \item Control and optimization 
+        \item Resource allocation 
+        \item Actuation
+    \end{itemize}
+    & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item Acquisition of robot states
+        \item Adapt the plans with current state (e.g., emergent stop) 
+        \item Control and optimize the robot's motion 
+        \item Allocate the agents with specific tasks 
+        \item Actuate the robot with outputs
+    \end{itemize} \\
+    \hline
+    
+    Knowledge Base & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item \gls{db}
+        \item Knowledge representation and reasoning 
+        \item Learning 
+        \item Knowledge sharing 
+    \end{itemize}
+    & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item Hierarchical, relational, non-relational and object oriented
+        \item Relational ontology \gls{db} system
+        \item Agent learns from the existing primitives and create new executable primitives for customer's changing requirements
+        \item Unfound primitives could be retrieved by querying other agents
+    \end{itemize} \\
+    \hline
+
+    Diagnosis Module & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item Fault detection 
+        \item Fault diagnosis 
+        \item Fault prediction 
+        \item Root cause analysis and classification
+    \end{itemize}
+    & 
+    \vspace{-10pt}
+    \begin{itemize}
+        \item Hierarchical, relational, non-relational and object oriented
+        \item Relational ontology \gls{db} system
+        \item Agent learns from the existing primitives and create new executable primitives for customer's changing requirements
+        \item Unfound primitives could be retrieved by querying other agents
+    \end{itemize} \\
+    \hline
+
+    Communication Interface & 
+    \vspace{-15pt}
+    \begin{itemize}
+        \item Message parsing and encoding
+        \item Connection establishment, maintenance
+        \item Message handling 
+        \item Data security
+    \end{itemize}
+    & 
+    \vspace{-15pt}
+    \begin{itemize}
+        \item Encode and decode the massages in agent specific data type, or  parse the data object to other types (e.g., json)
+        \item Ensure the connection with other agents based on system requirements
+        \item Filter messages with undesired data type or incomplete messages, prioritize the incoming messages
+        \item Ensure data integrity and confidentiality by encrypting, decrypting and authenticating messages
+    \end{itemize} \\
+    \hline
+    \end{tabularx}
+    \end{table}
+
+
+\subsection{Prerequisite}
+\subsubsection{System Setup}
+ 
+%figure conceptual MAS
+\begin{figure}[htbp]
+\includegraphics[width=0.8\textwidth]{figures/NamespaceConceptual.pdf}
+\centering
+\caption{Conceptual diagram of namespaces creation
+\label{fig: NSConceptual}}
+\end{figure}
+
+
+Before simulating network environments for agent communication testing 
+and development of the \gls{mas}, the internal packet routing between agents 
+in a single Linux device should be avoided. A common way to visualize 
+the network for performance testing is to use namespaces for network 
+emulation. The trick is that a process running within a given
+namespace will see only the network interfaces, including, for example, 
+virtual interfaces and forwarding tables, that exist in that namespace. 
+The applications under test should serve as a
+switch, and each packet should be routed through these interfaces. 
+Fig.\ref{fig: NSConceptual} shows that each namespace is assigned 
+a virtual ethernet interface, 
+starting with the name eth, along with an individual IP address. 
+Each time a script gets called, it runs under a namespace with its 
+IP address. In exercise, if a packet is sent from
+Namespace 1 to 3 and then back; it is routed by the switch instead of 
+bridges between namespaces to avoid internal routing.
+
+\subsection{\gls{osi} model and comparison between sockets relevant protocol layers}
+%figure conceptual MAS
+\begin{figure}[htbp]
+\includegraphics[width=0.8\textwidth]{figures/OSI.pdf}
+\centering
+\caption{\gls{osi} model with example protocols \label{fig: OSI}}
 \end{figure}
 
 
 
-
-
-\subsection{Test results of message prioritization in a WebSocket server with various 
-performance testing} \label{chap: Result-priority}
-In an agent communication system, the server that serves as a \gls{ca} should not only 
-focus on speed, robustness, reliability, and application size, but also have additional 
-functionalities beyond pure message transport. Table \ref{tab:designPatterns} lists the 
-essential design requirements of a \gls{ca}, which should include a communication interface 
-capable of processing various messages with different data types such as jsonified images, 
-handling a large number of agent connections, and prioritizing incoming messages. 
-In the following sections, we will test and discuss the server's performance in 
-handling message prioritization.
-
-\subsubsection{Measurgin method}
-In order to verify the prioritization mechanism of the server, a delay of 1s should be 
-added to the non-prioritized message processing. In the test, two kinds of messages are 
-sent concurrently to the server: the normal and the critical messages. If multiple 
-messages with different priority levels enter the server simultaneously, the critical 
-messages should be processed first. The add-up of delay also reflects real-world scenarios. 
-Suppose a critical message representing an emergent stop or a task with higher priority 
-in production comes in. In that case, every other process in the server should wait until 
-the critical message is sent. 
-
-\subsubsection{String message priority test}
-The first string priority test is performed for ten clients. The following 
-fig.\ref{fig: priority-10clients-a} and \ref{fig: priority-10clients-b} show the 
-mean \gls{owd} that a non-prioritized and prioritized message is being sent forward and 
-back separately for 100 times.
-Fig.\ref{fig: priority-10clients-a} shows the mean \gls{owd} for client1 to client10 in both 
-directions, which ranges from 0.63ms to 1.09ms. These results meet the near real-time 
-requirement for the production process\cite{li_5g_2018}, with a latency from <1 ms to 10 ms 
-for the use of collaborative robots in a factory. 
-On the other hand, fig.\ref{fig: priority-10clients-b} 
-illustrates the timing differences between normal messages as a group and critical messages 
-as a control group. In this test, all clients except client10 delivered normal messages. 
-The server paused other processes for 1s and handled the critical message immediately 
-whenever a critical message from client10 arrived. The mean \gls{owd} for client10 was less 
-than 1ms, while clients such as client1 through client5 and client9 experienced 
-significantly higher \gls{owd}, sometimes reaching several hundred milliseconds. This 
-verified the assumption of message prioritization. It is worth mentioning that the 
-asyncio package used in the WebSocket server design is concurrent. Therefore, each 
-client is executed one after another, rather than in parallel processing. As a result, 
-some messages may never be paused if the clients' execution process is not synchronized 
-and coordinated explicitly.
-
-\begin{sidewaysfigure}[htb]
-    \centering
-    \includegraphics[width=\textheight]{figures/tests/priority_tests/violin_10clients_string_non_priority.png}\hfill 
-    \caption{Tests for mean \gls{owd} of forward and return non-prioritized string messages between 10 clients 
-    and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
-    respresent mean \gls{owd}.} \label{fig: priority-10clients-a}
-\end{sidewaysfigure}
-\begin{sidewaysfigure}[htb]
-    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_string_priority.png}\hfill 
-    \caption{Tests for mean \gls{owd} of forward and return prioritized string messages between 10 clients 
-    and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
-    respresent mean \gls{owd}.} \label{fig: priority-10clients-b}
-\end{sidewaysfigure}
+Fig.\ref{fig: OSI} shows the famous OSI model with seven abstraction layers, with Transport and 
+application layers most relevant to sockets. TCP and UDP are typical transport layer 
+protocols, and they provide a mode of end-to-end data transport between two devices, 
+while the application layer protocols like HTTP or Websocket establish communication 
+between applications within devices. Although the application layer protocols still 
+utilize TCP/UDP sockets to transport stream data, they defined additional "rules" to 
+specify the structure, content, and semantics of the messages transported through 
+sockets. In the following tables, a comparison
+between protocols in different layers provide a more straightforward overview of 
+their pro and cons in different contents.
 
 
 
+\subsubsection{Transport layer protocols}
 
-
-As part of our testing process, priority tests are performed for ten clients across 
-various scales, with the number of clients varying from 2 to 10 to 50. The test results 
-of two clients can be found in \ref{chap: append-string-priority} fig.\ref{fig: priority-2clients-string}, 
-and those for fifty clients in fig.\ref{fig: priority-50clients-string-a} to 
-\ref{fig: priority-50clients-string-e}.  The results of the string message priority 
-test with two clients clearly show that client 1 sent messages with lower priority, 
-resulting in significantly higher delays than client 2 in both directions. In the test 
-with fifty clients, the results were similar to those of the ten-client test. Only the 
-last client sent a critical message, while the other 49 sent normal messages. As a 
-result, some clients were affected by the mechanism, causing significant delays, while 
-client 50 always had the smallest round-trip time.
-
-\subsubsection{Image message priority test}
-The same tests are also done for image message transport. Slightly different from string 
-messages, the prioritization jsonified image file (image size: 33.4KB) will be performed 
-after deserialization. In the image priority test, client1 to client10 will send an image 
-to clientR and receive a string message as a response. In actual production, a confirm 
-string message will be sent back if the clientR successfully receives the image message. 
-Therefore, this test better reflects the time difference between different message types 
-in the actual production process since the actual string length will be much smaller than 
-the image length. As shown in fig.\ref{fig: priority-10clients-c}, it proves that the data 
-transmission time or the server process time of an image message 
-will be higher than that of a string message.
-
-
-\begin{sidewaysfigure}[htb]
-    \centering
-    \includegraphics[width=\textheight]{figures/tests/priority_tests/violin_10clients_image_non_priority.png}\hfill 
-    \caption{Tests for mean \gls{owd} of non-prioritized forward image messages and return string messages between 10 clients 
-    and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
-    respresent mean \gls{owd}.} \label{fig: priority-10clients-c}
-\end{sidewaysfigure}
-
-
-Another test (fig.\ref{fig: priority-10clients-d}) should be similar to the string message priority test In the upcoming test (fig.\ref{fig: priority-10clients-d}), 2, 10, and 50 clients will send images and receive string messages as a response from clientR. All clients, except client10, will send normal image messages while client10 will send a critical one to the clientR. The prioritization mechanism will be triggered for all image messages and a part of the response string messages. Notably, the prioritized string messages' latency in this test is similar to the previous test results (fig.\ref{fig: priority-10clients-b}). 
-
-This can be attributed to the fact that larger file sizes require longer transport and 
-processing times. As the image message length increases, more data bytes need to be 
-processed simultaneously, resulting in more message queuing and prioritization in the 
-server. A similar conclusion can be drawn from the tests conducted for 2 and 50 clients 
-in fig.\ref{fig: priority-2clients-image} to fig.\ref{fig: priority-50clients-image-e} 
-in \ref{chap: append-image-priority}., 
-with 2, 10 and 50 clients sending images and receiving string messages as a response 
-from clientR. All client1 to client9 send a normal image message, and meanwhile client10 
-sends a critical one to the clientR. In the test, all image messages and only a part of 
-the response string messages being sent trigger the prioritization mechanism. In this, 
-the latency for the prioritized string messages is very similar to previous test results.
-The reason might be that the larger the file size, the longer the transport 
-and processing time will be required. The more significant message length of images 
-results in more data bytes that need to be processed simultaneously, which involves 
-more message queuing and prioritization in the server. The same conclusion can also be 
-made for the tests for 2 and 50 clients in \ref{chap: append-image-priority} 
-fig.\ref{fig: priority-2clients-image} to \ref{fig: priority-50clients-image-e}.
-
-
-\begin{sidewaysfigure}[htb]
-    \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_image_priority.png}\hfill 
-    \caption{Tests for mean \gls{owd} of prioritized forward image messages and return string messages between 10 clients 
-    and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
-    respresent mean \gls{owd}.} \label{fig: priority-10clients-d}
-\end{sidewaysfigure}
-
-
-\subsection{Diagrams of \gls{mas} architecture under two use cases and 
-test results of BMW use case}\label{chap: Result-Internal-Usecase}
-
-As mentioned earlier in the form of pseudocode in Section \ref{chap: Meth-WS-MAS}, 
-the architecture of the \gls{mas} is designed to cater to all use cases. In the code, 
-a complete workflow is designed for a standard production process in the real world, 
-from agent allocation to sequenced-based agent communication. To gain a better 
-understanding of the workflow of both use cases, two diagrams are provided: 
-fig.\ref{fig: sequence-diagram} shows a general workflow that can be applied to all
-use cases, and fig.\ref{fig: Flowchart-usecase} shows the actual workflow of the 
-two use cases.
-
-
-In the general use case diagram (fig.\ref{fig: sequence-diagram}), the 
-design for the \gls{mas} should be identical for all use cases except for 
-the availability check and primitive execution parts (production processes) in the loop. 
-The detailed program execution sequence is already described in 
-section \ref{chap: Meth-WS-MAS}. Something worth noting here is that the sequence 
-of the production processes in the loop should be relevant to use cases, namely the 
-customer requirements. That means the sequence for task execution in the test should 
-be more complex. Rather than a simple round trip between three agents, sometimes the 
-Transport agent can receive orders from the Storage agent and send orders to the Storage 
-agent again to save time from the slow restocking of supermarket cell. However, 
-the workflow in fig.\ref{fig: Flowchart-usecase} may be the best route in actual 
-production based on its simplicity of agent communication design.  
-
-\begin{figure}[htb]
-    \centering
-    \includegraphics[width=\textwidth]{figures/tests/usecase/SequenceUsecases.pdf}\hfill 
-    \caption{\gls{uml} general use case diagram of the \gls{mas} architecture.} 
-    \label{fig: sequence-diagram}
-\end{figure}
-
-
-\begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/tests/usecase/Usecase_flow.pdf}\hfill 
-    \caption{Flowchart of BMW and Wittenstein use case of the \gls{mas} architecture. 
-    Blue containers: BMW use case, allocated agents are Storge agent, 
-    Transport agent MiR600, Wiring agent and \gls{dta} respectively. 
-    Green Containers: Wittenstein use case, allocated agents are Storage agent, 
-    Transport agent MiR250, Assembly agent and \gls{dta} respectively. 
-    Red container: \gls{cda} for both usecases.} 
-    \label{fig: Flowchart-usecase}
-\end{figure}
-The primitives, agents and execution sequence for both BMW and Wittenstein use cases 
-are predefined. However, only the timing behaviors of the BMW use case are tested due 
-to similarity. The average \gls{owd} and WebSocket data transmission time of the BMW 
-use case are presented in Table \ref{tab: mean-usecase-time}. The test was conducted 
-100 times, but the number of messages exchanged among agents varied greatly. Therefore, 
-the test results and average values can only be used as a reference to understand the 
-data transmission process in actual production. In order to provide a more detailed data 
-distribution of each message, the violin plot in fig.\ref{fig: violin-CDA-T600} is 
-presented along with other test results with other agents (see fig.\ref{fig: violin-CDA-ST} to \ref{fig: violin-T600-WI}). 
-Based on these results, it can be concluded that the message transport in the system meets 
-the real-time requirements, with the largest message size of 636 Bytes taking a maximum of 
-10ms and the smallest taking about 0.2ms.
-
+Tab.\ref{tab: transportlayer} compares the typical transport layer protocols \gls{tcp} 
+and \gls{udp} from different aspects. \gls{tcp} provides reliable data 
+transport, while \gls{udp} mainly focuses on transport speed and efficiency without a 
+reliability guarantee. With a focus on speed and reliability, UDP, on the one hand, 
+offers faster packet
+transport. On the other hand, it produces a network-dependent packet loss rate and 
+out-of-order packet sequence compared to TCP. Because of the requirement of a 
+reliable real-time ordered data transport with minimum to no packet loss in \gls{mas} 
+communication, \gls{tcp} is used as the base protocol of the design.
 
 \begin{table}[htbp]
     \small
     \centering
-    \caption{Average delays between agents with different string message length and 
-    different amount of messages.}
-    \label{tab: mean-usecase-time}
-    \begin{tabular}{|m{0.13\textwidth}|m{0.17\textwidth}|m{0.17\textwidth}|m{0.17\textwidth}|m{0.17\textwidth}|}
+    \caption{Characteristics of different technologies in transport layer protocols}
+    \label{tab: transportlayer}
+    \begin{tabular}{|m{0.2\textwidth}|m{0.3\textwidth}|m{0.3\textwidth}|}
     \hline
-    \multicolumn{5}{|c|}{\textbf{Average delays between agents (\gls{owd}/Transmission time)}}                                                            \\ \hline
-    \textbf{}                         & \textbf{Coordinator Agent}             & \textbf{Storage Agent}        & \textbf{Transport Agent MiR600}    & \textbf{Wiring Agent}\\ \hline
-    \textbf{Coordinator Agent}      & None                  & 1.029355ms /0.820172ms & 1.067170ms /0.849335ms  & 1.032151ms /0.817049ms \\ \hline
-    \textbf{Storage Agent}          & 0.998253ms /0.794590ms & None                  & 1.427890ms /1.158142ms  & None                  \\ \hline
-    \textbf{Transport Agent MiR600} & 1.055389ms /0.840291ms & 1.422970ms /1.150696ms & None                   & 1.668750ms /1.344250ms \\ \hline
-    \textbf{Wiring Agent}           & 0.988012ms /0.783014ms & None                  & 1.654000ms /1.361000ms  & None                  \\ \hline
+    \multicolumn{3}{|c|}{\textbf{Transport layer protocols}}                                                            \\ \hline
+    \textbf{Aspect}                         & \textbf{\gls{tcp}}             & \textbf{\gls{udp}}        \\ \hline
+    Use cases                      & Web browsing, email, text messaging, and file transfers & Live and real-time data transmission \\ \hline
+    Reliability                    & Reliable        & Unreliable \\ \hline
+    Stream type                    & Byte stream with no preserved boundaries & Message stream with preserved boundaries \\ \hline
+    Connection type                & Connection oriented, three handshake & No connection needed \\ \hline
+    Overhead                       & Larger than \gls{udp} & Very low   \\ \hline
+    Sequence                       & Packets arrive in sequence & No sequencing for packets \\ \hline
+    Retransmission of lost packets & Yes             & No         \\ \hline
+    Speed                          & Slower than \gls{udp}, because of overhead and connection & Relative faster than \gls{tcp} \\ \hline
+    State                          & Stateful        & Stateless  \\ \hline
+    Flow control                   & Yes             & No         \\ \hline
     \end{tabular}
 \end{table}
 
 
-\begin{figure}[htb]
+
+
+\subsubsection{Application layer protocols}
+
+
+% % Please add the following required packages to your document preamble:
+
+\begin{sidewaystable}[p]
+    \small
+    \caption{Characteristics of different technologies in application layer protocols}
+    \label{tab: applicationlayer}
     \centering
-    \includegraphics[width=\textwidth]{figures/tests/usecase/violin_CoordinatorAgent_to_TransportAgent_MiR600.png}\hfill 
-    \caption{Test to measure \gls{owd} and transmission time between \gls{cda} and 
-    TransportAgent\_MiR600 for 100 times. The number in x-axis respresents the 
-    corresonding messages. \protect\ref{firstfootnote}}
-    \label{fig: violin-CDA-T600}
+    \begin{tabular}{|m{0.15\textwidth}|m{0.25\textwidth}|m{0.25\textwidth}|m{0.25\textwidth}|}
+    \hline
+    \multicolumn{4}{|c|}{\textbf{Application layer protocols}} \\ \hline
+    \textbf{Aspect} & \textbf{HTTP} & \textbf{WebSocket}  & \textbf{MQTT} \\ \hline
+    Use cases & Web pages, images, videos, World Wide Web, etc & Such as chat applications, live gaming, etc & Usually in IoT with limited bandwidth \\ \hline
+    Functionality & Request-response protocol based on TCP, foundation for both RESTful APIs and the initial connection in WebSockets & Bi-directional, real-time communication & Lightweight message transport, runs over TCP \\ \hline
+    Security & Use SSL/TLS & ws (unsecured) and wss (secured with SSL/TLS) & Use TLS, like username/password authentication and optional message-level security \\ \hline
+    Message patterns & Request-Response & Full Duplex (send and receive independent) & Publish-Subscribe \\ \hline
+    Connection type & No connection needed & Persistent {connection} & Persistent connection \\ \hline
+    State & Stateless & Stateful & Stateful \\ \hline
+    Overhead & Overhead for each request-response cycle, especially for new connections & After the initial handshake (HTTP), data frames are lightweight & Minimal message overhead \\ \hline
+    Realtime capability & Less Capable & Highly Suitable & Highly Suitable \\ \hline
+    Flexibility & Supported in all environments & Supported in most modern web browsers and many backend environments & Highly flexible \\ \hline
+    Adaptability to dynamic changes & Relative lower (influenced by stateless nature) & High & High \\ \hline
+    Capability of handling instability & Less capable, requires a stable connection for each request-response cycle & Less stable if connection disruptions happen frequently & Capable, Ideal for remote locations with limited connectivity \\ \hline
+    Scalability & Less scalable, require more infrastructure support & Highly scalable, maintains connections for real-time interactions & Highly scalable based on broker-client message transport \\ \hline
+    \end{tabular}
+\end{sidewaystable}
+
+Several protocols in application layers are considered suitable for \gls{mas} 
+communication, each with advantages and limits in different aspects according to 
+ab.\ref{tab: applicationlayer}.
+To get a closer look at the tab.\ref{tab: applicationlayer}, a horizontal comparison 
+between different application layer protocols: 
+
+
+\begin{itemize}
+    \item \gls{http}
+    \item WebSocket
+    \item and \gls{mqtt}
+\end{itemize}
+
+should be performed. In one word, WebSocket is chosen to be the application 
+layer protocol for MAS communication, while \gls{tcp} socket for the \gls{dta} 
+design, which will be further discussed in the next chapter. Here are the 
+reasons for the choice of WebSocket: 
+
+
+\begin{itemize}
+    \item Bi-directional, full-duplex, real-time communication between server and clients, no re-connection needed, suitable for continuous data transport
+    \item Small overhead after connection establishment to reduce latency (\gls{http})
+    \item Stateful, store the information of the client's state under connection
+    \item High flexibility, adaptability and scalability
+    \item Secure with wss
+\end{itemize}
+
+Fig.\ref{fig: MsgConceptual} illustrates the differences between bi-directional full-duplex and other message patterns, such as Request-Response and Publish-Subscribe, in the context of data transport.
+For the \gls{mqtt}, the publisher publishes (sends) a message within a topic to the broker (server), while the subscriber subscribes (receives) the message from the broker within the same topic. 
+For response, a new topic needs to start, but there is no guarantee that the original publisher is listening, which is a drawback for send-and-receive patterns of \gls{mas}. 
+
+Out of the four protocols, the other three are considered more appropriate. One such protocol is HTTP, which operates on a request-response mechanism. In this mechanism, a client sends messages to the server, and the other client receives them. Regardless of the success of the GET and POST methods, a response is always provided. For each message that goes through the server, a new connection is established, and it is closed after the responses are sent.
+The inconsistent connection will consume more communication time and lead to higher latency. 
+The WebSocket protocol, on the other hand, provides bi-directional and full duplex real-time communication, minimizing communication delays caused by inconsistent connections.
+The client sends a message to the server. After processing the data, the server will pass the message to the other client and receive a response with the same logic, which allows simultaneous communication in both directions between clients so that no re-connection in the message transport cycle is necessary. The consistent server-client connection makes it possible to realize continuous real-time communication between agents. In the next section, a more detailed explanation of the WebSocket mechanism for \gls{mas} design will be given.
+%figure conceptual application layer protocols
+\begin{figure}[htb]
+\includegraphics[width=0.8\textwidth]{figures/MessageConceptual.png}
+\centering
+\caption{Conceptual diagram of different applcation layer 
+protocols\label{fig: MsgConceptual}}
 \end{figure}
 
-%addtional for footnote in caption
-\footnotetext[2]{\label{firstfootnote}https://github.com/XuezhouHou/Websocket\_MAS/new\_MAS/output/plots/table4UCBMW.xlsx}
+\subsection{Transport layer protocols versus Application layer protocols}
+The reasons of choosing application layer protocols over transport layer protocols for \gls{mas} according to tab.\ref{tab: transportlayer} and \ref{tab: applicationlayer} are listed as following:
+\begin{itemize}
+    \item Semantic-rich message patterns
+    \item Higher flexibility
+    \item Standardized communication between different agents
+    \item Header with agent relevant information
+    \item Security and authentication
+    \end{itemize}
+However, unlike for \gls{mas} design, the architecture of \gls{dta} is more straightforward and the basic \gls{tcp} socket is chosen for the more to one server-client communication. 
+The details will be discussed later in section \ref{chap: Meth-External}.
+
+\subsection{Pseudo-Code of MAS workflow in WebSocket python}\label{chap: Meth-WS-MAS}
+In algorithm \ref{alg: CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
+Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitive execution but the ability to do planning and decision-making. 
+Under the Main, the production tasks are broken down into a list of sequenced primitives and then assigned to each allocated agent through one of the predefined $send\_and\_receive()$ functions under the messageSender class.
+After getting responses from the agents, \gls{cda} should decide whether to start processing positive responses or retry the steps by negative responses.  
+Once the production process starts, the \gls{cda} assumes the role of a coordinator and waits for inform messages from the allocated agents. It does so by using one of the $receive\_and\_send()$ functions under the messageReceiver class. This allows the \gls{cda} to have overall control of the entire production process and centralize the distributed agent systems.
 
 
-
-\section{External}\label{chap: Result-External}
-As for the delay measurement of the external \gls{dta} system, tests for the 
-upload and download are done separately, with different packet sizes as tuning 
-parameters. 
-
-
-\subsection{Test results of data transmission 
-time in \gls{tcp} sockets between robots and \gls{dta} across 
-various packet lengths} \label{chap: Result-RCP-DTA}
-
-To better measure the influence of different packet lengths on transmission time from 
-a \gls{rcp} to \gls{dta} utilizing \gls{tcp} sockets, the packet length of JointGripper 
-(joint and gripper of the robot arm) position values should be larger than that of the 
-Elbow (elbow of the robot arm), they are 151 and 80 Bytes respectively. As depicted in 
-fig.\ref{fig: SR-JointGripper-Elbow}, the mean transmission time of JointGripper is 
-larger than Elbow, which verifies that larger files take longer to transfer. 
-The cumulative delays of both data lengths also show a linear growth relationship in 
-the upper graph, which means there are no major fluctuations or irregularities in 
-transmission speeds or times for the packets in \gls{tcp} sockets. 
+As for the decentralization of \gls{mas}, the \gls{ra} should be able to react to \gls{cda} and do the decision-making for its field-level control, which means \gls{cda} should only be informed about the status of the production process. In contrast, the exact processes should be done within \gls{ra}, and the material flow should be informed between \gls{ras}. The combination of centralization and decentralization will save the resource power consumed by \gls{cda}, 
+while still maintaining the management level control and decision-making.  
+The algorithm \ref{alg: RAPseudoCode} shows the logic of a \gls{ra}. At the beginning, \gls{ra} waits for the connection and capability check from \gls{cda}. After that, the first agent in the list of $sequenced\_agent$ will listen to the starting message from \gls{cda}. 
+Moreover, other agents will wait for the availability check and inform messages from the last agent on the list. 
+Once the \gls{ra} has completed its own primitives, it should check for the availability of the next agent and inform its starting point. 
+Once all primitives in the list are executed, the last agent should inform the \gls{cda} about the end of processing.
 
 
-\begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_SendReceive_JointGripper_Elbow.png}
-    \centering
-    \caption{Tests for different packet sizes w.r.t data transmission time between robots 
-    and \gls{dta}. \label{fig: SR-JointGripper-Elbow}}
-\end{figure}
+Before the agents start to run, the WebSocket server program (algorithm \ref{alg: ServerPseudoCode}) must be started first so that the messages from agents will be routed to it, which serves as a \gls{ca}.  
+The server runs asynchronously and listens to incoming messages forever, meaning that every time a new agent gets connected, a new thread will be started and killed after the incoming message is processed and sent to the recipient agent. 
+All threads run concurrently, and the hardware limits the maximum possible connection number and also the network bandwidth and latency. 
+After the server receives a message, it should identify the message type to check whether it is in JSON or string format. 
+After that, it will split the string or parse the JSON file to retrieve the recipient name, the priority, and the message content. 
+Since all message-handling processes run concurrently, there is a chance that multiple messages are coming into the server and waiting for processing at the same time. 
+In order to rearrange them and handle the messages with higher priority in advance, all messages should be pushed to the queue, and the critical messages should be popped out first. The critical messages have the highest priority, and after this, the important and then the normal messages. 
+Finally, the message will be processed further or sent directly to the recipient. 
+   
+\begin{breakablealgorithm}
+\caption{Pseudo-Code for \gls{cda} in MAS workflow}
+\label{alg: CDAPseudoCode}
+\begin{algorithmic}[1]
+\State \textbf{Input:} custRequirement
+\State {Import} WebSocket
+\State {Initialize} agentID, centralServerIP
+\State \textbf{Class} messageSender
+    \State \textbf{\qquad function} {$send\_and\_receive(self, recipient, message, priority)$}
+    \State \qquad \qquad Establish a WebSocket connection    
+    \State \textbf{\qquad \qquad while} recipient not Found \textbf{do}    
+    \State \qquad \qquad \qquad Send prioritized messages and wait for response
 
-Since each packet only takes a few milliseconds to be transported, the real-time 
-requirement for production processes is again fulfilled. 
+    \State \textbf{\qquad function} {$send\_capCheck\_and\_receive(self, recipient, primitive, priority)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} recipient not found \textbf{do} 
+    \State \qquad \qquad \qquad Send prioritized messages and wait for response
+    \State \qquad \qquad \qquad Handle capability exceptions
+
+    \State \textbf{\qquad function} {$send\_image\_and\_receive(self, recipient, image\_path, priority)$}
+    \State \qquad \qquad {\#similar to $send\_and\_receive()$ but send an image }    
+    % \State \qquad \qquad ...
+
+    \State \textbf{\qquad function} {$send\_availCheck\_and\_receive(self, recipient, primitive, priority)$}
+    \State \qquad \qquad {\#similar to $send\_capCheck\_and\_receive()$ but raise availibility exceptions } 
+    % \State \qquad \qquad ...
+
+\State \textbf{EndClass}
+\State \textbf{Class} messageReceiver
+    \State \textbf{\qquad function} {$receive\_and\_send(self, response, priority)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} message not received \textbf{do}
+    \State \qquad \qquad \qquad Receive, process and send responses with priority
+    \State \textbf{\qquad function} {$receive\_image\_and\_send(self, response, priority)$}
+    \State \qquad \qquad {\#similar to $receive\_and\_send()$ but receive and save an image }    
+    % \State \qquad \qquad ...    
+    \State \textbf{EndClass}
+\State \textbf{Class} agentsAllocation
+    \State \textbf{\qquad function} {$allocate\_agents\_with\_seq\_primitives(self, requirements)$}
+    \State \qquad \qquad Find tasks from customer requirements
+    \State \qquad \qquad Breakdown tasks into skills into primitives
+    \State \qquad \qquad Create sequence lists for primitives and agents allocation    
+    \State \qquad \qquad \textbf{return} sequences
+    \State \textbf{EndClass}
+\State \textbf{Main:}
+\State {\qquad Instantiate} agentsAllocation, messageSender and messageReceiver with agentID
+\State \qquad $sequences = allocate\_agents\_with\_seq\_primitives(custRequirement)$
+\State \qquad \textbf{repeat}
+\State \qquad \qquad $send\_and\_receive(agent, connectMsg, priority)$
+\State \qquad \textbf{until} all allocated agents connected
+\State \qquad \textbf{repeat}
+\State \qquad \qquad $send\_capCheck\_and\_receive(agent, primitive, priority)$
+\State \qquad \textbf{until} all allocated agents capable of all primitives
+\State \qquad \textbf{repeat}
+\State \qquad \qquad $send\_and\_receive(agent, sequences, priority)$
+\State \qquad \textbf{until} all allocated agents receive sequences
+\State \qquad \qquad $send\_availCheck\_and\_receive(1st\_Agent, 1st\_primitive, priority)$
+\State \qquad \textbf{repeat}
+\State \qquad \qquad $receive\_and\_send(responseMsg, priority)$
+\State \qquad \textbf{until} informed by last agent with finish message 
+\State \textbf{End} 
+\end{algorithmic}
+\end{breakablealgorithm}
+
+%pseudo code for RA
+\begin{breakablealgorithm}
+    \caption{Pseudo-Code for \gls{ra} in MAS workflow}
+    \label{alg: RAPseudoCode}
+    \begin{algorithmic}[1]
+    \State {Import} WebSocket
+    \State {Initialize} agentID, centralServerIP, subServerIP
+    
+\State \textbf{Class} messageSender
+    \State \textbf{\qquad function} {$send\_and\_receive(self, recipient, message, priority)$}
+    \State \qquad \qquad Establish a WebSocket connection    
+    \State \textbf{\qquad \qquad while} recipient not Found \textbf{do}    
+    \State \qquad \qquad \qquad Send prioritized messages and wait for response
+
+    \State \textbf{\qquad function} {$send\_availCheck\_and\_receive(self, recipient, primitive, priority)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} recipient not found \textbf{do} 
+    \State \qquad \qquad \qquad Send prioritized messages and wait for response
+    \State \qquad \qquad \qquad Handle availability exceptions
+
+    \State \textbf{\qquad function} {$send\_image\_and\_receive(self, recipient, image\_path, priority)$}
+    \State \qquad \qquad{\#similar to $send\_and\_receive()$ but send an image }
+    % \State \qquad \qquad ...
+
+\State \textbf{EndClass}
+
+\State \textbf{Class} messageReceiver
+    \State \textbf{\qquad function} {$receive\_and\_send(self, response, serverID)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} message not received \textbf{do}
+    \State \qquad \qquad \qquad Receive, process and send responses with priority
+    \State \textbf{\qquad function} {$receive\_capCheck\_and\_send(self, response, serverID)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} message not received \textbf{do}
+    \State \qquad \qquad \qquad Receive, check capability and send responses with priority
+    \State \qquad \qquad \qquad Handle capability exceptions
+    \State \textbf{\qquad function} {$receive\_sequences\_and\_send(self, response, serverID)$}
+    \State \qquad \qquad Establish a WebSocket connection
+    \State \textbf{\qquad \qquad while} message not received \textbf{do}
+    \State \qquad \qquad \qquad Receive, store sequences and send responses with priority
+
+    \State \textbf{\qquad function} {$receive\_image\_and\_send(self, response, serverID)$}
+    \State \qquad \qquad{\#similar to $receive\_and\_send()$ but receive and save an image }    
+    % \State \qquad \qquad ...    
+    \State \textbf{\qquad function} {$receive\_availCheck\_and\_send(self, response, serverID)$}
+    \State \qquad \qquad {\#similar to $receive\_capCheck\_and\_send()$ but check availability}
+    % \State \qquad \qquad ...  
+    \State \textbf{EndClass}
+ 
+
+   
+    \State \textbf{Main:}
+    \State {\qquad Instantiate} messageSender and messageReceiver with agentID
+    \State \qquad $receive\_and\_send(connectMsg, centralServerID)$
+    \State \textbf{\qquad repeat}
+    \State \qquad \qquad $receive\_capCheck\_and\_send(capMsg, centralServerID)$
+    \State \textbf{\qquad until} CapabilityCheck finished  
+    \State \textbf{\qquad for} agent in sequence {\textbf do}
+    \State \textbf{\qquad \qquad if} {agent is first in sequence} \textbf{then}
+        \State {\qquad \qquad \qquad} $receive\_availCheck\_and\_send(availMsg, centralServerID)$
+        \State \textbf{\qquad \qquad else}
+        \State \textbf{\qquad \qquad \qquad if} {previous agent is not self} \textbf{then}
+            \State \qquad \qquad \qquad \qquad $receive\_availCheck\_and\_send(availMsg, SubServerID)$
+            \State \qquad \qquad \qquad \qquad executePrimitive(primitive)
+        
+            \State \textbf{\qquad \qquad \qquad if} {agent is not last one AND next agent is not self} \textbf{then}
+            \State \textbf{\qquad \qquad \qquad \qquad} $send\_availCheck\_and\_receive(nextAgent, primitive, priority)$
+            \State \textbf{\qquad \qquad \qquad \qquad} executePrimitive(primitive)
+            \State \textbf{\qquad \qquad \qquad \qquad} $send\_and\_receive(nextAgent, informMsg, priority)$
+         
+            \State \textbf{\qquad \qquad \qquad if} {agent is last} \textbf{then}
+            \State \textbf{\qquad \qquad \qquad \qquad} executePrimitive(primitive)
+            \State \textbf{\qquad \qquad \qquad \qquad} $send\_and\_receive(\gls{cda}, informFinishMsg, priority)$
+            \State \textbf{\qquad end for} 
+    \State \textbf{End} 
+\end{algorithmic}
+\end{breakablealgorithm}
 
 
+%pseudo code for Server
+\begin{breakablealgorithm}
+    \caption{Pseudo-Code for \gls{ca} as a server in MAS workflow}
+    \label{alg: ServerPseudoCode}
+    \begin{algorithmic}[1]
+        \State {Import} WebSocket
+        \State {Initialize} serverID, priorityDict, messageQueue, connectedAgents
+        \State \textbf{Do in parallel}
+        \State \textbf{\qquad function} handler(WebSocket, path)  
+        \State \textbf \qquad \qquad receive agent name and store in connectedAgents
+        \State \textbf {\qquad \qquad while} WebSocket connected \textbf{do} 
+        \State \textbf \qquad \qquad \qquad receive message from agent   
+        \State \textbf{\qquad \qquad \qquad if} {message is json} \textbf{then}
+        \State \textbf \qquad \qquad \qquad \qquad parse json message and retrieve recipient
+        \State \textbf \qquad \qquad \qquad \qquad store agent messages in messageQueue  
+        \State \textbf \qquad \qquad \qquad \qquad $process\_jsonMessage(recipient, jsonMsg)$
+        \State \textbf{\qquad \qquad \qquad else}  
+        \State \textbf \qquad \qquad \qquad \qquad retrieve recipient from string message
+        \State \textbf \qquad \qquad \qquad \qquad store agent messages in messageQueue  
+        \State \textbf \qquad \qquad \qquad \qquad $process\_message(recipient, stringMsg)$
+        
+        \State \textbf{\qquad function} $process\_message(recipient, stringMsg)$   
+        \State \textbf \qquad \qquad prioritize messages from priorityDict and store in messageQueue 
+        \State \textbf \qquad \qquad handle messages with higher priority first   
+        \State \textbf \qquad \qquad send stringMsg to recipient 
+        \State \textbf{\qquad function} $process\_jsonMessage(recipient, jsonMsg)$   
+        \State \textbf \qquad \qquad prioritize messages from priorityDict and store in messageQueue
+        \State \textbf \qquad \qquad handle messages with higher priority first 
+        \State \textbf \qquad \qquad send jsonMsg to recipient
+        \State \textbf{Main:}   
+        \State \textbf {\qquad while} true \textbf {do}
+        \State \textbf \qquad \qquad handler(WebSocket, serverID) 
+        \State \textbf{End}                 
+    \end{algorithmic}
+\end{breakablealgorithm}
 
-\subsection{Test results of data transmission time in \gls{tcp} sockets between \gls{dta} 
-and \gls{ms} Azure \gls{dt} platform across various packet lengths} \label{chap: Result-DTA-DT}
+\subsection{Pseudo-Code of one to one agent communication workflow in RESTful API}
+A more comparable application layer protocol is \gls{http}, which has the request-response mechanism with more additional functionalities compared to \gls{http}. 
+Therefore, \gls{http} was considered an alternative communication protocol other than WebSocket. 
+However, based on some test results in chapter \ref{chap: Result}, WebSocket is more appropriate.
+As a result, different from WebSocket, the design of \gls{http} based system is only built for performance testing and compared to WebSocket. In the methods below, RESTful API will be used as a Web Service API, an interface to connect two devices over the internet based on \gls{http} protocol. With the design based on RESTful API, the clients can communicate with each other by using its standard \gls{crud} operations, for example, POST and GET, to send and receive messages. 
+Therefore, the RESTful API system is simplified to one-to-one agent communication without other functionalities like decision-making or message prioritization, among others.
 
-However, in the program, the most considerable variance 
-the total data transmission time is the \gls{rtt} between local devices and the global digital 
-twin. In addition to the \gls{rtt}, the data upload and download time is also measured 
-separately, which has an opposite result as those from the research\cite{cainelli_performance_2023}. 
-In the paper, the resulting uplink data transmission time is larger than the downlink 
-data transmission time. The difference between both tests is the research team from 
-Magdeburg measured delay with logical links from a 5G standalone network and the industrial 
-5G devices. In contrast, our test was based on data update times in the cloud. The latency 
-between data upload and update reflects the actual \gls{dt} data update patterns, 
-which includes additional process time in the cloud. Therefore, we can infer that the 
-increased latency of data upload may be caused by the internal Azure \gls{dt} Model 
-API for data update (an unclosed issue in \gls{ms} Q\&A\footnote{https://learn.microsoft.com/en-us/answers/questions/1328803/experiencing-slow-load-times-on-azure-digital-twin}).
+
+According to the pseudo-code for agentSR (send and receive messages) and agentRS (receive and send messages) in algorithm \ref{alg: SRPseudoCode} and \ref{alg: RSPseudoCode}, and the server in algorithm \ref{alg: apiServerPseudoCode}, the primary mechanism is similar to the one designed for WebSocket. One significant difference is that the connection will be closed after the message is sent from the clientSR to clientRS. If the agentRS needs to send a response message back to inform the success, re-connection is needed. 
+Instead of sending and receiving from WebSocket, agentSR first POST a request to the server to call the function $send\_message()$, 
+while agentRS GET a request to the server for the function call $get\_message()$, same for the reverse direction. 
+Under the same condition, the message transport routine with RESTful API may result in more latency than WebSocket, which will be verified later.
+\begin{algorithm}
+    \caption{Pseudo-Code for agentSR in one to one communication workflow}
+    \label{alg: SRPseudoCode}
+    \begin{algorithmic}[1]
+    \State {Import} flask
+    \State {Initialize} agentID, serverIP
+        \State \textbf{function} {$send\_and\_receive(sender, recipient, msg)$}
+        \State \qquad format msg with agent IDs 
+        \State \qquad post request msg to server
+        \State \textbf{\qquad while} no response \textbf{do}    
+        \State \qquad \qquad {$wait\_for\_response(sender, recipient)$}
+
+        \State \textbf{function} {$wait\_for\_response(sender, recipient)$}
+        \State \textbf{\qquad while} message not received \textbf{do}    
+        \State \qquad \qquad get request jsonMsg from server and wait for reponse
+        \State \qquad \qquad parse jsonMsg to retrieve message content
     
 
-It is worth mentioning that the data upload time from JointGripper and Elbow has little to 
-no difference since the upload mechanism of Azure \gls{dt} is limited by sending twin 
-values one after one. There is only such function to update up to one twin simultaneously. 
-In order to differentiate the upload speed, the patch size of the to-be-updated twin values 
-should vary. The fig.\ref{fig: UD-cycle-JointGripper} again shows the cumulative delays 
-with the same conclusion as in fig.\ref{fig: SR-JointGripper-Elbow} and mean \gls{rtt} is 
-slightly lower than 100ms, which is still under the real-time requirements. The packet for 
-upload and download will be routed to the cloud, which not only goes through the internal 
-5G network but also the internet externally, which results in much higher latency. Compared 
-with the test results from \cite{cainelli_performance_2023}, optimizing the internal twin 
-update mechanisms can further reduce data \gls{rtt}. 
+    \State \textbf{Main:}
+    \State \qquad {$send\_and\_receive(agentID, recipient, msg)$}
+    \State \textbf{End} 
+    \end{algorithmic}
+    \end{algorithm}
+
+
+    \begin{algorithm}
+        \caption{Pseudo-Code for agentRS in one to one communication workflow}
+        \label{alg: RSPseudoCode}
+        \begin{algorithmic}[1]
+        \State {Import} flask
+        \State {Initialize} agentID, serverIP
+            \State \textbf{function} {$send\_message(recipient, msg)$}
+            \State \qquad format msg with recipient ID 
+            \State \qquad post request msg to server and wait for response 
+    
+            \State \textbf{function} {$get\_message(agentID)$}  
+            \State \qquad get request jsonMsg from server and wait for response
+            \State \qquad parse jsonMsg to retrieve message content
+            \State \qquad \textbf{return} msg, recipient         
+    
+        \State \textbf{Main:}
+        \State \qquad {$msg, recipient = get\_message(agentID)$}
+        \State \textbf{\qquad if} msg AND recipient \textbf{then}   
+        \State \qquad \qquad{$send\_message(recipient, msg)$}
+        \State \textbf{End} 
+        \end{algorithmic}
+        \end{algorithm}
+
+    \begin{algorithm}
+        \caption{Pseudo-Code for a server in one to one communication workflow}
+        \label{alg: apiServerPseudoCode}
+        \begin{algorithmic}[1]
+        \State {Import} flask
+        \State {Initialize} jsonMsg 
+        \State \textbf{Class} app
+            \State \qquad \textbf{function} {$send\_message()$}
+            \State \qquad \qquad {\# POST request in app class} 
+            \State \qquad \qquad parse the json file from request
+            \State \qquad \qquad retrieve recipient and message content 
+            \State \qquad \qquad \textbf{if} recipient AND msgContent \textbf{then}
+            \State \qquad \qquad \qquad jsonify senderIP and message content and store in jsonMsg
+            \State \qquad \qquad \qquad response is OK status code
+            \State \qquad \qquad \textbf{else}            
+            \State \qquad \qquad \qquad response is Error code            
+            \State \qquad \qquad \textbf{return} response  
+
+            \State \qquad \textbf{function} {$get\_message(agentID)$}  
+            \State \qquad \qquad {\# GET request in app class} 
+            \State \qquad \qquad \textbf{if} agentID in jsonMsg \textbf{then}
+            \State \qquad \qquad \qquad send jsonMsg and response is OK status code
+            \State \qquad \qquad \textbf{else}
+            \State \qquad \qquad \qquad response is Error code
+            \State \qquad \qquad \textbf{return} response         
+    
+        \State \textbf{Main:}
+        \State \qquad Instantiate app
+        \State \qquad run app forever
+        \State \textbf{End} 
+        \end{algorithmic}
+        \end{algorithm}
+
+\section{External} \label{chap: Meth-External}
+In section \ref{chap: Overview-External}, the data flow for the external 
+\gls{dta} system will be presented. Following that, section \ref{chap: ntpsetup} 
+will explain the \gls{ntp} setup used to measure delays between local devices and 
+the cloud. To better understand the workflow, the pseudo-code for both \gls{rcp} 
+and \gls{dta} will be provided in section \ref{chap: RCPDTAPseudo}. Lastly, the 
+final section will cover the setup of the Azure \gls{dt} platform for data ingestion.
+
+
+
+\subsection{Overview (conceptual diagram)}\label{chap: Overview-External}
+
+%figure conceptual DT
+\begin{figure}[htb]
+\includegraphics[width=\textwidth]{figures/DT_Conceptual_Diagram.pdf}
+
+\centering
+\caption{Conceptual diagram of MAS\label{fig: DTConceptual}}
+\end{figure}
+
+The workflow of updating global \gls{dt} through the \gls{dta} process is shown 
+in Figure \ref{fig: DTConceptual}. The process begins on the left-hand side of the 
+graph, where the \gls{dta} receives process data from robots, including steady-state 
+data. The process data is parsed and uploaded one by one to the Azure \gls{dt} 
+platform after separating the sticky packets from the \gls{tcp} socket.
+All the updates of the \gls{dt} instances in the cloud are temporarily displayed 
+in Azure \gls{dt} Explorer and concurrently stored in Azure Event Hubs. The history 
+data can be ingested for further analysis in Azure Data Explorer. The Azure \gls{dt} 
+Explorer serves as a robot status monitor, while Azure Data Explorer is a data analysis tool.
+Once the remote data update is successful, the data is immediately downloaded to the local 
+host and can be used as input for other visualization purposes. The real-time capability 
+of this upload and download cycle of data should also be maintained.
+
+It is important to note that the process data is generated by robot movement, 
+which means that the \gls{dta} is completely independent of the \gls{mas}. This decoupling 
+offers a 
+significant advantage. Even if the \gls{mas} is in complete chaos, the robot's current status 
+will still be captured and updated remotely. This is advantageous for both data acquisition 
+and monitoring purposes.
+
+
+
+\subsection{Prerequisite} \label{chap: ntpsetup}
+\subsubsection{\gls{ntp} setup}
+In order to measure the delays between the local host and cloud, the clock of both ends must be synchronized. 
+Due to the nature of computer systems, the software clock might drift away from the "true" time (absolute \gls{utc}) 
+due to various reasons like system load, hardware imperfections, or even temperature changes.
+Therefore, before the measurement, the software clock of the local host should be synchronized with the global 
+clock using \gls{ntp}. 
+The \gls{ntp} setup of the Linux system is as follows:  
+
+\begin{enumerate}
+    \item System update and upgrade.
+    \item Install \gls{ntp}.
+    \item Add reliable global \gls{ntp} servers/server pools to configure ntp.conf file.
+    \item Allow port 123/udp for or disable firewall.
+    \item Restart \gls{ntp} and check \gls{ntp} status.
+    \item Check synchronization status (e.g.: reach, delay, offset and jitter, etc).
+    \end{enumerate}
+
+Since the cloud system clock is already synchronized with \gls{utc}, all the tests and calculations results are based on \gls{utc}. 
+
+\subsection{Pseudo-Code of \gls{rcp} and \gls{dta} workflow in C++ and C\#}\label{chap: RCPDTAPseudo}
+
+As previously mentioned in this chapter, it is important to completely separate the 
+\gls{dta} from the \gls{mas}. Algorithms \ref{alg:RCPPseudoCode} and 
+\ref{alg:DTAgentPseudoCode} list the workflows of \gls{rcp} and \gls{dta} separately. 
+In the \gls{rcp} workflow, the robot arm is controlled through predefined functions 
+that can record the current states. Each new state recorded must be immediately sent 
+to the \gls{dta} via the established \gls{tcp} socket. 
+On the \gls{dta} side, it must be started before the \gls{rcp} and listen to the 
+socket to receive the data stream once connected. Whenever a new connection to a 
+\gls{ra} is established, the \gls{dta} will create a new thread to receive, process, 
+upload and download data concurrently. 
+However, an issue with using \gls{tcp} is that packets do not arrive individually 
+but are stuck together. To solve this, delimiters are utilized for sticky packet separation.
+
+%pseudo code for RCP
+\begin{breakablealgorithm}
+    \caption{Pseudo-Code of \gls{rcp} workflow}
+    \label{alg:RCPPseudoCode}
+    \begin{algorithmic}
+    \State {Import} socket, franka
+    \State {Initialize} \gls{dta}\_IP
+    \State \textbf{function} {$get\_rstate\_and\_send(clientSocket)$}
+        \State \qquad Start robot motion and record robot state
+        \State \qquad {$send\_message(robotState, clientSocket)$}
+    \State \textbf{function} {$send\_message(msg, clientSocket)$}
+        \State \qquad send robot state to \gls{dta} 
+    \State \textbf{Main:}
+    \State \qquad Instantiate robot
+    \State \qquad Initialize start position
+    \State \qquad Establish a \gls{tcp} connection with \gls{dta}  
+    \State \qquad {$get\_rstate\_and\_send(clientSocket)$}
+    \State \textbf{End}
+    \end{algorithmic}
+\end{breakablealgorithm}
+
+
+%pseudo code for DTAgent
+\begin{breakablealgorithm}
+    \caption{Pseudo-Code of \gls{dta} workflow}
+    \label{alg:DTAgentPseudoCode}
+    \begin{algorithmic}
+    \State {Import} socket, AzureDigitalTwin
+    \State {Initialize} \gls{rcp}\_IP(s)
+    \State \textbf{function} {$read\_and\_upload\_download\_processData(\gls{rcp}\_IP)$}
+        \State \qquad \textbf{do run in parallel}
+            \State \qquad \qquad $create\_client\_thread(\gls{rcp}\_IP)$       
+    \State \textbf{function} {$create\_client\_thread(\gls{rcp}\_IP)$}
+        \State \qquad Establish a \gls{tcp} connection with \gls{ra}
+        \State \qquad {$data = read\_data(clientSocket)$}  
+        \State \qquad {$process\_data\_upload\_and\_download(data)$}    
+    \State \textbf{function} {$read\_data(clientSocket)$}
+        \State \qquad receive and store robot state data
+        \State \qquad \textbf{return} data
+    \State \textbf{function} {$process\_data\_upload\_and\_download(data)$}
+        \State \qquad separate sticky packets with delimiter
+        \State \qquad upload processed data to Azure \gls{dt} in json patch
+        \State \qquad download twin after data update 
+    \State \textbf{Main:}
+        \State \qquad \textbf{for} \gls{rcp}\_IP in IPs \textbf{do}
+        \State \qquad \qquad {$read\_and\_upload\_download\_processData(\gls{rcp}\_IP)$}
+        \State \textbf{End}
+    \end{algorithmic}
+\end{breakablealgorithm}
+
+
+
+\subsection{Azure \gls{dt}}
+According to the workflow explained in section \ref{chap: Overview-External}, 
+it is crucial to establish a reliable and operational Azure \gls{dt} platform 
+to ensure seamless data transfer. The platform should include Azure \gls{dt} Explorer, 
+Azure Event Hub, and Azure Data Explorer. Additionally, the Azure \gls{dt} 
+instance must be configured with a time-series data history connection. Other resources 
+must also be created, such as an Event Hubs namespace, an event hub, Azure Data Explorer 
+cluster, and a database. 
+After a connection, data is sent to an event hub, which eventually forwards the data to 
+the Azure Data Explorer cluster and stores it in a database. The history data includes 
+twin property updates, twin lifecycle events, and relationship lifecycle events, which 
+can be later queried in Azure Data Explorer.
+
+\subsubsection{Setup}
+Here is the sequence of the basic setup in the Azure platform:
+\begin{enumerate}
+    \item Create Azure Event Hub namespace and add instance.
+    \item Create Azure Data Explorer cluster and add database.
+    \item Connect data history of the Event Hub instance to the \gls{dt} instance.
+\end{enumerate}
+
+In order to verify whether the connection is successful, one can try updating the 
+\gls{dt} instance and querying data from the Azure Data Explorer side. The query
+language is called \gls{kql}, which is powerful for pattern discovery, anomalies 
+and outliers identification, and statistical modeling (various graphs creation). 
+Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} code in the test: 
+
+\begin{algorithm}
+    \caption{\gls{kql}}
+    \label{alg: KQLCode}
+    \begin{algorithmic}
+        \State  AdtPropertyEvents 
+        \State {| where ID == 'RadPositionJoint3' and Key == 'value'}
+        \State {| where TimeStamp between (datetime(2023-08-27 16:02) .. datetime(2023-08-27 19:00))}
+        \State {| order by TimeStamp asc}
+        \State {| project TimeStamp, Id, Key, Value}
+    \end{algorithmic}
+\end{algorithm}
 
 
 \begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_UploadDownloadCycleTime_JointGripper.pdf}
+    \includegraphics[width=\textwidth]{figures/KQL_cut.jpg}
+    
     \centering
-    \caption{Tests for \gls{rtt} of data upload and download for JointGripper. \label{fig: UD-cycle-JointGripper}}
+    \caption{Snippet of Data Explorer\label{fig: KQL}}
 \end{figure}
 
-As mentioned, the data upload time is larger than the download time, as depicted in 
-fig.\ref{fig: UD-sep-JointGripper}. The average upload time of JointGripper values is under 30ms, 
-while the download time results in about 70ms. Under the same conditions, the differences 
-between JointGripper and Elbow in both values for are negligible with only 1-2ms difference (see \ref{chap: append-DTagent} fig.\ref{fig: UD-cycle-Elbow} 
-and \ref{fig: UD-sep-Elbow}), due to the one after one twin upload mechanism. However, 
-the time spent connecting to the \gls{dt} platform needs to be factored in 
-as well, which takes about 9400ms for JointGripper and 9600ms for Elbow. Although it 
-does not fulfill the real-time requirement, it is still counted for comparison 
-to the average download time.
+As shown in fig.\ref{fig: KQL}, by executing the code from the snippet, all the history data will be listed as a table 
+which can be downloaded to the local devices later. 
+
+
+\section{Modularization}\label{chap: Meth-Modular}
+In addition to the internal and external designs of a general \gls{mas}, 
+there are also some considerations of modularizing timing behaviors of the 
+system. In the following sections, the \gls{tcp/ip} model as well as 
+\gls{dsl} will be introduced and used as the design basis of a modularized general 
+\gls{mas}. 
+\subsection{From \gls{osi} model to \gls{tcp/ip} model}
+
+Although TCP is classified as a transport layer protocol according to the 
+OSI model (fig.\ref{fig: OSI}), data transport between different TCP sockets 
+still involves all layers. This is because a program using socket libraries 
+operates the TCP socket, which is an operation under the application layer. 
+The transport layer protocols only accept data from the session layer in the 
+OSI model and break it down into smaller pieces to ensure reliable and correct 
+data transport. However, considering delays in all seven layers for modularization 
+purposes would be too strict and complicated. Therefore, the focus should be 
+shifted from the general OSI model to the more abstract TCP/IP model, as depicted 
+in fig.\ref{fig: TCP_IP}.
+
+The TCP/IP model consists of four layers: application layer, transport layer, 
+internet layer, and network access layer, with each mapping different layers in 
+the OSI model. As depicted in the TCP/IP model, the application layer roughly 
+contains the upper three layers, while the network access layer contains the 
+physical and data link layer. The network layer is renamed as the internet 
+layer, while the transport layer remains the same.
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/TCP_IP.pdf}
+    
+    \centering
+    \caption{\gls{tcp/ip} model with example protocols \label{fig: TCP_IP}}
+\end{figure}
+
+\subsection{Timing properties of data transport w.r.t sockets and visual notations based on \gls{tcp/ip} model}
+When operating in an application, both TCP sockets and WebSockets transport packets 
+through all layers of the TCP/IP model. In order to better modularize delay, a set of 
+visual notations based on \gls{dsl} is created.
+Thanks to the works of former researchers, there are already some graphical tools 
+developed for different purposes. The graphical tools 
+can be roughly divided into two types: tools ideal for real-world delay measurement, 
+for example, the famous Wireshark, OPNET, and NS-3, 
+and tools suitable for modeling and visualization, such as OpenModelica, 
+Matlab/Simulink and LabVIEW.
+
+
+
+Although being out of the scope of this thesis, the measurement of delay within 
+each layer of \gls{tcp/ip} model will be essential for future investment.
+For instance, as depicted in fig.\ref{fig: DSLConceptual}, the delay in 
+each layer is represented as a block based on \gls{dsl}, which can be later integrated 
+with graphical tools.
+In this case, delay in a specific network layer will become comparable between different 
+technologies based on either application or transport layer protocols, for example, 
+\gls{tcp} socket and WebSocket. Apart from the network delay of communication between 
+agents, as shown in the fig.\ref{fig: DSLConceptual}, there is also another delay that can be modularized in 
+the context of robot control. The robot control systems introduce delay first in \gls{rci} 
+by executing the commands and then a minor delay within the I/O module before activating 
+the actuator.
+After each robot motion driven by the actuator, its current state will be sent back to 
+the \gls{cpu} by first going through the sensor, I/O module, and \gls{rci} again. 
+
+
+
 
 
 
 
 \begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_UploadDownload_JointGripper.png}
+    \includegraphics[width=\textwidth]{figures/DSLConceptual.pdf}
+    
     \centering
-    \caption{Tests for delays between \gls{dta} and \gls{dt} update of JointGripper, 
-    and delays for twin value download. \label{fig: UD-sep-JointGripper}}
+    \caption{Conceptual diagram of a modularized general \gls{mas} based on \gls{dsl} \label{fig: DSLConceptual}}
 \end{figure}
-
-
-To differentiate the upload speed based on packet size, two patches with 
-different sizes are introduced. Ideally, the small data patch with a size of 
-49 Bytes should induce a higher transmission speed than the large one with 554 Bytes, 
-but the reality is quite different. The test results of all the 
-delay measurements for both patch sizes are presented as a violin plot in 
-fig.\ref{fig: UD-violin-patchsize}. As expected, the upload time of large 
-patches is more than that of small patches, while the result of download time is 
-the opposite. This results in nearly identical total \gls{rtt} of both. 
-The reasons can be that each test is done at a different time, which results in a 
-fluctuation related to the network traffic, cloud service loads, amount of end users 
-under the same 5G network, and many more, which influence the data transmission time 
-even more than the patch sizes.
-
-\begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/tests/DT/violin_patch_size.png}
-    \centering
-    \caption{Tests for \gls{rtt}, delays between \gls{dta} and \gls{dt} 
-    update of JointGripper, and delays of twin value download for 
-    two different patch sizes. In the graph, s represents small patches 
-    and l for large patches.\label{fig: UD-violin-patchsize}}
-\end{figure}
-
-In general, the data upload and download time between \gls{dta} and the cloud is 
-much higher than the field-level data transmission time under \gls{tcp} sockets. 
-A fig.\ref{fig: SR-U-D-violin} shows the variance and mean of those in a violin plot 
-for a more intuitive observation. 
-Compared to the violin plot in fig.\ref{fig: UD-violin-patchsize}, the send and receive 
-processes always show a symmetric triangular shape, suggesting a limited sample size. 
-Considering the non-symmetric triangular shape of the uploading and downloading processes, 
-it is likely to be attributed to the data points with a predominance at the lower extremum 
-and the minimal presence at the upper extremum.
-\begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/tests/DT/log_violin_Plot_3cat.png}
-    \centering
-    \caption{Tests for data transmission time from robot to \gls{dta}, 
-    delays between \gls{dta} and \gls{dt} 
-    update of JointGripper, and delays for twin value download.\label{fig: SR-U-D-violin}} 
-\end{figure}
-
-
-It is worth mentioning that, among all the tests for data update 
-in the Azure \gls{dt} platform, there were several times that the 
-twin instances experienced an incorrect update time. In these cases, 
-the data update time is even earlier than the upload timestamp from the 
-local device, which is theoretically impossible. The reason could be 
-that the data update process in the cloud is operated internally but not necessarily in 
-the same processing unit. The asynchronous processing in different counterparts 
-can result in time synchronization issues. Also, the inaccuracy in the 
-time synchronization across the devices and cloud servers may cause data 
-inconsistency issues.
