@@ -10,11 +10,40 @@ of specific use cases, in addition to studying the timing behaviors.
 It builds on the works of leading researchers in the field.
 
 
-\section{Centralized versus decentralized systems}
+\section{Centralized and decentralized systems}
 Studies around centralized and decentralized systems have been conducted 
-in many fields. It seems that the globalization has transfered the 
+in many fields. It seems that the globalization has gradually transfered the 
 centralized top-down to decentralized bottom-up synthesis\cite{ueda_emergent_2004}.   
-In the supply chain for example, 
+In the supply chain for example, there is no long a standalone production, instead, 
+a synergy of all vendors, customers, third-party providers, or other
+ﬁrms\cite{mahapatra_modeling_2003}. This concept is carried over to be used 
+in multi-agent architecture. A comparison between centralized and decentralized 
+architecture has been presented by service restoration with bus tests. The 
+analysis exposes the time taken by other system considerations, the impact 
+of communication failure and impact of multiple fault scenarios, indicating 
+that the decentralized system benefits from lower computation time and cyles, 
+not prone to single point failures, and efficient restoration of 
+multiple faults\cite{sharma_comparative_2016}. 
+In \cite{egger_deployment-friendly_2020}, simulation and production tests 
+for decentralized scheduling tasks have been conducted. In this paper, as shown 
+in fig.\ref{fig: CentralizeDecentralizeConcept}, centralized and decentralized 
+schemes are compared. In the centralized model, master agent has the most power, 
+while other agents serve as slaves without the ability to make their own decisions. 
+However, in a \gls{mas} based decentralized model, the production agents are 
+capable of making decisons, and interact with each other under the coordination 
+of the central customer interface agent. 
+
+\begin{figure}[htb]
+    \includegraphics[width=0.8\textwidth]{figures/State-of-the-art/CentralizeDecentralizeConcept.png}
+    \centering
+    \caption{Centralized vs. decentralized control schemes compared. 
+    In the centralized model decisions are made only within the 
+    master, whereas in the decentralized model decisions are taken 
+    within local resources dependent of both local events or measurements 
+    and information exchange with other resources. 
+    Source: \cite[fig.1]{egger_deployment-friendly_2020}\label{fig: CentralizeDecentralizeConcept}}
+\end{figure}
+
 
 
 \section{MAS}
@@ -32,7 +61,7 @@ robot that participates in the complex task execution\cite{ota_multi-agent_2006}
 
 
 Defining \gls{mas} can be confusing, as different researchers approach 
-it from various angles. For a more unambiguous interpretation of the 
+it from various aspects. For a more unambiguous interpretation of the 
 concept, a general \gls{mas} can be divided into three views: the 
 technical system that comprises robots, the automation control system 
 characterized by sensors, actuators, networks, and robot control units, 
@@ -54,7 +83,8 @@ pattern. Therefore, comparing design patterns in different production
 levels is done\cite{ocker_leveraging_2021}. The choice of an ideal 
 design pattern should be limited for \gls{ra} in this research by 
 comparing three relevant design patterns:  \gls{ra} pattern in Wannagat’s 
-architecture, \gls{mfs} patterns in Fischer’s architecture self*-control 
+architecture, \gls{mfs} patterns in Fischer’s architecture and 
+self*-control 
 MAS in Ryashentseva’s architecture. Among all,  Wannagat’s architecture 
 is chosen as the appropriate design pattern for \gls{ra} for field level 
 control, which consists of five modules: Planning Module, Knowledge Base, 

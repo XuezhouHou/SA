@@ -1,48 +1,23 @@
 % !TeX spellcheck = en_US
 \chapter{Methodology}\label{chap: Meth}%
-This chapter describes the methodologies of the general \gls{mas} design. 
-The general \gls{mas} is distributed into two parts: internal (section \ref{chap: Meth-Internal}) 
-and external (section \ref{chap: Meth-External}).  
-The internal system includes a \gls{mas} for the \gls{cda} and \gls{ra}, 
-while the external system involves the \gls{dta}. 
+To realize the decentralization of \gls{mas}, we divided the general \gls{mas} into 
+two parts. The local \gls{mas} (section \ref{chap: Meth-Internal}) to achieve agent 
+collaboration and the global \gls{dt} (section \ref{chap: Meth-External})
+for cloud-based digital mapping of physical entities. The local \gls{mas} 
+includes a \gls{mas} for the \gls{cda}, \gls{ca} and \gls{ra}, 
+while the global \gls{dt} represents the cloud-based \gls{dta}. 
 Although these two systems are decoupled from each other, 
 they both follow the principles of an agent-based operating system. 
 At the end, it concludes the timing properties for both 
-internal and external systems with protocols in 
+local \gls{mas} and global \gls{dt} with communication protocols in 
 different layers and suggests a way to represent 
-network latency modularly using visual notation of \gls{dsl}.
-
-
-
-\section{Centralization versus decentralization}
+network latency modularly using visual notation of \gls{dsl}. 
 
 
 
 
+\section{Local \gls{mas}}\label{chap: Meth-Internal}%
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\section{Internal}\label{chap: Meth-Internal}
 This section discusses the selected design pattern for \gls{mas} along 
 with the responsibilities of each module within it.
 It then compares the features of transport layer protocols with those of 
@@ -50,7 +25,19 @@ application layer protocols.
 Eventually the methods for using python WebSocket for \gls{mas} and 
 RESTful API for one to one agent communication are presented in form of pseudocode. 
 
-\subsection{Overview (conceptual diagram)}
+
+\subsection{Decentralization of \gls{mas}}
+The design of our local \gls{mas} relies on the decentralization 
+schemes in fig.\ref{fig: CentralizeDecentralizeConcept}. 
+Based on the use cases from BMW and Wittenstein, all the agents can be roughly 
+divided into two kinds, the management level master agent and the field-level sub-agents. 
+The \gls{cda} represents the former, while the others belong to the latter ones, 
+including the storage agent, transport agent, wiring agent and assembly agent. For 
+convenience we will refer to all sub-agents as \gls{ras}. Addtionally, we included 
+a \gls{ca} to handle real-time communication between agents in different levels. 
+
+
+\subsection{\gls{mas} design based on Wannagat's architecture}
 
 %figure conceptual MAS
 \begin{figure}[htb]
@@ -60,7 +47,10 @@ RESTful API for one to one agent communication are presented in form of pseudoco
 \end{figure}
 
 % decribe the conceptual diagram
-
+For the modularization purposes, Wannagat's architecture is chosen for the 
+system design because of its concentration on field-level operation over other 
+design architectures, such as Fischer’s and Ryashentseva’s architecture that focus 
+on higher levels in production system.  
 Fig.\ref{fig: MASConceptual} shows a conceptual diagram of a \gls{mas} based 
 on the \gls{ra} design patterns 
 in Wannagat’s architecture\cite{cruz_salazar_cyber-physical_2019}, 
@@ -78,120 +68,239 @@ instead of a management system. The five modules within an agent are:
 \end{itemize}
 
 for both \gls{cda} and \gls{ra}.
-Based on these five modules, the agents executing functions can be categorized into five parts. 
-The following tab.\ref{tab:designPatterns} shows 
-some functions of each module based on the general requirements of a smart factory.
+Based on these five modules, the agent tasks can be categorized into five parts. Some 
+of them have been included in our \gls{mas}, while the others should be considered in the 
+next design steps. 
 
 
-\begin{table}[p]
-    \setlist[itemize]{leftmargin=*, topsep=0pt, itemsep=2pt, parsep=0pt}
-    \caption{Wanagat's \gls{ra} design patterns with task related examples.}
-    \label{tab:designPatterns}
-    \small
-    \renewcommand{\arraystretch}{1.2} 
-    \setlength{\extrarowheight}{3pt}
+Firstly, in the planning module, it normally contains requirements like task planning, 
+decision making, 
+resource allocation, sequencing and scheduling. It has been mostly explored in our 
+design, except for the communication Interface module. Inside a \gls{cda}, 
+for the task planning, we introduced 
+a mechanism to break down tasks into smaller executable units (primitives). 
+The decision 
+making process is also enabled by including functionalities that can decide which task should be 
+assigned to which agent based on the local \gls{db}. After that, for a better resource 
+allocation, the allocated agents will be assigned with these tasks. What has not been 
+considered is the scheduling tasks. It would be ideal if each agent could calculate 
+the primitive execution time before starting.
+
+Secondly, the control module should be able to perform tasks like monitoring, adaptation, 
+control and optimization, resource allocation and actuation and many more. The only part 
+performed in our design is the actuation. All \gls{ras} can actuate the robot's operation 
+unit by calling the primitives actuation functions. Other tasks, such as monitoring the 
+robot states, adapting the plans with current states (e.g., emergent stop), control and 
+optimizing the robot's motion are not under consideration in the work. 
+
+
+The knowledge base module is another important module in general. 
+The module consists of lot of components and tasks including \gls{db}, knowledge representation and reasoning, learning and knowledge 
+sharing tasks. For DB design, it can be either hierarchical, relational, non-relational 
+or object-oriented. In our work, the \gls{db} design of \gls{cda} is based on a 
+hierarchical task decomposition structure. They are used to represent and reason task-related 
+knowledges. 
+Other parts like learning from new tasks or sharing knowledges between agents are not considered here.  
+
+
+Although less concerned in the work, the diagnosis module is also important for fault 
+detection, diagnosis and prediction, and root cause analysis and classification. Among all, 
+only fault detection here is relevant to our work. In a \gls{ra}, an exception can be raised 
+if the agents are currently not available or capable of primitives. 
+
+
+The last module is the most important module in our case, which is responsible for agent 
+communications. This module is embedded in each agent, or as the main module in \gls{ca}. 
+Common tasks, for example, are message parsing and encoding, connection 
+establishment, message handling, message queuing and data security. 
+All tasks are executed at least once 
+except for the security issues in our case. Here are some examples for each: 
+messages are generally encoded and decoded into agent specific data types, a stable 
+connection can be ensured for constant data exchange, and messages can be prioritized in a 
+queue inside a \gls{ca}. 
+
+
+\subsection{\gls{osi} model and comparison between sockets relevant protocol layers}
+%figure conceptual MAS
+\begin{figure}[htbp]
+\includegraphics[width=0.6\textwidth]{figures/OSI.pdf}
+\centering
+\caption{\gls{osi} model with example protocols \label{fig: OSI}}
+\end{figure}
+
+An important aspect in agent communication is the communication protocols 
+in different layers. 
+Fig.\ref{fig: OSI} shows the famous OSI model with seven abstraction layers, with Transport and 
+application layers mostly relevant to network communication. TCP and UDP are typical transport layer 
+protocols, and they provide a more abstract and generic service for reliable data transfer, 
+while the application layer protocols like HTTP or Websocket are designed for applcations with 
+more user-specific functionalities. Although the application layer protocols are still based on 
+TCP/UDP, they defined additional "rules" to 
+specify the structure, content, and semantics of the messages transport. 
+
+
+To choose one protocol over the others, we considered the Characteristics and compared 
+those with our requirements of system design. Firstly, 
+protocols within the same layer should be compared. In our studies, \gls{tcp} is chosen 
+over \gls{udp}, while WebSocket is chosen over other comparable protocols 
+such as \gls{http} and \gls{mqtt}. The decision is mainly done by comparison of their 
+characteristics related to the design requirements. 
+
+
+
+\subsubsection{TCP as communication protocols}
+\gls{tcp} as communication protocol is chosen based on the following characteristics: 
+\begin{itemize}
+    \item Use case
+    \item Reliability
+    \item Connection type
+    \item Overhead 
+    \item Sequence
+    \item Retransmission of lost Packets
+    \item Speed
+    \item State
+\end{itemize}
+Normally, \gls{tcp} and \gls{udp} are used in difference use cases with different focus. 
+TCP are usually the communication protocols for email, text messages and file transfers where a 
+reliable connection is needed. It manages the pace of data transmission to avoid overload of 
+the receiver side. Moreover, it stores the information about system to enable tracking. The 
+packet loss rate is minimized in a reliable network configuration with the guarantee of the 
+data retransmission mechanism and packet sequencing. However, it comes along with the 
+drawbacks. To ensure the 
+reliability, \gls{tcp} is designed with larger overhead than \gls{udp}, which results in a 
+lower data transmission speed. Besides, a three handshake connection needs to be established 
+which adds up extra delay. 
+
+
+On the other hand, \gls{udp} is mostly used for live and real-time stream data transmission. 
+Although suitable for real-time system based on the stateless and connectionless 
+properties, and its lightweight overhead, \gls{udp} is not under consideration in our 
+design based on its unreliability and non-sequencing properites. The packet loss rate is 
+relative higher because no retransmission of data is possible. Last but not the least, 
+the packets may come in a different ordering, which results in problems in reconstructing 
+data files at the receiver side.  
+
+In a \gls{mas}, a reliable and direct communication between each agent should be 
+guaranteed under a real time requirement, 
+which leads to the choice of \gls{tcp} over \gls{udp}. 
+ 
+
+
+\subsubsection{WebSocket as communication protocols}
+Compared to transport layer protocols, applcation layer protocols provide more 
+application-specific services. The choice of the protocols are again mainly based on the 
+design requirements. Hence, three commonly used protocols, \gls{http}, 
+WebSocket and \gls{mqtt}, are compared horizontally with each other for their 
+requirement-specific characteristics:
+
+\begin{itemize}
+    \item Use case
+    \item Functionality
+    \item Message patterns 
+    \item Connection types
+    \item State
+    \item Overhead
+    \item Real-time capability
+    \item Flexibility
+    \item Adaptability to dynamic changes
+    \item Capability of handling instability
+    \item Scalability
+\end{itemize}
+
+\gls{http}, a networking protocol, is widely used for web pages, images, videos, World 
+Wide Web and many more. Its function operates in the following manners: a 
+request-response based message pattern that serves as the foundation for some third-party 
+communication application such as RESTful API and used for the initial connection of WebSocket. The connection 
+of \gls{http} protocol is non-persistent and the connection will be closed after 
+each individual request-response cycle. The communication is stateless with additional 
+overhead for each request-response cycle, especially for new connections. Therefore, 
+it is less capable of handling real-time activities. Among all other protocols, 
+\gls{http} benefits from its high flexibility in all environments, while in contrast, less 
+adaptable to dynamic changes, less capable of stable connection and less scalable 
+in many cases compared to the other two protocols. 
+
+Another option should be the WebSocket, which is for example used for chat 
+applications and live gaming, providing a real-time, bi-directional, stateful and full 
+duplex communication 
+solution. The term bi-directional means that, once the connection is established, 
+either the client or the server can send a message to each other simultaneously, and Full 
+duplex indicates the independency of data flow in both directions. WebSocket is suitable 
+for real time application because of its persistent connection, meaning that the connection 
+will stay until it is closed specially. This mechanism greatly reduces the delay for 
+reconnections. WebSocket also has the advantages of being highly flexible in most modern 
+web browser and many backend environments, its high adaptability and scalability. The only 
+drawback for the implementation of \gls{mas} could be its instability by constant disconnections. 
+
+
+The last comparable protocol should be the \gls{mqtt} that is usually integrated in 
+\gls{iot} with limited bandwidth. It has many leading points for 
+\gls{mas} design. It is highly suitable for real time systems with persistent connection, 
+benefited from the statefulness property, and a minimal message overhead. The system 
+based on \gls{mqtt} is highly real-time capable, flexible, adaptable to dynamic changes, 
+capable of handling instability and highly scalable on broker-client message transport. 
+Nevertheless, it is not adapted for system design based on its publish-subscribe message pattern. 
+As depicted in fig.\ref{fig: MsgConceptual}, the conceptual grapgh illustrates 
+the differences between bi-directional 
+full-duplex and other message patterns, such as Request-Response and Publish-Subscribe, 
+in the context of data transport.
+For the \gls{mqtt}, the publisher publishes (sends) a 
+message within a topic to the broker (server), while the subscriber 
+subscribes (receives) the message from the broker within the same topic. 
+For response, a new topic needs to start, but there is no guarantee that the original publisher is listening, 
+which is a drawback for send-and-receive patterns of \gls{mas}. 
+
+Out of the three protocols, we consider \gls{http} and WebSocket more appropriate for our 
+\gls{mas} in the early design stage. The final choice of using WebSocket will be verified 
+by the test results in section \ref{chap: Result-RestFUL_WS}.
+
+
+%figure conceptual application layer protocols
+\begin{figure}[htb]
+\includegraphics[width=0.8\textwidth]{figures/MessageConceptual.png}
+\centering
+\caption{Conceptual diagram of different applcation layer 
+protocols\label{fig: MsgConceptual}}
+\end{figure}
+
+
+
+
+
+\subsection{WebSocket and \gls{tcp}}
+In the final stage of the system design, WebSocket is chosen over \gls{tcp} as 
+base communication protocols. There are several reasons for the choice. 
+In the most basic communication mode according to \cite{vogel-heuser_delay_2023} 
+is based on \gls{tcp} utilizing sockets (data transport endpoints in 
+program), which is beneficial for one-to-one, 
+or more-to-one, but never a more-to-more agent communication. This is based on 
+the fact that, client/-s should always start before the server. Assume that 
+each agent is both a server and a client at the same time, the more-to-more 
+agent communication will greatly enhance the complexity of the data exchange 
+and also consumes too much\gls{cpu} power. To be more specific, for a 
+system of five agents, each agent has at least four threads for communication, 
+which enables the agent to switch between the role of clients and servers, 
+making it impossible for real-time communication. The complex interconnections 
+between agents is shown in fig.\ref{fig: threadMASConceptual}.
+
+\begin{figure}[htb]
+    \includegraphics[width=\textwidth]{figures/threads_MAS.pdf}
     \centering
-    \begin{tabularx}{\textwidth}{|Y|Z|W|}
-    \hline
-    \multicolumn{3}{|c|}{Wanagat's design patterns} \\ 
-    \hline
-    Module name & Task & Example \\ 
-    \hline
-    Planning Module &
-    \vspace{-10pt}    
-    \begin{itemize}
-        \item Task planning 
-        \item Decision making 
-        \item Resource allocation 
-        \item Sequencing 
-        \item Scheduling
-    \end{itemize} 
-    &  
-    \vspace{-10pt}   
-    \begin{itemize}
-        \item Break down tasks into smaller executable units
-        \item Decide which task should be assigned to which agent 
-        \item Allocate the agents with specific tasks 
-        \item Find the task execution sequence 
-        \item Calculate the execution time for each agent
-    \end{itemize} \\
-    \hline
-    
-    Control Module & 
-    \vspace{-10pt}
-    \begin{itemize}
-        \item Monitoring 
-        \item Adaptation 
-        \item Control and optimization 
-        \item Resource allocation 
-        \item Actuation
-    \end{itemize}
-    & 
-    \vspace{-10pt}
-    \begin{itemize}
-        \item Acquisition of robot states
-        \item Adapt the plans with current state (e.g., emergent stop) 
-        \item Control and optimize the robot's motion 
-        \item Allocate the agents with specific tasks 
-        \item Actuate the robot with outputs
-    \end{itemize} \\
-    \hline
-    
-    Knowledge Base & 
-    \vspace{-10pt}
-    \begin{itemize}
-        \item \gls{db}
-        \item Knowledge representation and reasoning 
-        \item Learning 
-        \item Knowledge sharing 
-    \end{itemize}
-    & 
-    \vspace{-10pt}
-    \begin{itemize}
-        \item Hierarchical, relational, non-relational and object oriented
-        \item Relational ontology \gls{db} system
-        \item Agent learns from the existing primitives and create new executable primitives for customer's changing requirements
-        \item Unfound primitives could be retrieved by querying other agents
-    \end{itemize} \\
-    \hline
+    \caption{Conceptual diagram of \gls{mas} communication based on 
+    \gls{tcp} sockets, agent can be either client or agent by creating 
+    multiple threads. \label{fig: threadMASConceptual}}
+\end{figure}
 
-    Diagnosis Module & 
-    \vspace{-10pt}
-    \begin{itemize}
-        \item Fault detection 
-        \item Fault diagnosis 
-        \item Fault prediction 
-        \item Root cause analysis and classification
-    \end{itemize}
-    & 
-    \vspace{-10pt}
-    \begin{itemize}
-        \item Hierarchical, relational, non-relational and object oriented
-        \item Relational ontology \gls{db} system
-        \item Agent learns from the existing primitives and create new executable primitives for customer's changing requirements
-        \item Unfound primitives could be retrieved by querying other agents
-    \end{itemize} \\
-    \hline
 
-    Communication Interface & 
-    \vspace{-15pt}
-    \begin{itemize}
-        \item Message parsing and encoding
-        \item Connection establishment, maintenance
-        \item Message handling 
-        \item Data security
-    \end{itemize}
-    & 
-    \vspace{-15pt}
-    \begin{itemize}
-        \item Encode and decode the massages in agent specific data type, or  parse the data object to other types (e.g., json)
-        \item Ensure the connection with other agents based on system requirements
-        \item Filter messages with undesired data type or incomplete messages, prioritize the incoming messages
-        \item Ensure data integrity and confidentiality by encrypting, decrypting and authenticating messages
-    \end{itemize} \\
-    \hline
-    \end{tabularx}
-    \end{table}
+
+After some unfeasible attempts, the demand to design a \gls{ca} that collect 
+messages from sender agents, process them and futher transport them to the 
+receiver agents has increased. Therefore, a server built with WebSocket serves 
+as the \gls{ca}. Since the server should have many addtional 
+capabilities including queuing messages, providing simple APIs for sending 
+and receiving messages and many more, raw bytes transport with \gls{tcp} is 
+less under consideration for a complex \gls{mas}. However, \gls{tcp} socket 
+may be more suitable for more-to-one communication for \gls{dta}, 
+with its details described in section \ref{chap: RCPTCP-DTAPI}.  
 
 
 \subsection{Prerequisite}
@@ -205,6 +314,8 @@ some functions of each module based on the general requirements of a smart facto
 \label{fig: NSConceptual}}
 \end{figure}
 
+After choosing the suitable design architecture and protocols, the detailed 
+software design for \gls{mas} and performance testing methods will be described below. 
 
 Before simulating network environments for agent communication testing 
 and development of the \gls{mas}, the internal packet routing between agents 
@@ -221,153 +332,14 @@ starting with the name eth, along with an individual IP address.
 Each time a script gets called, it runs under a namespace with its 
 IP address. In exercise, if a packet is sent from
 Namespace 1 to 3 and then back; it is routed by the switch instead of 
-bridges between namespaces to avoid internal routing.
+bridges between namespaces to avoid internal routing. This external routing 
+device is useful for delay measurement between each agent through 5G Network, 
+by introducing external delays to estimate the network environment. 
 
-\subsection{\gls{osi} model and comparison between sockets relevant protocol layers}
-%figure conceptual MAS
-\begin{figure}[htbp]
-\includegraphics[width=0.8\textwidth]{figures/OSI.pdf}
-\centering
-\caption{\gls{osi} model with example protocols \label{fig: OSI}}
-\end{figure}
-
-
-
-Fig.\ref{fig: OSI} shows the famous OSI model with seven abstraction layers, with Transport and 
-application layers most relevant to sockets. TCP and UDP are typical transport layer 
-protocols, and they provide a mode of end-to-end data transport between two devices, 
-while the application layer protocols like HTTP or Websocket establish communication 
-between applications within devices. Although the application layer protocols still 
-utilize TCP/UDP sockets to transport stream data, they defined additional "rules" to 
-specify the structure, content, and semantics of the messages transported through 
-sockets. In the following tables, a comparison
-between protocols in different layers provide a more straightforward overview of 
-their pro and cons in different contents.
-
-
-
-\subsubsection{Transport layer protocols}
-
-Tab.\ref{tab: transportlayer} compares the typical transport layer protocols \gls{tcp} 
-and \gls{udp} from different aspects. \gls{tcp} provides reliable data 
-transport, while \gls{udp} mainly focuses on transport speed and efficiency without a 
-reliability guarantee. With a focus on speed and reliability, UDP, on the one hand, 
-offers faster packet
-transport. On the other hand, it produces a network-dependent packet loss rate and 
-out-of-order packet sequence compared to TCP. Because of the requirement of a 
-reliable real-time ordered data transport with minimum to no packet loss in \gls{mas} 
-communication, \gls{tcp} is used as the base protocol of the design.
-
-\begin{table}[htbp]
-    \small
-    \centering
-    \caption{Characteristics of different technologies in transport layer protocols}
-    \label{tab: transportlayer}
-    \begin{tabular}{|m{0.2\textwidth}|m{0.3\textwidth}|m{0.3\textwidth}|}
-    \hline
-    \multicolumn{3}{|c|}{\textbf{Transport layer protocols}}                                                            \\ \hline
-    \textbf{Aspect}                         & \textbf{\gls{tcp}}             & \textbf{\gls{udp}}        \\ \hline
-    Use cases                      & Web browsing, email, text messaging, and file transfers & Live and real-time data transmission \\ \hline
-    Reliability                    & Reliable        & Unreliable \\ \hline
-    Stream type                    & Byte stream with no preserved boundaries & Message stream with preserved boundaries \\ \hline
-    Connection type                & Connection oriented, three handshake & No connection needed \\ \hline
-    Overhead                       & Larger than \gls{udp} & Very low   \\ \hline
-    Sequence                       & Packets arrive in sequence & No sequencing for packets \\ \hline
-    Retransmission of lost packets & Yes             & No         \\ \hline
-    Speed                          & Slower than \gls{udp}, because of overhead and connection & Relative faster than \gls{tcp} \\ \hline
-    State                          & Stateful        & Stateless  \\ \hline
-    Flow control                   & Yes             & No         \\ \hline
-    \end{tabular}
-\end{table}
-
-
-
-
-\subsubsection{Application layer protocols}
-
-
-% % Please add the following required packages to your document preamble:
-
-\begin{sidewaystable}[p]
-    \small
-    \caption{Characteristics of different technologies in application layer protocols}
-    \label{tab: applicationlayer}
-    \centering
-    \begin{tabular}{|m{0.15\textwidth}|m{0.25\textwidth}|m{0.25\textwidth}|m{0.25\textwidth}|}
-    \hline
-    \multicolumn{4}{|c|}{\textbf{Application layer protocols}} \\ \hline
-    \textbf{Aspect} & \textbf{HTTP} & \textbf{WebSocket}  & \textbf{MQTT} \\ \hline
-    Use cases & Web pages, images, videos, World Wide Web, etc & Such as chat applications, live gaming, etc & Usually in IoT with limited bandwidth \\ \hline
-    Functionality & Request-response protocol based on TCP, foundation for both RESTful APIs and the initial connection in WebSockets & Bi-directional, real-time communication & Lightweight message transport, runs over TCP \\ \hline
-    Security & Use SSL/TLS & ws (unsecured) and wss (secured with SSL/TLS) & Use TLS, like username/password authentication and optional message-level security \\ \hline
-    Message patterns & Request-Response & Full Duplex (send and receive independent) & Publish-Subscribe \\ \hline
-    Connection type & No connection needed & Persistent {connection} & Persistent connection \\ \hline
-    State & Stateless & Stateful & Stateful \\ \hline
-    Overhead & Overhead for each request-response cycle, especially for new connections & After the initial handshake (HTTP), data frames are lightweight & Minimal message overhead \\ \hline
-    Realtime capability & Less Capable & Highly Suitable & Highly Suitable \\ \hline
-    Flexibility & Supported in all environments & Supported in most modern web browsers and many backend environments & Highly flexible \\ \hline
-    Adaptability to dynamic changes & Relative lower (influenced by stateless nature) & High & High \\ \hline
-    Capability of handling instability & Less capable, requires a stable connection for each request-response cycle & Less stable if connection disruptions happen frequently & Capable, Ideal for remote locations with limited connectivity \\ \hline
-    Scalability & Less scalable, require more infrastructure support & Highly scalable, maintains connections for real-time interactions & Highly scalable based on broker-client message transport \\ \hline
-    \end{tabular}
-\end{sidewaystable}
-
-Several protocols in application layers are considered suitable for \gls{mas} 
-communication, each with advantages and limits in different aspects according to 
-ab.\ref{tab: applicationlayer}.
-To get a closer look at the tab.\ref{tab: applicationlayer}, a horizontal comparison 
-between different application layer protocols: 
-
-
-\begin{itemize}
-    \item \gls{http}
-    \item WebSocket
-    \item and \gls{mqtt}
-\end{itemize}
-
-should be performed. In one word, WebSocket is chosen to be the application 
-layer protocol for MAS communication, while \gls{tcp} socket for the \gls{dta} 
-design, which will be further discussed in the next chapter. Here are the 
-reasons for the choice of WebSocket: 
-
-
-\begin{itemize}
-    \item Bi-directional, full-duplex, real-time communication between server and clients, no re-connection needed, suitable for continuous data transport
-    \item Small overhead after connection establishment to reduce latency (\gls{http})
-    \item Stateful, store the information of the client's state under connection
-    \item High flexibility, adaptability and scalability
-    \item Secure with wss
-\end{itemize}
-
-Fig.\ref{fig: MsgConceptual} illustrates the differences between bi-directional full-duplex and other message patterns, such as Request-Response and Publish-Subscribe, in the context of data transport.
-For the \gls{mqtt}, the publisher publishes (sends) a message within a topic to the broker (server), while the subscriber subscribes (receives) the message from the broker within the same topic. 
-For response, a new topic needs to start, but there is no guarantee that the original publisher is listening, which is a drawback for send-and-receive patterns of \gls{mas}. 
-
-Out of the four protocols, the other three are considered more appropriate. One such protocol is HTTP, which operates on a request-response mechanism. In this mechanism, a client sends messages to the server, and the other client receives them. Regardless of the success of the GET and POST methods, a response is always provided. For each message that goes through the server, a new connection is established, and it is closed after the responses are sent.
-The inconsistent connection will consume more communication time and lead to higher latency. 
-The WebSocket protocol, on the other hand, provides bi-directional and full duplex real-time communication, minimizing communication delays caused by inconsistent connections.
-The client sends a message to the server. After processing the data, the server will pass the message to the other client and receive a response with the same logic, which allows simultaneous communication in both directions between clients so that no re-connection in the message transport cycle is necessary. The consistent server-client connection makes it possible to realize continuous real-time communication between agents. In the next section, a more detailed explanation of the WebSocket mechanism for \gls{mas} design will be given.
-%figure conceptual application layer protocols
-\begin{figure}[htb]
-\includegraphics[width=0.8\textwidth]{figures/MessageConceptual.png}
-\centering
-\caption{Conceptual diagram of different applcation layer 
-protocols\label{fig: MsgConceptual}}
-\end{figure}
-
-\subsection{Transport layer protocols versus Application layer protocols}
-The reasons of choosing application layer protocols over transport layer protocols for \gls{mas} according to tab.\ref{tab: transportlayer} and \ref{tab: applicationlayer} are listed as following:
-\begin{itemize}
-    \item Semantic-rich message patterns
-    \item Higher flexibility
-    \item Standardized communication between different agents
-    \item Header with agent relevant information
-    \item Security and authentication
-    \end{itemize}
-However, unlike for \gls{mas} design, the architecture of \gls{dta} is more straightforward and the basic \gls{tcp} socket is chosen for the more to one server-client communication. 
-The details will be discussed later in section \ref{chap: Meth-External}.
 
 \subsection{Pseudo-Code of MAS workflow in WebSocket python}\label{chap: Meth-WS-MAS}
+The local \gls{mas} application is named as Websocket\_MAS, which is designed under the 
+environment of Ubuntu 20.04 LTS with Python 3.10. 
 In algorithm \ref{alg: CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
 Unlike other \gls{ras}, \gls{cda} has no mechanisms of primitive execution but the ability to do planning and decision-making. 
 Under the Main, the production tasks are broken down into a list of sequenced primitives and then assigned to each allocated agent through one of the predefined $send\_and\_receive()$ functions under the messageSender class.
@@ -664,7 +636,9 @@ Under the same condition, the message transport routine with RESTful API may res
         \end{algorithmic}
         \end{algorithm}
 
-\section{External} \label{chap: Meth-External}
+
+
+\section{Global Digital Twin} \label{chap: Meth-External}
 In section \ref{chap: Overview-External}, the data flow for the external 
 \gls{dta} system will be presented. Following that, section \ref{chap: ntpsetup} 
 will explain the \gls{ntp} setup used to measure delays between local devices and 
@@ -725,6 +699,25 @@ The \gls{ntp} setup of the Linux system is as follows:
     \end{enumerate}
 
 Since the cloud system clock is already synchronized with \gls{utc}, all the tests and calculations results are based on \gls{utc}. 
+
+\subsection{Data flow with \gls{tcp} socket and Azure \gls{dt} REST APIs}\label{chap: RCPTCP-DTAPI}
+Differnt from the \gls{mas} with frequent connection reestablishment and heavy data handling in \gls{ca}, 
+\gls{dta} only conducts a simple one-way data flow, starting from \gls{rcp} and 
+ending at local download from Azure \gls{dt} platform. \gls{tcp} is beneficial for 
+its less overhead and lightweight compared to WebSocket. 
+
+
+The Azure \gls{dt} REST APIs are, on the other hand, responsible for the data 
+transport between local devices and cloud. It consists of two modules, the 
+control plane APIs for manages \gls{dt} instances as a whole, and the 
+data plane APIs to mangage elements of the Azure \gls{dt} instances. For the 
+time measurement of \gls{dt} update, we mainly used the data plane APIs. The 
+common operations including create, delete, update, and list. In the test, two 
+APIs are mainly used. \textit{UpdateDigitalTwin} for updating the whole twin instance 
+and \textit{UpdateComponent} for the specific update of \gls{dt} component. 
+Other APIs, for example, \textit{Query} is used to execute queries for twin 
+instances, to get the demanding components. It was once used for timestamp 
+logging in local device. 
 
 \subsection{Pseudo-Code of \gls{rcp} and \gls{dta} workflow in C++ and C\#}\label{chap: RCPDTAPseudo}
 
@@ -800,13 +793,24 @@ to ensure seamless data transfer. The platform should include Azure \gls{dt} Exp
 Azure Event Hub, and Azure Data Explorer. Additionally, the Azure \gls{dt} 
 instance must be configured with a time-series data history connection. Other resources 
 must also be created, such as an Event Hubs namespace, an event hub, Azure Data Explorer 
-cluster, and a database. 
-After a connection, data is sent to an event hub, which eventually forwards the data to 
+cluster, and a database. To use the data update APIs 
+from section \ref{chap: RCPTCP-DTAPI}, a client for Azure Digital Twins should be 
+initialized. The correct steps should be: 
+
+
+\begin{enumerate}
+    \item Initialize the URL that points to the Azure \gls{dt}
+    \item Get a credential to authenticate with Azure services
+    \item Creat a client object that allows interaction between \gls{dta} and Azure \gls{dt}
+    \end{enumerate}
+
+After the connection from the local device to the Azure \gls{dt}, 
+data is sent to an event hub, which eventually forwards the data to 
 the Azure Data Explorer cluster and stores it in a database. The history data includes 
 twin property updates, twin lifecycle events, and relationship lifecycle events, which 
 can be later queried in Azure Data Explorer.
 
-\subsubsection{Setup}
+\subsubsection{Data history setup}
 Here is the sequence of the basic setup in the Azure platform:
 \begin{enumerate}
     \item Create Azure Event Hub namespace and add instance.

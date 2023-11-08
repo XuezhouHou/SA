@@ -1,8 +1,7 @@
 \chapter{Preliminary} \label{chap: Preliminary}
 
 \section{Use case Wittenstein and BMW}
-To get to the point quickly, some prior knowledge about each 
-subfield in section \ref{chap: Motivation} will be provided. 
+To get to the point quickly, some prior knowledges will be provided. 
 
 This work is under the ongoing flagship project KI.FABRIK, aims to 
 find solutions to enable direct physical interactions between humans and 
@@ -38,7 +37,7 @@ of a message-based software architecture for an assembly task with two use cases
 In the
 fig.\ref{fig: Msg-based-SW-architecture} below, different agents are responsible for different sub-tasks in the 
 production process. The assignment of a task starts from the customer order. 
-The coordinator agent receives a customized requirement that should be analyzed 
+The \gls{cda} receives a customized requirement that should be analyzed 
 and broken down 
 into smaller executable sub-tasks based on its local \gls{db}. Inside the coordinator 
 agent, a \gls{paas} will do the rescheduling and dispatching of the customer 
@@ -55,7 +54,7 @@ agent delivers the parts to the wiring (BMW) or assembly agents (Wittenstein) th
 conducts assembly tasks. After the process is executed, the transport 
 agent again delivers the gearbox or cockpit back to the product agent, who is 
 responsible for the end-product logistics. Once the task execution is 
-finished, feedback will be given back to the coordinator agent to close 
+finished, feedback will be given back to the \gls{cda} to close 
 the process. During the production processes, the current robot states will be 
 stored in the local database and synchronized with the \gls{dta} and 
 then the global \gls{dt}.
