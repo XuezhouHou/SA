@@ -130,7 +130,7 @@ queue inside a \gls{ca}.
 
 An important aspect in agent communication is the communication protocols 
 in different layers. 
-Fig.\ref{fig: OSI} shows the famous OSI model with seven abstraction layers, with Transport and 
+Fig.\ref{fig: OSI} shows the famous \gls{osi} model with seven abstraction layers, with Transport and 
 application layers mostly relevant to network communication. TCP and UDP are typical transport layer 
 protocols, and they provide a more abstract and generic service for reliable data transfer, 
 while the application layer protocols like HTTP or Websocket are designed for applcations with 
@@ -148,7 +148,7 @@ characteristics related to the design requirements.
 
 
 
-\subsubsection{TCP as communication protocols}
+\subsubsection{TCP as transport layer communication protocols}
 \gls{tcp} as communication protocol is chosen based on the following characteristics: 
 \begin{itemize}
     \item Use case
@@ -186,7 +186,7 @@ which leads to the choice of \gls{tcp} over \gls{udp}.
  
 
 
-\subsubsection{WebSocket as communication protocols}
+\subsubsection{WebSocket as application layer communication protocols}
 Compared to transport layer protocols, applcation layer protocols provide more 
 application-specific services. The choice of the protocols are again mainly based on the 
 design requirements. Hence, three commonly used protocols, \gls{http}, 
@@ -249,9 +249,10 @@ subscribes (receives) the message from the broker within the same topic.
 For response, a new topic needs to start, but there is no guarantee that the original publisher is listening, 
 which is a drawback for send-and-receive patterns of \gls{mas}. 
 
-Out of the three protocols, we consider \gls{http} and WebSocket more appropriate for our 
-\gls{mas} in the early design stage. The final choice of using WebSocket will be verified 
-by the test results in section \ref{chap: Result-RestFUL_WS}.
+Out of the three application layer protocols, we consider \gls{http} and 
+WebSocket more appropriate for our 
+\gls{mas} in the early design stage. The choice of using WebSocket will be verified 
+by the test results with two protocols compared to each other in section \ref{chap: Result-RestFUL_WS}.
 
 
 %figure conceptual application layer protocols
@@ -266,7 +267,7 @@ protocols\label{fig: MsgConceptual}}
 
 
 
-\subsection{WebSocket and \gls{tcp}}
+\subsection{Vertical comparison between WebSocket and \gls{tcp}}
 In the final stage of the system design, WebSocket is chosen over \gls{tcp} as 
 base communication protocols. There are several reasons for the choice. 
 In the most basic communication mode according to \cite{vogel-heuser_delay_2023} 
@@ -292,7 +293,7 @@ between agents is shown in fig.\ref{fig: threadMASConceptual}.
 
 
 
-After some unfeasible attempts, the demand to design a \gls{ca} that collect 
+After some unfeasible attempts, the demand to design a \gls{ca} to collect 
 messages from sender agents, process them and futher transport them to the 
 receiver agents has increased. Therefore, a server built with WebSocket serves 
 as the \gls{ca}. Since the server should have many addtional 
@@ -713,7 +714,8 @@ control plane APIs for manages \gls{dt} instances as a whole, and the
 data plane APIs to mangage elements of the Azure \gls{dt} instances. For the 
 time measurement of \gls{dt} update, we mainly used the data plane APIs. The 
 common operations including create, delete, update, and list. In the test, two 
-APIs are mainly used. \textit{UpdateDigitalTwin} for updating the whole twin instance 
+APIs are mainly used. \textit{UpdateDigitalTwin} is used for updating 
+the whole twin instance 
 and \textit{UpdateComponent} for the specific update of \gls{dt} component. 
 Other APIs, for example, \textit{Query} is used to execute queries for twin 
 instances, to get the demanding components. It was once used for timestamp 
@@ -794,8 +796,9 @@ Azure Event Hub, and Azure Data Explorer. Additionally, the Azure \gls{dt}
 instance must be configured with a time-series data history connection. Other resources 
 must also be created, such as an Event Hubs namespace, an event hub, Azure Data Explorer 
 cluster, and a database. To use the data update APIs 
-from section \ref{chap: RCPTCP-DTAPI}, a client for Azure Digital Twins should be 
-initialized. The correct steps should be: 
+from section \ref{chap: RCPTCP-DTAPI}, a client for Azure \gls{dt} should be 
+initialized. The following steps should enable the Azure \gls{dt} connection 
+establishment: 
 
 
 \begin{enumerate}
@@ -838,7 +841,7 @@ Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} cod
 
 
 \begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/KQL_cut.jpg}
+    \includegraphics[width=0.8\textwidth]{figures/KQL_cut.jpg}
     
     \centering
     \caption{Snippet of Data Explorer\label{fig: KQL}}
@@ -857,19 +860,19 @@ system. In the following sections, the \gls{tcp/ip} model as well as
 \subsection{From \gls{osi} model to \gls{tcp/ip} model}
 
 Although TCP is classified as a transport layer protocol according to the 
-OSI model (fig.\ref{fig: OSI}), data transport between different TCP sockets 
+\gls{osi} model (fig.\ref{fig: OSI}), data transport between different TCP sockets 
 still involves all layers. This is because a program using socket libraries 
 operates the TCP socket, which is an operation under the application layer. 
 The transport layer protocols only accept data from the session layer in the 
-OSI model and break it down into smaller pieces to ensure reliable and correct 
+\gls{osi} model and break it down into smaller pieces to ensure reliable and correct 
 data transport. However, considering delays in all seven layers for modularization 
 purposes would be too strict and complicated. Therefore, the focus should be 
-shifted from the general OSI model to the more abstract TCP/IP model, as depicted 
+shifted from the general \gls{osi} model to the more abstract TCP/IP model, as depicted 
 in fig.\ref{fig: TCP_IP}.
 
 The TCP/IP model consists of four layers: application layer, transport layer, 
 internet layer, and network access layer, with each mapping different layers in 
-the OSI model. As depicted in the TCP/IP model, the application layer roughly 
+the \gls{osi} model. As depicted in the TCP/IP model, the application layer roughly 
 contains the upper three layers, while the network access layer contains the 
 physical and data link layer. The network layer is renamed as the internet 
 layer, while the transport layer remains the same.
@@ -885,7 +888,7 @@ layer, while the transport layer remains the same.
 When operating in an application, both TCP sockets and WebSockets transport packets 
 through all layers of the TCP/IP model. In order to better modularize delay, a set of 
 visual notations based on \gls{dsl} is created.
-Thanks to the works of former researchers, there are already some graphical tools 
+Thanks to the works of former researchers, there are already some commercial graphical tools 
 developed for different purposes. The graphical tools 
 can be roughly divided into two types: tools ideal for real-world delay measurement, 
 for example, the famous Wireshark, OPNET, and NS-3, 
@@ -893,21 +896,49 @@ and tools suitable for modeling and visualization, such as OpenModelica,
 Matlab/Simulink and LabVIEW.
 
 
-
+Fig.\ref{fig: DSLConceptual} shows a conceptual diagram of a modularized 
+general \gls{mas} based on the previous \gls{dsl} design \cite{hujo_toward_2022} 
+for industrial \gls{cps} and \gls{dsl} design for robot-like 
+systems\cite{volpert_supporting_nodate}. 
 Although being out of the scope of this thesis, the measurement of delay within 
 each layer of \gls{tcp/ip} model will be essential for future investment.
 For instance, as depicted in fig.\ref{fig: DSLConceptual}, the delay in 
 each layer is represented as a block based on \gls{dsl}, which can be later integrated 
 with graphical tools.
-In this case, delay in a specific network layer will become comparable between different 
-technologies based on either application or transport layer protocols, for example, 
-\gls{tcp} socket and WebSocket. Apart from the network delay of communication between 
-agents, as shown in the fig.\ref{fig: DSLConceptual}, there is also another delay that can be modularized in 
-the context of robot control. The robot control systems introduce delay first in \gls{rci} 
-by executing the commands and then a minor delay within the I/O module before activating 
-the actuator.
-After each robot motion driven by the actuator, its current state will be sent back to 
-the \gls{cpu} by first going through the sensor, I/O module, and \gls{rci} again. 
+In this case, delay in a specific \gls{tcp/ip} layer will become comparable between 
+application or transport layer protocols, for example, 
+\gls{tcp} and WebSocket. In the graph, \gls{cda} and \gls{dta} 
+have the same modular design for the network traffic based on \gls{tcp/ip} 
+model. The data transport starts from the \gls{cpu} module at the left-hand side. 
+\gls{cpu} is responsible for preparing the data for transmission over the network, 
+assigning ports and \gls{ip} addresses and many more. After a function call 
+through a programming language and platform specific application 
+networking API, a socket is created to initialize the network communication. 
+During the data transimission, each layer of \gls{tcp/ip} except the lowest 
+produces delays 
+based on its protocol. Take \gls{cda} as an example, delays in application, 
+transport and Internet layer is based on WebSocket, \gls{tcp} and 
+\gls{ip} protocol. With regard to the delay in network access layer, is is mainly 
+base on the hardware and physical medium. After passing through the network 
+environment, the packet is routed in a reverse direction back to other agents, 
+for example, a \gls{ra}, to reach the socket endpoint.  
+
+
+
+Apart from the network delay of communication between 
+agents, as shown in the fig.\ref{fig: DSLConceptual}, there is also another 
+delay that can be modularized in 
+the context of robot control. The robot control systems introduce first a processing 
+delay in the robot controller, and minor delays of both network interface and 
+\gls{d/a} converter within the I/O module, before activating 
+the actuator. The network interface refers to the network access layer, because of 
+the physical interconnections between robot controller interface and \gls{d/a} converter. 
+Afterwards, delays in actuator are produced by a multiplexer and an operating element. 
+For each robot state update during the technical process, the data will be recorded 
+by the measuring element of the sensor and the analog signals will be 
+converted into a single line with the multiplexer. The signal will then be routed 
+back to the robot controller interface through a \gls{a/d} converter and network interface. 
+
 
 
 
