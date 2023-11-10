@@ -296,8 +296,8 @@ essential for an agent-based system.
 performance testing} \label{chap: Result-priority}
 In an agent communication system, the server that serves as a \gls{ca} should not only 
 focus on speed, robustness, reliability, and application size, but also have additional 
-functionalities beyond pure message transport. Table \ref{tab:designPatterns} lists the 
-essential design requirements of a \gls{ca}, which should include a communication interface 
+functionalities beyond pure message transport. The design pattern of \gls{ca} should 
+include a communication interface 
 capable of processing various messages with different data types such as jsonified images, 
 handling a large number of agent connections, and prioritizing incoming messages. 
 In the following sections, we will test and discuss the server's performance in 
@@ -463,7 +463,8 @@ production based on its simplicity of agent communication design.
 The primitives, agents and execution sequence for both BMW and Wittenstein use cases 
 are predefined. However, only the timing behaviors of the BMW use case are tested due 
 to similarity. The average \gls{owd} and WebSocket data transmission time of the BMW 
-use case are presented in Table \ref{tab: mean-usecase-time}. The test was conducted 
+use case are presented in table \ref{tab: mean-usecase-time}, with a snippet of the whole 
+data table for BMW use case presented in table \ref{tab: TestsCDAMiR600}. The test was conducted 
 100 times, but the number of messages exchanged among agents varied greatly. Therefore, 
 the test results and average values can only be used as a reference to understand the 
 data transmission process in actual production. In order to provide a more detailed data 
@@ -472,6 +473,57 @@ presented along with other test results with other agents (see fig.\ref{fig: vio
 Based on these results, it can be concluded that the message transport in the system meets 
 the real-time requirements, with the largest message size of 636 Bytes taking a maximum of 
 10ms and the smallest taking about 0.2ms.
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{graphicx}
+% \usepackage{lscape}
+
+\begin{table}[htbp]
+    \tiny
+    \centering
+    \caption{An overview of communication messages from \gls{cda} to Transport Agent MiR600, the full table can be found in \ref{firstfootnote}.}
+    \label{tab: TestsCDAMiR600}
+    \begin{tabular}{m{0.1\textwidth} m{0.1\textwidth} m{0.05\textwidth} m{0.05\textwidth} m{0.35\textwidth} m{0.07\textwidth} m{0.05\textwidth}}
+    \textbf{Sender}            & \textbf{Recipient}              & \textbf{Message number} & \textbf{Message length (Bytes)} & \textbf{Message content}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      & \textbf{Transmission time (ms)} & \textbf{OWD (ms)} \\ \hline
+    Coordinator Agent & TransportAgent MiR600 & 1  & 34  & "TransportAgent\_MiR600:normal:Are you ready?"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           & 1.099 & 0.923 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 2  & 53  & "TransportAgent\_MiR600:normal:Are you capable:move\_MIR"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                & 0.982 & 0.805 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 3  & 62  & "TransportAgent\_MiR600:normal:Are you capable:pick\_up\_shelf\_MIR"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     & 0.920 & 0.730 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 4  & 67  & "TransportAgent\_MiR600:normal:Are you capable:get\_position\_transport"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 & 1.011 & 0.816 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 5  & 53  & "TransportAgent\_MiR600:normal:Are you capable:move\_MIR"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                & 1.046 & 0.840 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 6  & 60  & "TransportAgent\_MiR600:normal:Are you capable:place\_shelf\_MIR"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        & 1.058 & 0.845 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 7  & 53  & "TransportAgent\_MiR600:normal:Are you capable:move\_MIR"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                & 0.987 & 0.778 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 8  & 60  & "TransportAgent\_MiR600:normal:Are you capable:place\_shelf\_MIR"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        & 0.981 & 0.767 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 9  & 53  & "TransportAgent\_MiR600:normal:Are you capable:move\_MIR"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                & 1.023 & 0.829 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 10 & 60  & "TransportAgent\_MiR600:normal:Are you capable:place\_shelf\_MIR"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        & 1.008 & 0.800 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 11 & 52  & "TransportAgent\_MiR600:normal:Finish capability check"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  & 0.947 & 0.752 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 12 & 324 & "TransportAgent\_MiR600:normal:Sequence:{[}{[}1, 1, 0{]}, {[}1, 1, 0{]}, {[}1, 2, 0{]}, {[}1, 2, 0{]}, {[}1, 2, 0{]}, {[}1, 2, 1{]}, {[}1, 2, 2{]}, {[}1, 2, 3{]}, {[}1, 2, 4{]}, {[}1, 2, 5{]}, {[}1, 2, 6{]}, {[}1, 2, 7{]}, {[}1, 2, 8{]}, {[}1, 3, 0{]}, {[}1, 3, 0{]}, {[}1, 3, 0{]}, {[}2, 1, 0{]}, {[}2, 1, 0{]}, {[}2, 1, 0{]}, {[}2, 1, 1{]}, {[}2, 2, 0{]}, {[}2, 2, 1{]}, {[}2, 2, 2{]}, {[}2, 2, 3{]}, {[}2, 3, 0{]}, {[}2, 3, 1{]}{]}"                                                                                                                                                                                                                                      & 1.082 & 0.849 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 13 & 547 & "TransportAgent\_MiR600:normal:All\_Primitives:{[}'Get\_cable\_routing', 'Get\_shoplist\_BMW', 'move\_initial\_panda', 'move\_MIR', 'pick\_up\_shelf\_MIR', 'read\_shoplist', 'get\_position\_shop', 'get\_item\_shoprobot', 'move\_panda', 'close\_gripper\_data', 'get\_position\_transport', 'move\_panda', 'open\_gripper', 'move\_initial\_panda', 'move\_MIR', 'place\_shelf\_MIR', 'move\_MIR', 'place\_shelf\_MIR', 'move\_initial\_wiring\_panda', 'pick\_up\_components', 'identify\_cable\_color', 'calculate\_position', 'execute\_wiring', 'place\_shelf\_component', 'move\_MIR', 'place\_shelf\_MIR'{]}"                                                                  & 1.023 & 0.780 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 14 & 528 & "TransportAgent\_MiR600:normal:Sequenced\_agents:{[}'StorageAgent', 'StorageAgent', 'StorageAgent', 'TransportAgent\_MiR600', 'TransportAgent\_MiR600', 'StorageAgent', 'StorageAgent', 'StorageAgent', 'StorageAgent', 'StorageAgent', 'TransportAgent\_MiR600', 'StorageAgent', 'StorageAgent', 'StorageAgent', 'TransportAgent\_MiR600', 'TransportAgent\_MiR600', 'TransportAgent\_MiR600', 'TransportAgent\_MiR600', 'WiringAgent', 'WiringAgent', 'WiringAgent', 'WiringAgent', 'WiringAgent', 'WiringAgent', 'TransportAgent\_MiR600', 'TransportAgent\_MiR600'{]}" & 1.083 & 0.820 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 15 & 29  & "TransportAgent\_MiR600:normal:"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         & 1.207 & 0.956 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 16 & 29  & "TransportAgent\_MiR600:normal:"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         & 1.106 & 0.874 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 17 & 29  & "TransportAgent\_MiR600:normal:"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         & 1.172 & 0.930 \\ 
+    & & & & & &\\
+    Coordinator Agent & TransportAgent MiR600 & 18 & 29  & "TransportAgent\_MiR600:normal:"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         & 1.474 & 1.196
+    \end{tabular}%
+
+\end{table}
 
 
 \begin{table}[htbp]
@@ -497,12 +549,12 @@ the real-time requirements, with the largest message size of 636 Bytes taking a 
     \includegraphics[width=\textwidth]{figures/tests/usecase/violin_CoordinatorAgent_to_TransportAgent_MiR600.png}\hfill 
     \caption{Test to measure \gls{owd} and transmission time between \gls{cda} and 
     TransportAgent\_MiR600 for 100 times. The number in x-axis respresents the 
-    corresonding messages. \protect\ref{firstfootnote}}
+    corresonding messages \protect\ref{firstfootnote}.}
     \label{fig: violin-CDA-T600}
 \end{figure}
 
 %addtional for footnote in caption
-\footnotetext[2]{\label{firstfootnote}https://github.com/XuezhouHou/Websocket\_MAS/new\_MAS/output/plots/table4UCBMW.xlsx}
+\footnotetext[2]{\label{firstfootnote}https://github.com/XuezhouHou/Websocket\_MAS/blob/master/Table\_with\_all\_values/table4UCBMW.xlsx}
 
 
 
@@ -542,18 +594,18 @@ requirement for production processes is again fulfilled.
 \subsection{Test results of data transmission time in \gls{tcp} sockets between \gls{dta} 
 and \gls{ms} Azure \gls{dt} platform across various packet lengths} \label{chap: Result-DTA-DT}
 
-However, in the program, the most considerable variance 
+However, in the program, the most considerable variable of 
 the total data transmission time is the \gls{rtt} between local devices and the global digital 
 twin. In addition to the \gls{rtt}, the data upload and download time is also measured 
 separately, which has an opposite result as those from the research\cite{cainelli_performance_2023}. 
 In the paper, the resulting uplink data transmission time is larger than the downlink 
-data transmission time. The difference between both tests is the research team from 
+data transmission time. The difference between both tests is that, research team from 
 Magdeburg measured delay with logical links from a 5G standalone network and the industrial 
 5G devices. In contrast, our test was based on data update times in the cloud. The latency 
 between data upload and update reflects the actual \gls{dt} data update patterns, 
 which includes additional process time in the cloud. Therefore, we can infer that the 
 increased latency of data upload may be caused by the internal Azure \gls{dt} Model 
-API for data update (an unclosed issue in \gls{ms} Q\&A\footnote{https://learn.microsoft.com/en-us/answers/questions/1328803/experiencing-slow-load-times-on-azure-digital-twin}).
+API for data update (an unclosed issue in \gls{ms} Q\&A\footnote[1]{https://learn.microsoft.com/en-us/answers/questions/1328803/experiencing-slow-load-times-on-azure-digital-twin}).
     
 
 It is worth mentioning that the data upload time from JointGripper and Elbow has little to 
@@ -649,6 +701,22 @@ inconsistency issues.
 
 
 
+\section{Tests results overview}
+
+For a more abstract overview, except for the use case specific ones, all 
+test results are listed in the following table \ref{tab: TestsProportional} to 
+\ref{tab: TestsDT} for the horizonal and vertical comparison between 
+one another. Table \ref{tab: TestsProportional} shows the tests results for 
+WebSocket and \gls{http} by varying the conditions of the experiments, 
+while keeping the others unchanged. Similarily, tests conducted for message 
+prioritization in the server are grouped in table \ref{tab: TestsPriority}, 
+and the tests for global \gls{dt} are summarized in table \ref{tab: TestsDT}. 
+The values in those tables are highly concentrated, with only the essential 
+information included. A detailed view to all the experimental data refers to 
+the repository. 
+\footnote[3]{https://github.com/XuezhouHou/Websocket\_MAS/tree/master/Table\_with\_all\_values/Proportional\_test.xlsx}
+\footnote[4]{https://github.com/XuezhouHou/Websocket\_MAS/tree/master/Table\_with\_all\_values/priority\_test.xlsx}
+\footnote[5]{https://github.com/XuezhouHou/Websocket\_MAS/tree/master/Table\_with\_all\_values/DTA.xlsx}
 
 % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
@@ -656,16 +724,19 @@ inconsistency issues.
 % \useunder{\uline}{\ul}{}
 % \usepackage{lscape}
 \begin{landscape}
-    \begin{table}[]
+    \begin{table}[htbp]
     \centering
+    \caption{An overview of tests for WebSocket and HTTP performance testing including worst case scenarios.}
+    \label{tab: TestsProportional}
     \resizebox{\columnwidth}{!}{%
     \begin{tabular}{llllllll}
-    Test case                        & var. value & Trans. Delay (ms) & OWD (ms) & Server Proc. Delay (ms) & Trans. Delay (ms) & OWD (ms) & Server Proc. Delay (ms) \\ \hline
+    \textbf{Test case}                        & \textbf{var. value} & \textbf{Trans. Delay (ms)} & \textbf{OWD (ms)} & \textbf{Server Proc. Delay (ms)} & \textbf{Trans. Delay (ms)} & \textbf{OWD (ms)} & \textbf{Server Proc. Delay (ms)} \\ \hline
     1. Increase client\_Nr.          & 1          & 0.792             & 0.635    & 0.157                   & 0.782             & 0.629    & 0.153                   \\
     (server: 1,                      & 10         & 0.882             & 0.839    & 0.043                   & 0.548             & 0.515    & 0.034                   \\
     byte length: 40B,                & 100        & 4.610             & 4.548    & 0.062                   & 6.167             & 6.109    & 0.058                   \\
     protocol: WebSocket)             & 500        & 11.064            & 10.918   & 0.146                   & 21.681            & 21.540   & 0.141                   \\
                                      & 1000       & Timeout           & Timeout  & Timeout                 & Timeout           & Timeout  & Timeout                 \\
+
     2. Increase server\_Nr.          & 2          & 1.538             & 1.394    & 0.144                   & 46.536            & 46.368   & 0.168                   \\
     (client: 1000, byte length: 40B, & 3          & 0.977             & 0.862    & 0.115                   & 55.024            & 54.918   & 0.106                   \\
     protocol: WS)                    &            &                   &          &                         &                   &          &                         \\
@@ -675,11 +746,13 @@ inconsistency issues.
     protocol: WebSocket)             & 1MB        & 229.443           & 2.454    & 226.988                 & 253.098           & 4.122    & 248.976                 \\
                                      & 10MB       & 2789.003          & 28.481   & 2760.522                & 2834.665          & 31.330   & 2803.335                \\
                                      & 100MB      & Timeout           & Timeout  & Timeout                 & Timeout           & Timeout  & Timeout                 \\
+
     4. Increase string\_msg length   &            & 2.294             & 1.525    & 0.768                   & 2.231             & 1.569    & 0.663                   \\
     (client: 1,                      &            & 7.331             & 5.380    & 1.951                   & 7.937             & 5.519    & 2.419                   \\
     server: 1,                       &            & 11.673            & 9.147    & 2.526                   & 12.528            & 9.652    & 2.876                   \\
     protocol: RESTful API)           &            & 51.967            & 49.963   & 2.003                   & 56.313            & 54.336   & 1.977                   \\
                                      &            & 362.932           & 359.836  & 3.096                   & 393.885           & 390.473  & 3.412                   \\
+
     5. Increase json\_msg length     & 1KB        & 1.183             & 0.881    & 0.303                   & 1.226             & 0.881    & 0.346                   \\
     (client: 1,                      & 10KB       & 3.390             & 1.662    & 1.728                   & 3.488             & 1.662    & 1.826                   \\
     server: 1,                       & 100KB      & 11.848            & 5.306    & 6.542                   & 12.115            & 5.306    & 6.809                   \\
@@ -696,42 +769,51 @@ inconsistency issues.
 % \usepackage{graphicx}
 % \usepackage{lscape}
 \begin{landscape}
-    \begin{table}[]
+    \begin{table}[htbp]
     \centering
+    \caption{An overview of tests for message prioritization in WebSocket server with various performance testing.}
+    \label{tab: TestsPriority}
     \resizebox{\columnwidth}{!}{%
     \begin{tabular}{llllllll}
-    Test case                     & Client ID  & Trans. Delay (ms) & OWD (ms)    & Server Proc. Delay (ms) & Trans. Delay (ms) & OWD (ms)    & Server Proc. Delay (ms) \\ \hline
-    6. Non-priori. string\_msg    & 1-10       & 0.967895          & 0.763061    & 0.204834                & 0.953934          & 0.747598    & 0.206336                \\
-    (client: 10,                  & (normal)   &                   &             &                         &                   &             &                         \\
-    byte length: 40B,             &            &                   &             &                         &                   &             &                         \\
-    Protocol: WebSocket)          &            &                   &             &                         &                   &             &                         \\
-    7. Non-priori. json\_msg      & 1-10       & 9.172859          & 3.783451    & 5.389408                & 1.314781          & 1.063232    & 0.251549                \\
-    (byte length: 33.4KB,         & (normal)   &                   &             &                         &                   &             &                         \\
-    Protocol: WebSocket)          &            &                   &             &                         &                   &             &                         \\
-    8. priori.string\_msg         & 1          & 31.391            & 1.140       & 30.251                  & 973.309           & 1.193       & 972.116                 \\
-    (client: 2,                   & (normal)   &                   &             &                         &                   &             &                         \\
-    byte length: 40B,             & 2          & 1.167             & 0.957       & 0.210                   & 1.244             & 1.011       & 0.233                   \\
-    Protocol: WebSocket)          & (critical) &                   &             &                         &                   &             &                         \\
-    9. priori.string\_msg         & 1-9        & 115.32263         & 2.788792222 & 112.5338378             & 69.84120556       & 1.788741111 & 68.05246444             \\
-    (client: 10,                  & (normal)   &                   &             &                         &                   &             &                         \\
-    byte length: 40B,             & 10         & 0.898             & 0.794       & 0.104                   & 0.693             & 0.586       & 0.107                   \\
-    Protocol: WebSocket)          & (critical) &                   &             &                         &                   &             &                         \\
-    10. priori.string\_msg        & 1-49       & 28.69973245       & 3.090028367 & 25.60970408             & 12.07897857       & 3.435143061 & 8.64383551              \\
-    (client: 50,                  & (normal)   &                   &             &                         &                   &             &                         \\
-    byte length: 40B,             & 50         & 1.791             & 1.726       & 0.064                   & 0.412             & 0.362       & 0.050                   \\
-    Protocol: WebSocket)          & (critical) &                   &             &                         &                   &             &                         \\
-    11. priori.json\_msg          & 1          & 393.123           & 4.344       & 388.779                 & 243.836           & 3.113       & 240.723                 \\
-    (client: 2,                   & (normal)   &                   &             &                         &                   &             &                         \\
-    (S/R byte length: 33.4KB/36B, & 2          & 12.781            & 4.293       & 8.488                   & 2.635             & 2.331       & 0.305                   \\
-    Protocol: WebSocket)          & (critical) &                   &             &                         &                   &             &                         \\
-    12. priori.json\_msg          & 1-9        & 66.03862127       & 2.546360177 & 63.4922611              & 145.0404806       & 1.65369513  & 143.3867854             \\
-    (client: 10,                  & (normal)   &                   &             &                         &                   &             &                         \\
-    (S/R byte length: 33.4KB/36B, & 10         & 11.11369          & 5.81784     & 5.29585                 & 3.355             & 3.17536     & 0.17964                 \\
-    Protocol: WebSocket)          & (critical) &                   &             &                         &                   &             &                         \\
-    13. priori.json\_msg          & 1-49       & 84.42516327       & 10.53019612 & 73.89496714             & 31.43365041       & 23.06905245 & 8.364597959             \\
-    (client: 50,                  & (normal)   &                   &             &                         &                   &             &                         \\
-    (S/R byte length: 33.4KB/36B, & 50         & 27.577            & 22.481      & 5.097                   & 4.277             & 4.094       & 0.183                   \\
-    Protocol: WebSocket)          & (critical) &                   &             &                         &                   &             &                        
+        \textbf{Test case}                     & \textbf{Client ID}  & \textbf{Trans. Delay (ms)} & \textbf{OWD (ms)}    & \textbf{Server Proc. Delay (ms)} & \textbf{Trans. Delay (ms)} & \textbf{OWD (ms)}    & \textbf{Server Proc. Delay (ms)} \\ \hline
+        6. Non-priori. string\_msg    & 1-10       & 0.968   & 0.763  & 0.205   & 0.954   & 0.748  & 0.206   \\
+        (client: 10,                  & (normal)   &         &        &         &         &        &         \\
+        byte length: 40B,             &            &         &        &         &         &        &         \\
+        Protocol: WebSocket)          &            &         &        &         &         &        &         \\
+
+        7. Non-priori. json\_msg      & 1-10       & 9.173   & 3.783  & 5.389   & 1.315   & 1.063  & 0.252   \\
+        (byte length: 33.4KB,         & (normal)   &         &        &         &         &        &         \\
+        Protocol: WebSocket)          &            &         &        &         &         &        &         \\
+
+        8. priori.string\_msg         & 1          & 31.391  & 1.140  & 30.251  & 973.309 & 1.193  & 972.116 \\
+        (client: 2,                   & (normal)   &         &        &         &         &        &         \\
+        byte length: 40B,             & 2          & 1.167   & 0.957  & 0.210   & 1.244   & 1.011  & 0.233   \\
+        Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
+
+        9. priori.string\_msg         & 1-9        & 115.323 & 2.789  & 112.534 & 69.841  & 1.789  & 68.052  \\
+        (client: 10,                  & (normal)   &         &        &         &         &        &         \\
+        byte length: 40B,             & 10         & 0.898   & 0.794  & 0.104   & 0.693   & 0.586  & 0.107   \\
+        Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
+
+        10. priori.string\_msg        & 1-49       & 28.700  & 3.090  & 25.610  & 12.079  & 3.435  & 8.644   \\
+        (client: 50,                  & (normal)   &         &        &         &         &        &         \\
+        byte length: 40B,             & 50         & 1.791   & 1.726  & 0.064   & 0.412   & 0.362  & 0.050   \\
+        Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
+
+        11. priori.json\_msg          & 1          & 393.123 & 4.344  & 388.779 & 243.836 & 3.113  & 240.723 \\
+        (client: 2,                   & (normal)   &         &        &         &         &        &         \\
+        (S/R byte length: 33.4KB/36B, & 2          & 12.781  & 4.293  & 8.488   & 2.635   & 2.331  & 0.305   \\
+        Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
+
+        12. priori.json\_msg          & 1-9        & 66.039  & 2.546  & 63.492  & 145.040 & 1.654  & 143.387 \\
+        (client: 10,                  & (normal)   &         &        &         &         &        &         \\
+        (S/R byte length: 33.4KB/36B, & 10         & 11.114  & 5.818  & 5.296   & 3.355   & 3.175  & 0.180   \\
+        Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
+
+        13. priori.json\_msg          & 1-49       & 84.425  & 10.530 & 73.895  & 31.434  & 23.069 & 8.365   \\
+        (client: 50,                  & (normal)   &         &        &         &         &        &         \\
+        (S/R byte length: 33.4KB/36B, & 50         & 27.577  & 22.481 & 5.097   & 4.277   & 4.094  & 0.183   \\
+        Protocol: WebSocket)          & (critical) &         &        &         &         &        &                             
     \end{tabular}%
     }
     \end{table}
@@ -742,23 +824,30 @@ inconsistency issues.
 % \usepackage{graphicx}
 % \usepackage{lscape}
 
-\begin{table}[]
+\begin{table}[htbp]
 \centering
+\caption{An overview of tests for data transport between \gls{rcp}, \gls{dta} and Azure \gls{dt}.}
+\label{tab: TestsDT}
 \resizebox{\columnwidth}{!}{%
 \begin{tabular}{lllll}
-Test case                               & var. value   & OWD forward (ms) & OWD return (ms) & RTT (ms) \\ \hline
-14. Var. string\_msg, RCP-DTA           & 151B         & 8.0714           & None            & None     \\
-(Protocol: TCP)                         & 80B          & 6.3943           & None            & None     \\
-15. Var. robot data, DTA-Azure DT       & JointGripper & 26.3666          & 70.3221         & 96.688   \\
-(Protocol: HTTP/HTTPS,                  & Elbow        & 24.4194          & 71.5992         & 96.0186  \\
-msg type: json, byte length: 49B)       &              &                  &                 &          \\
-16. Var. json\_msg, DTA-Azure DT        & 554B         & 20.92            & 82.16           & 103.08   \\
-(Protocol: HTTP/HTTPS, data type: json) & 49B          & 23.78            & 78.63           & 102.41   \\
-17. RCP-DTA-Azure DT                    & 151B         & 5.4137           & None            & None     \\
-(Protocols: TCP, HTTP/HTTPS;            & 49B          & 26.3666          & 70.3221         & 96.6887  \\
-msg type: string, json;                 &              &                  &                 &          \\
-robot data: JointGripper)               &              &                  &                 &         
+\textbf{Test case}                               & \textbf{var. value}   & \textbf{OWD forward (ms)} & \textbf{OWD return (ms)} & \textbf{RTT (ms)} \\ \hline
+14. Var. string\_msg, RCP-DTA           & 151B         & 8.071  & None   & None    \\
+(Protocol: TCP)                         & 80B          & 6.394  & None   & None    \\
+                                        &              &        &        &         \\
+15. Var. robot data, DTA-Azure DT       & JointGripper & 26.367 & 70.322 & 96.688  \\
+(Protocol: HTTP/HTTPS,                  & Elbow        & 24.419 & 71.599 & 96.019  \\
+msg type: json, byte length: 49B)       &              &        &        &         \\
+                                        &              &        &        &         \\
+16. Var. json\_msg, DTA-Azure DT        & 554B         & 20.920 & 82.160 & 103.080 \\
+(Protocol: HTTP/HTTPS, data type: json) & 49B          & 23.780 & 78.630 & 102.410 \\
+                                        &              &        &        &         \\
+17. RCP-DTA-Azure DT                    & 151B         & 5.414  & None   & None    \\
+(Protocols: TCP, HTTP/HTTPS;            & 49B          & 26.367 & 70.322 & 96.689  \\
+msg type: string, json;                 &              &        &        &         \\
+robot data: JointGripper)               &              &        &        &    
 \end{tabular}%
 }
 \end{table}
+
+
 

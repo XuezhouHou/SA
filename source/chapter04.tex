@@ -43,7 +43,7 @@ a \gls{ca} to handle real-time communication between agents in different levels.
 \begin{figure}[htb]
 \includegraphics[width=\textwidth]{figures/MAS_Conceptual_Diagram.pdf}
 \centering
-\caption{Conceptual diagram of MAS\label{fig: MASConceptual}}
+\caption{Conceptual diagram of MAS.\label{fig: MASConceptual}}
 \end{figure}
 
 % decribe the conceptual diagram
@@ -120,7 +120,7 @@ connection can be ensured for constant data exchange, and messages can be priori
 queue inside a \gls{ca}. 
 
 
-\subsection{\gls{osi} model and comparison between sockets relevant protocol layers}
+\subsection{\gls{osi} model and comparison between communication-relevant protocol layers}
 %figure conceptual MAS
 \begin{figure}[htbp]
 \includegraphics[width=0.6\textwidth]{figures/OSI.pdf}
@@ -267,17 +267,17 @@ protocols\label{fig: MsgConceptual}}
 
 
 
-\subsection{Vertical comparison between WebSocket and \gls{tcp}}
+\subsection{Server-client design for \gls{mas} with the vertical comparison between WebSocket and \gls{tcp}}
 In the final stage of the system design, WebSocket is chosen over \gls{tcp} as 
-base communication protocols. There are several reasons for the choice. 
-In the most basic communication mode according to \cite{vogel-heuser_delay_2023} 
+the base communication protocol for \gls{mas}. There are several reasons for the choice. 
+A most basic communication mode according to \cite{vogel-heuser_delay_2023} 
 is based on \gls{tcp} utilizing sockets (data transport endpoints in 
 program), which is beneficial for one-to-one, 
 or more-to-one, but never a more-to-more agent communication. This is based on 
 the fact that, client/-s should always start before the server. Assume that 
 each agent is both a server and a client at the same time, the more-to-more 
 agent communication will greatly enhance the complexity of the data exchange 
-and also consumes too much\gls{cpu} power. To be more specific, for a 
+and also consumes too much \gls{cpu} power. To be more specific, for a 
 system of five agents, each agent has at least four threads for communication, 
 which enables the agent to switch between the role of clients and servers, 
 making it impossible for real-time communication. The complex interconnections 
@@ -287,8 +287,8 @@ between agents is shown in fig.\ref{fig: threadMASConceptual}.
     \includegraphics[width=\textwidth]{figures/threads_MAS.pdf}
     \centering
     \caption{Conceptual diagram of \gls{mas} communication based on 
-    \gls{tcp} sockets, agent can be either client or agent by creating 
-    multiple threads. \label{fig: threadMASConceptual}}
+    \gls{tcp} sockets, agent can be either client or server by creating 
+    multiple threads in a single script. \label{fig: threadMASConceptual}}
 \end{figure}
 
 
@@ -304,14 +304,57 @@ may be more suitable for more-to-one communication for \gls{dta},
 with its details described in section \ref{chap: RCPTCP-DTAPI}.  
 
 
+
+\subsection{Decentralization of \gls{mas} communication with more than one server}
+After choosing server-based \gls{ca} design and selecting WebSocket as the 
+communication protocol for \gls{mas}, we now focus on the system decentralization.  
+Except for the ideas of the decentralization of tasks for each sub-agent, the agent 
+communication system can also be decentralized. For example, reprsented as \gls{ca}, 
+server is responsible for handling all connections asynchronously, which should be 
+feasible if the total number of agents does not exceed the limit. However, as already 
+tested in our \gls{mas} design, a server cannot handle up to 1000 agents simultaneously. 
+Hence, a distribution of a large communication system is necessary. 
+
+
+However, it is challenging to distribute an agent communication system. 
+Each agent needs to know 
+with which server it should connect to and for what type of tasks. Another issue could 
+be, if an agent receives conflicting messages from different servers, it will probably 
+perform incorrect actions. A possible way it to design a mechanism to predefine the 
+agent interaction to avoid the system inconsistency. In our use cases, the communication 
+between \gls{ca} and \gls{ras}, and the interactions among \gls{ras} can be separated. 
+The communication between \gls{ca} and other \gls{ras} is always under a central server, 
+while the prodution-oriented communications between each \gls{ra} will go through a 
+sublevel server. Although having only two servers in our study, the number of servers 
+can be expanded according to the scale of the \gls{mas}. For instance, if some agent 
+will never access other parts of agents during the production process, a subserver should 
+be designed to connect those agents and keep the communications internal. Meanwhile, on 
+the other hand, the integration of additional servers will increase the system complexity, 
+and introduce additional load balancing and synchronization issues. Therefore, 
+in practical applications, engineers should be more careful in scaling the system in 
+the design phase. Fig.\ref{fig: server-client-decentralization} shows the decentralization 
+of the agent communication system with two servers. 
+
+\begin{figure}[htbp]
+    \includegraphics[width=0.7\textwidth]{figures/Server-clients-decentralize.pdf}
+    \centering
+    \caption{Conceptual diagram of a decentralized \gls{mas} communication system with 
+    two servers integrated.
+    \label{fig: server-client-decentralization}}
+\end{figure}
+
+
+
+
+
 \subsection{Prerequisite}
 \subsubsection{System Setup}
  
-%figure conceptual MAS
+
 \begin{figure}[htbp]
 \includegraphics[width=0.8\textwidth]{figures/NamespaceConceptual.pdf}
 \centering
-\caption{Conceptual diagram of namespaces creation
+\caption{Conceptual diagram of namespaces creation.
 \label{fig: NSConceptual}}
 \end{figure}
 
@@ -336,6 +379,59 @@ Namespace 1 to 3 and then back; it is routed by the switch instead of
 bridges between namespaces to avoid internal routing. This external routing 
 device is useful for delay measurement between each agent through 5G Network, 
 by introducing external delays to estimate the network environment. 
+
+\subsection{Use WebSocket and RESTful API libraries for data transmission}
+Since the programs are written in python language, the python \textit{websockets} 
+and \textit{flask} library can be used for WebSocket and RESTful API implementation 
+respectively, resulting on different communication meachnism. 
+
+
+The connection establishment in WebSocket is rather simple. The program is 
+built under the default \textit{asyncio} I/O framework, which 
+provides a coroutine-based API for the server to handle multiple clients 
+concurrently. The following steps 
+show the simplified function calls for each conection step from the client side: 
+\begin{enumerate}
+    \item use \textit{$with connect(URI) as websocket$}: to establish connection with server
+    \item use \textit{$await websocket.send(client ID)$} to send client ID
+    \item use \textit{$await websocket.send(message)$} to send messages
+    \item use \textit{$await websocket.recv(response)$} to get response
+\end{enumerate}
+If the functions are called under a loop, the client can send and receive 
+messages consistently until the connection is closed explicitly. 
+Due to its statelessness, the client-relevant information (i.e. client ID) 
+should be sent first. Since the server side is also running the same send 
+and receive functions as in client, it will receive the message from the 
+client, extract the receiver information and route the packet continuously. 
+So at the receiver side, the send and receive calls are reverted: 
+\begin{enumerate}
+    \item use \textit{$with connect(URI) as websocket$}: to establish connection with server
+    \item use \textit{$await websocket.recv(response)$} to receive messages
+    \item use \textit{$await websocket.send(message)$} to send response
+\end{enumerate}
+
+With regards to the \textit{flask} APIs, it is closely related to the common 
+\gls{http} request methods: GET, POST, PU, DELETE, PATCH and HEAD. 
+The client should POST and GET the message to and from the server, with 
+a response indicating whether the function call is sucessful or not. The 
+other client should then GET first and then POST a message back.  
+
+\begin{enumerate}
+    \item use \textit{$response = requests.post(f'{server\_address}/send\_message', json=data)$} to POST a message to server
+    \item use \textit{$response = requests.get(f'{server\_address}/get\_messages/{self\_client_name}$)} to GET a message from server
+\end{enumerate}
+
+At the server side, functions to process data and give response are defined as:
+\begin{enumerate}
+    \item use \textit{$@app.route('/send\_message', methods=['POST'])$} to receive message from sender client
+    \item use \textit{$@app.route('/get\_messages/<agent\_name>', methods=['GET'])$} to send message to receiver client
+\end{enumerate}
+
+Unlike the persistent connection in WebSocket, RESTful API needs to create 
+a new connection for each new message, which seems to be less suitable for real-time 
+requirements. 
+
+
 
 
 \subsection{Pseudo-Code of MAS workflow in WebSocket python}\label{chap: Meth-WS-MAS}
@@ -366,7 +462,7 @@ In order to rearrange them and handle the messages with higher priority in advan
 Finally, the message will be processed further or sent directly to the recipient. 
    
 \begin{breakablealgorithm}
-\caption{Pseudo-Code for \gls{cda} in MAS workflow}
+\caption{Pseudo-Code for \gls{cda} in MAS workflow.}
 \label{alg: CDAPseudoCode}
 \begin{algorithmic}[1]
 \State \textbf{Input:} custRequirement
@@ -431,7 +527,7 @@ Finally, the message will be processed further or sent directly to the recipient
 
 %pseudo code for RA
 \begin{breakablealgorithm}
-    \caption{Pseudo-Code for \gls{ra} in MAS workflow}
+    \caption{Pseudo-Code for \gls{ra} in MAS workflow.}
     \label{alg: RAPseudoCode}
     \begin{algorithmic}[1]
     \State {Import} WebSocket
@@ -510,7 +606,7 @@ Finally, the message will be processed further or sent directly to the recipient
 
 %pseudo code for Server
 \begin{breakablealgorithm}
-    \caption{Pseudo-Code for \gls{ca} as a server in MAS workflow}
+    \caption{Pseudo-Code for \gls{ca} as a server in MAS workflow.}
     \label{alg: ServerPseudoCode}
     \begin{algorithmic}[1]
         \State {Import} WebSocket
@@ -557,7 +653,7 @@ Instead of sending and receiving from WebSocket, agentSR first POST a request to
 while agentRS GET a request to the server for the function call $get\_message()$, same for the reverse direction. 
 Under the same condition, the message transport routine with RESTful API may result in more latency than WebSocket, which will be verified later.
 \begin{algorithm}
-    \caption{Pseudo-Code for agentSR in one to one communication workflow}
+    \caption{Pseudo-Code for agentSR in one to one communication workflow.}
     \label{alg: SRPseudoCode}
     \begin{algorithmic}[1]
     \State {Import} flask
@@ -582,7 +678,7 @@ Under the same condition, the message transport routine with RESTful API may res
 
 
     \begin{algorithm}
-        \caption{Pseudo-Code for agentRS in one to one communication workflow}
+        \caption{Pseudo-Code for agentRS in one to one communication workflow.}
         \label{alg: RSPseudoCode}
         \begin{algorithmic}[1]
         \State {Import} flask
@@ -605,7 +701,7 @@ Under the same condition, the message transport routine with RESTful API may res
         \end{algorithm}
 
     \begin{algorithm}
-        \caption{Pseudo-Code for a server in one to one communication workflow}
+        \caption{Pseudo-Code for a server in one to one communication workflow.}
         \label{alg: apiServerPseudoCode}
         \begin{algorithmic}[1]
         \State {Import} flask
@@ -656,7 +752,7 @@ final section will cover the setup of the Azure \gls{dt} platform for data inges
 \includegraphics[width=\textwidth]{figures/DT_Conceptual_Diagram.pdf}
 
 \centering
-\caption{Conceptual diagram of MAS\label{fig: DTConceptual}}
+\caption{Conceptual diagram of global \gls{dt}. \label{fig: DTConceptual}}
 \end{figure}
 
 The workflow of updating global \gls{dt} through the \gls{dta} process is shown 
@@ -844,7 +940,7 @@ Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} cod
     \includegraphics[width=0.8\textwidth]{figures/KQL_cut.jpg}
     
     \centering
-    \caption{Snippet of Data Explorer\label{fig: KQL}}
+    \caption{Snippet of Azure Data Explorer.\label{fig: KQL}}
 \end{figure}
 
 As shown in fig.\ref{fig: KQL}, by executing the code from the snippet, all the history data will be listed as a table 
@@ -881,7 +977,7 @@ layer, while the transport layer remains the same.
     \includegraphics[width=\textwidth]{figures/TCP_IP.pdf}
     
     \centering
-    \caption{\gls{tcp/ip} model with example protocols \label{fig: TCP_IP}}
+    \caption{\gls{tcp/ip} model with example protocols. \label{fig: TCP_IP}}
 \end{figure}
 
 \subsection{Timing properties of data transport w.r.t sockets and visual notations based on \gls{tcp/ip} model}
@@ -950,5 +1046,5 @@ back to the robot controller interface through a \gls{a/d} converter and network
     \includegraphics[width=\textwidth]{figures/DSLConceptual.pdf}
     
     \centering
-    \caption{Conceptual diagram of a modularized general \gls{mas} based on \gls{dsl} \label{fig: DSLConceptual}}
+    \caption{Conceptual diagram of a modularized general \gls{mas} based on \gls{dsl}. \label{fig: DSLConceptual}}
 \end{figure}

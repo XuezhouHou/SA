@@ -89,7 +89,7 @@ MAS in Ryashentseva’s architecture. Among all,  Wannagat’s architecture
 is chosen as the appropriate design pattern for \gls{ra} for field level 
 control, which consists of five modules: Planning Module, Knowledge Base, 
 Control Module, Diagnosis Module, and communication interface. 
-All modules are interconnected, meanwhile, with each connected to 
+All modules are interconnected, meanwhile, with each bound to 
 I/Os of a physical system and a communication interface to interact 
 with other \gls{ras} or \gls{ams} through \gls{ca} \cite{cruz_salazar_cyber-physical_2019}. 
 \gls{ams} and \gls{ca} should have different specifications in the 
@@ -185,7 +185,21 @@ used in industrial automation for modeling hard real-time constraints with
 a set of symbols that capture delays from networks and devices, I/O interfaces, 
 and industrial controllers\cite{hujo_toward_2022}, \gls{dsl} for robotics is still 
 under development due to its higher level of complexity and flexibility in 
-robot control. The \gls{dsl} based visualization tools are mostly developed 
+robot control. Most of the time, a network communication system is integrated in a group 
+of robot operations. To bridge the gap between highly modularized automation system 
+and robotic system, \gls{dsl4ras} for the software and hardware 
+properties of robotic drive components is to be defined to meet the need 
+of developing robot-like system based on \gls{dsl}. In the recent work\cite{vogel-heuser_delay_2023}, 
+the adaptation of \gls{dsl} is even more straightforward, by adopting and 
+extending the graphical notations 
+from \cite{hujo_toward_2022} and \cite{volpert_supporting_nodate}. It, however, 
+leaves the space for further extension. 
+
+
+
+The starting point of a requirements specific \gls{dsl} design is usually 
+the existing softwares. 
+A large amount of \gls{dsl} based visualization tools are mostly developed 
 to be applied to an open-source robotics middleware suite such as \gls{ros}. 
 For example, \gls{rviz} is a \gls{dsl} based 3D 
 visualization tool for \gls{ros} that can visualize the robot model and 
@@ -206,11 +220,16 @@ provided\cite[fig.5]{hutchison_robotml_2012}.
 \section{\gls{dt}}
 
 
-Apart from the agents that are responsible for internal production 
-processes, \gls{dta} plays a crucial part in collecting data from the 
-production and storing it externally to create a digital replica of the 
-physical entities or systems. As described in section \ref{chap: Motivation}, 
-\gls{dt} is a digital mapping of physical entities. Former work for this 
+As mentioned earlier in chapter \ref{chap: Motivation}, 
+\gls{dt} is a digital mapping of physical entities. 
+
+
+
+
+
+
+
+Former work for this 
 project has already provided a foundation for the \gls{dt} 
 structure\cite{hofgen_architecture_2023}. 
 The work mainly focuses on the realization of an \gls{aas} based \gls{dt} system, 
