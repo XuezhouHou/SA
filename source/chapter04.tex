@@ -181,7 +181,7 @@ the packets may come in a different ordering, which results in problems in recon
 data files at the receiver side.  
 
 In a \gls{mas}, a reliable and direct communication between each agent should be 
-guaranteed under a real time requirement, 
+guaranteed under a real-time requirement, 
 which leads to the choice of \gls{tcp} over \gls{udp}. 
  
 
@@ -225,7 +225,7 @@ duplex communication
 solution. The term bi-directional means that, once the connection is established, 
 either the client or the server can send a message to each other simultaneously, and Full 
 duplex indicates the independency of data flow in both directions. WebSocket is suitable 
-for real time application because of its persistent connection, meaning that the connection 
+for real-time application because of its persistent connection, meaning that the connection 
 will stay until it is closed specially. This mechanism greatly reduces the delay for 
 reconnections. WebSocket also has the advantages of being highly flexible in most modern 
 web browser and many backend environments, its high adaptability and scalability. The only 
@@ -234,7 +234,7 @@ drawback for the implementation of \gls{mas} could be its instability by constan
 
 The last comparable protocol should be the \gls{mqtt} that is usually integrated in 
 \gls{iot} with limited bandwidth. It has many leading points for 
-\gls{mas} design. It is highly suitable for real time systems with persistent connection, 
+\gls{mas} design. It is highly suitable for real-time systems with persistent connection, 
 benefited from the statefulness property, and a minimal message overhead. The system 
 based on \gls{mqtt} is highly real-time capable, flexible, adaptable to dynamic changes, 
 capable of handling instability and highly scalable on broker-client message transport. 
@@ -392,10 +392,10 @@ provides a coroutine-based API for the server to handle multiple clients
 concurrently. The following steps 
 show the simplified function calls for each conection step from the client side: 
 \begin{enumerate}
-    \item use \textit{$with connect(URI) as websocket$}: to establish connection with server
-    \item use \textit{$await websocket.send(client ID)$} to send client ID
-    \item use \textit{$await websocket.send(message)$} to send messages
-    \item use \textit{$await websocket.recv(response)$} to get response
+    \item use \textit{with connect(URI) as websocket}: to establish connection with server
+    \item use \textit{await websocket.send(client ID)} to send client ID
+    \item use \textit{await websocket.send(message)} to send messages
+    \item use \textit{await websocket.recv(response)} to get response
 \end{enumerate}
 If the functions are called under a loop, the client can send and receive 
 messages consistently until the connection is closed explicitly. 
@@ -405,9 +405,9 @@ and receive functions as in client, it will receive the message from the
 client, extract the receiver information and route the packet continuously. 
 So at the receiver side, the send and receive calls are reverted: 
 \begin{enumerate}
-    \item use \textit{$with connect(URI) as websocket$}: to establish connection with server
-    \item use \textit{$await websocket.recv(response)$} to receive messages
-    \item use \textit{$await websocket.send(message)$} to send response
+    \item use \textit{with connect(URI) as websocket}: to establish connection with server
+    \item use \textit{await websocket.recv(response)} to receive messages
+    \item use \textit{await websocket.send(message)} to send response
 \end{enumerate}
 
 With regards to the \textit{flask} APIs, it is closely related to the common 
@@ -418,7 +418,7 @@ other client should then GET first and then POST a message back.
 
 \begin{enumerate}
     \item use \textit{$response = requests.post(f'{server\_address}/send\_message', json=data)$} to POST a message to server
-    \item use \textit{$response = requests.get(f'{server\_address}/get\_messages/{self\_client_name}$)} to GET a message from server
+    \item use \textit{$response = requests.get(f'{server\_address}/get\_messages/{self\_client\_name}$)} to GET a message from server
 \end{enumerate}
 
 At the server side, functions to process data and give response are defined as:

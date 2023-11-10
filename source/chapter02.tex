@@ -111,7 +111,7 @@ to avoid packet loss\cite{paxson_end--end_1999}. Benefits from
 the development of the internet latency test tools, \gls{tcp} delay 
 performance can be evaluated by one of them. Wireshark, for example, is famous 
 for capturing network delay in transport layer, where \gls{tcp} delay 
-can be filtered in real time\cite{dsouza_transmission_2020}. Besides, 
+can be filtered in real-time\cite{dsouza_transmission_2020}. Besides, 
 application and presentation layer delays can also be measured by Wireshark and 
 other Program 
 specific profiling tools\cite{heger_application_2017}. Furthermore, 
@@ -221,24 +221,78 @@ provided\cite[fig.5]{hutchison_robotml_2012}.
 
 
 As mentioned earlier in chapter \ref{chap: Motivation}, 
-\gls{dt} is a digital mapping of physical entities. 
+\gls{dt} is a digital mapping of physical entities. Being a rather new concept to 
+industrial automation systems, \gls{dt} has gained a lot of attention as a key-concept 
+of Industry 4.0. According to the existing research on \gls{dt}, their 
+directions can be roughly divided into the following categories. The first one 
+focuses on the real-time monitoring and visualization of physical asset or system. 
+A \gls{dt} visualization architecture for \gls{fms} has been designed to present 
+the high value information for lifecycle planning, design, debugging and service 
+stages by\cite{fan_digital-twin_2021}. In some cases, the visualization of \gls{dt} 
+can be presented in a way for \gls{hmi}\cite{schroeder_visualising_2016}. 
+
+
+The next orientation of \gls{dt} includes the data analytics to support 
+learning and decision making. In a case study of wind power, the data from 
+a \gls{dt} model is taken to feed both the physics-based and 
+machine learning models\cite{erikstad_merging_nodate}. The processed 
+data will be then either stored in a \gls{db} or presented in a regression model. 
+Another examplary \gls{dt} design that has contributed rich functionalities to 
+data analytics is the \gls{imt} \gls{dt}\cite{tong_real-time_2020}. 
+It contains a data analysis module 
+that includes algorithms for error estimation, trajectory kinematics/dynamics 
+transformation, machining vibration modal analysis, and a cutting force
+estimation.
+
+Based on the data analysis model, predictions can be made to handle failures, and 
+to optimize resources. In \cite{katalinic_digital_2018}, known models are used to solve static and dynamic 
+diagnostics tasks, and the an applcation for technical process optimization. To fill the 
+gaps in maintainence prediction utilizing \gls{dt} big data analytics, a framework 
+is designed to support the sharing of data, knowledge and resources, with a 
+mathematical programming model integrated\cite{mi_prediction_2021}. 
+
+
+The last biggest challenge for \gls{dt} development will be the security threats. 
+Although it benefits from breaking the edges in Industry 4.0, industrial stakeholders 
+become more and more conservative. The threats exist but not limited to the following 
+fields: software attack, Privilege escalation, Man-in-the-middle, Rogue \gls{dt} 
+servers and infrastructures and DT service tampering. Some possible solutions to these 
+threats have been introduced, including the improvement of Identity, Authentication 
+and Authorization, 
+Hardware and Software Security, Hardening of DT Infrastructures and Decoupling and many 
+more. The gain of trust-worthy technologies to overcome security issues will certainly 
+gain the confidence of potential \gls{dt} users. 
 
 
 
-
-
-
-
-Former work for this 
-project has already provided a foundation for the \gls{dt} 
+Our studies for the \gls{dt} part is based on the 
+former work for this 
+project, which has already provided a foundation for the \gls{dt} 
 structure\cite{hofgen_architecture_2023}. 
-The work mainly focuses on the realization of an \gls{aas} based \gls{dt} system, 
+The work mainly focuses on the realization of an \gls{aas} based Azure \gls{dt} system, 
 with an automated \gls{dt} creation and socket-based communication between 
 different layers from the \gls{dt} architecture reference 
-model\cite[fig.5]{aheleroff_digital_2021}. 
+model\cite[fig.5]{aheleroff_digital_2021}. In our work, the functionalities of \gls{dt} 
+will be further investigated, with a additional agent-based consideration. 
 
 
 
+\section{Real-time requirements for \gls{mas} and \gls{dt}}
+Throughout our research, the real-time capability is an important metric for connecting 
+various systems and components in \gls{cps}. However, it is not easy to define the 
+real-time requirements, which varies greatly due to the system complexity, 
+system interaction requirements, hardware capability, and network latency, 
+along with others. 
+A use case based real-time requirements for low latency and high reliability 
+is defined by\cite{li_5g_2018}, with the floor-level end-to-end latency 
+approximately ranging from 1 to 10ms, and the remote control with about 50ms for a 5G 
+system. However, according to\cite{zhang_infrastructure_2017}, the real-time 
+\gls{qos} requirements for cloud applications (e.g.,\gls{ms} Azure and Amazon Web Service) 
+could be selected by a real-time \gls{qos}-aware multicriteria decision-making 
+technique. From the paper, an example is given in the gaming industry that has 
+high real-time streaming requirements. Hence, the real-time requirement is not unique 
+and the decision-making for a hard or 
+soft real-time requirements should be executed in the design stage. 
 
 \section{Research gap}
 

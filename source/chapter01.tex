@@ -52,13 +52,12 @@ in the environment. This collective capability enables them to solve complex pro
 that a single agent would not be able to handle alone. 
 
 
-% check from here with grammarly
 Effective communication between agents is crucial for the successful functioning of a 
 system\cite{georgeff_communication_1988}. According to the discussion of agent 
 communication\cite{vogel-heuser_multi-agent_2020}, in addition to the horizontal 
 communication between agents, the vertical communication between assets 
 and their mapped \gls{aas} can also be realized by agents to extend the domain 
-of \gls{mas}. \gls{aas} is a standard 
+of production lifecycle. \gls{aas} is a standard 
 that serves as the foundation of the \gls{dt} implementation\cite{redeker_towards_2021}. 
 To differentiate, \gls{aas} provides a data structure for \gls{dt}, while Digital 
 Twin uses the data for real-time data representation, simulation, and analysis. 
@@ -68,11 +67,10 @@ famous \gls{plm} model \cite{greengard_digital_nodate}to
 explain the role of a in the product lifecycle. Data from engineering, 
 design and manufacture should be digitalized to represent physical 
 assets. Some common understandings of engineering data could be 
-for example simulation for performance testing. Or may be design data 
+for example simulation for performance testing, design data 
 that builds a visual representation of CAD data of plants and robots, 
 and manufacture data that helps to inspect changes of production for 
-process optimization. The digitalization of the physical asset 
-throughout the entire lifecycle should be summarized as \gls{dt}.
+process optimization. 
 Based on a summation of timeline-based \gls{dt} definitions until the year 
 2016\cite{negri_review_2017}, the concept of \gls{dt} is defined as: \textit{"A 
 unified system model that can coordinate architecture, mechanical, electrical, 
@@ -83,15 +81,15 @@ communication between physical assets and \gls{dt} will be another focus of this
 article. 
 
 
-When exploring \gls{dt} and \gls{mas}, a network is the prerequisite for agent communication. 
-Resolving network delays during data exchange becomes more and more vital. The network 
+When exploring \gls{dt} and \gls{mas}, a network system is essential for agent communication 
+and therefore the demands of resolving network delays during data exchange is growing. The network 
 latency refers to the time it takes for a packet to travel across the network, from one end 
 to the other end, namely the netwotk communication delay. The network delay can be measured 
 as either \gls{rtt}, representing the time consumption of a packet travels from source and 
 back, or \gls{owd}, the one-way latency from source to 
 destination. One solution for \gls{owd} estimation\cite{abdou_accurate_2015} is 
-to halve the calculated \gls{rtt}\cite{karn_improving_nodate}. 
-The exact \gls{owd} value should be measured after synchronization based on \gls{ntp}\cite{abdou_accurate_2015}. 
+to halve the calculated \gls{rtt}\cite{karn_improving_nodate}, with the \gls{owd} 
+value synchronized before meausurement\cite{abdou_accurate_2015}. 
 
 
 Not only the network delays influence the system performance, timing behaviors of other 

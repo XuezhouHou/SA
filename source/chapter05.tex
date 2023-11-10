@@ -319,7 +319,7 @@ fig.\ref{fig: priority-10clients-a} and \ref{fig: priority-10clients-b} show the
 mean \gls{owd} that a non-prioritized and prioritized message is being sent forward and 
 back separately for 100 times.
 Fig.\ref{fig: priority-10clients-a} shows the mean \gls{owd} for client1 to client10 in both 
-directions, which ranges from 0.63ms to 1.09ms. These results meet the near real-time 
+directions, which ranges from 0.63ms to 1.09ms. These results meet the suggested near real-time 
 requirement for the production process\cite{li_5g_2018}, with a latency from <1 ms to 10 ms 
 for the use of collaborative robots in a factory. 
 On the other hand, fig.\ref{fig: priority-10clients-b} 
@@ -463,7 +463,7 @@ production based on its simplicity of agent communication design.
 The primitives, agents and execution sequence for both BMW and Wittenstein use cases 
 are predefined. However, only the timing behaviors of the BMW use case are tested due 
 to similarity. The average \gls{owd} and WebSocket data transmission time of the BMW 
-use case are presented in table \ref{tab: mean-usecase-time}, with a snippet of the whole 
+use case are presented in table \ref{tab: mean-usecase-time}, with a excerpt of the whole 
 data table for BMW use case presented in table \ref{tab: TestsCDAMiR600}. The test was conducted 
 100 times, but the number of messages exchanged among agents varied greatly. Therefore, 
 the test results and average values can only be used as a reference to understand the 
@@ -482,7 +482,7 @@ the real-time requirements, with the largest message size of 636 Bytes taking a 
 \begin{table}[htbp]
     \tiny
     \centering
-    \caption{An overview of communication messages from \gls{cda} to Transport Agent MiR600, the full table can be found in \ref{firstfootnote}.}
+    \caption{An excerpt of communication messages from \gls{cda} to Transport Agent MiR600, the full table can be found in \ref{firstfootnote}.}
     \label{tab: TestsCDAMiR600}
     \begin{tabular}{m{0.1\textwidth} m{0.1\textwidth} m{0.05\textwidth} m{0.05\textwidth} m{0.35\textwidth} m{0.07\textwidth} m{0.05\textwidth}}
     \textbf{Sender}            & \textbf{Recipient}              & \textbf{Message number} & \textbf{Message length (Bytes)} & \textbf{Message content}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      & \textbf{Transmission time (ms)} & \textbf{OWD (ms)} \\ \hline
@@ -610,11 +610,13 @@ API for data update (an unclosed issue in \gls{ms} Q\&A\footnote[1]{https://lear
 
 It is worth mentioning that the data upload time from JointGripper and Elbow has little to 
 no difference since the upload mechanism of Azure \gls{dt} is limited by sending twin 
-values one after one. There is only such function to update up to one twin simultaneously. 
+values one after one. There is no integrated APIs to update multiple twins simultaneously. 
 In order to differentiate the upload speed, the patch size of the to-be-updated twin values 
 should vary. The fig.\ref{fig: UD-cycle-JointGripper} again shows the cumulative delays 
 with the same conclusion as in fig.\ref{fig: SR-JointGripper-Elbow} and mean \gls{rtt} is 
-slightly lower than 100ms, which is still under the real-time requirements. The packet for 
+slightly lower than 100ms, which is still near the real-time requirements with its half 
+(compared to the realtime requirements of the end-to-end latency for 5G remote control\cite{li_5g_2018}). 
+The packet for 
 upload and download will be routed to the cloud, which not only goes through the internal 
 5G network but also the internet externally, which results in much higher latency. Compared 
 with the test results from \cite{cainelli_performance_2023}, optimizing the internal twin 
