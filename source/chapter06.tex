@@ -44,4 +44,29 @@ divided into three types: performance tests for an increasing number of servers,
 clients, and message lengths in different types, including worst-case scenarios, 
 message prioritization mechanism in server design for critical messages 
 (e.g., emergent stop, important task prioritization), and a use case specific 
-delay measurement for real-world production process simulation. 
+delay measurement to simulate real-world production process. Respecting \gls{dta}, 
+the tests are more straightforward. We first measured the transmission delays of 
+different robot states from \gls{rcp} to \gls{dta}, and then we performed tests 
+for data upload and download between \gls{dta} and Azure \gls{dt}. Based on the 
+results from \cite{cainelli_performance_2023} for uplink and downlink delay measurement under a 5G 
+network, this results in a more significant delay by the former and less by the 
+latter. In our test, we managed to separate the data upload and download \gls{owd} 
+delays from the total cycle time by extracting the twin update time in 
+Azure \gls{dt}. Our results show an opposite upload and download \gls{owd}, 
+possibly due to a different network or cloud setup. Since many influencing 
+factors exist, we can hardly analyze the network delays simply from the values. 
+
+
+
+Therefore, we inherited the model-driven approach from the automation industry. 
+There are already extended graphical notations based on \gls{dsl} that exist 
+for analyzing the timing properties for both software and hardware under soft 
+and hard real-time requirements\cite{hujo_toward_2022} and the modularization 
+approaches for robot-like systems\cite{volpert_supporting_nodate}. Based on these 
+considerations, we designed a graphical model to describe the timing properties 
+and requirements for agent-based communication and robot control systems. 
+In our model, the data follows a path to flow through the \gls{tcp/ip} layers 
+after being processed in \gls{cpu} and again the same layers in the opposite 
+direction to the receiver \gls{cpu} endpoint. Similarly, the robot control system 
+also produces delays, which can be modularized as delays in technical processing, 
+I/O module, and robot controller interface. 
