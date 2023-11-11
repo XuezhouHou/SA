@@ -6,7 +6,9 @@ decentralization. Considered a modern and effective solution to system
 decentralization, \gls{mas} is incredibly functional for domain-specific 
 applications. By applying \gls{mas} to a traditional master-slave\cite{egger_deployment-friendly_2020} 
 pattern, we now obtained a system that is mainly scheduled and coordinated 
-by \gls{cda}, supplemented by other intelligent \gls{ras}, to enable the 
+by \gls{cda} who receives the customer requirements and break those down to agent 
+executable primitives, supplemented by other intelligent \gls{ras} that proceed 
+with those primitives, to enable the 
 autonomous decision-making and planning in each agent. Distinct from a 
 general \gls{mas}, we extended its domain to \gls{iot} by 
 introducing an additional \gls{dta} to bridge the gap between physical 
@@ -70,3 +72,18 @@ after being processed in \gls{cpu} and again the same layers in the opposite
 direction to the receiver \gls{cpu} endpoint. Similarly, the robot control system 
 also produces delays, which can be modularized as delays in technical processing, 
 I/O module, and robot controller interface. 
+Another modularization consideration is related to agent-based design architecture. 
+According to the Wannagat's design pattern\cite{wannagat_agent_nodate}\cite{wannagat_entwicklung_2010}, instead of the delays, the 
+functionalities for each agent can be categorized to five modules:  Planning 
+module, control module, diagnosis module, knowledge base, and communication 
+interface. In our \gls{mas} design, each module is interconnected to transfer 
+states within an agent, where a series of tasks from each module is performed.
+
+
+Our graphical notations provided insight into a more abstract and domain-specific 
+modularization of timing properties for \gls{mas}, and decision-making and planning 
+within each agent. 
+Future work could be using the existing tools to measure or simulate delays for 
+each module or developing a modeling tool for research purposes. And also, one improvement 
+of the \gls{dta} system design could be introduing a real-time visualization platform 
+for a more intuitive representation of the physical changes in robots' collaboration.
