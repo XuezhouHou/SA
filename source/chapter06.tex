@@ -1,1 +1,47 @@
 \chapter{Conclusion and outlook}
+
+In this article, we emphasize that in modern factories, in order to handle 
+multi-tasking problems, it is essential to introduce the concept of system 
+decentralization. Considered a modern and effective solution to system 
+decentralization, \gls{mas} is incredibly functional for domain-specific 
+applications. By applying \gls{mas} to a traditional master-slave\gls{egger_deployment-friendly_2020} 
+pattern, we now obtained a system that is mainly scheduled and coordinated 
+by \gls{cda}, supplemented by other intelligent \gls{ras}, to enable the 
+autonomous decision-making and planning in each agent. Distinct from a 
+general \gls{mas}, we extended its domain to \gls{iot} by 
+introducing an additional \gls{dta} to bridge the gap between physical 
+entities and \gls{dt}. On top of the existing Azure \gls{dt} architecture, we 
+added an Azure EventHub and Azure Data Explorer inside the \gls{dta} data 
+flow cycle to store and analyze the data. 
+
+
+To represent the systems, we designed two programs for both local 
+\gls{mas} and \gls{dta}, with the name Websocket_MAS and DTAgent 
+(along with a \gls{rcp}). Although both can transfer data, the 
+specific content required for production processes differs. For 
+example, local \gls{mas} transmits commands for the agent's decision-making 
+and planning, and \gls{dta} is responsible for the robot's raw data processing 
+and routing between local devices and global \gls{dt}. Due to its high complexity 
+of communication mechanism, local \gls{mas} is designed based on the application 
+layer protocol WebSocket, which is exceptionally suitable for real-time required, 
+bi-directional, and full-duplex agent-based communications. 
+In comparison, the data transport in \gls{dta} is one-directional, which allows 
+a simple, more-to-one server-client communication based on the transport layer 
+protocol \gls{tcp}. The choice of \gls{tcp} minimizes the packet header and 
+guarantees a stable and secure data transport through the internet. In fact, 
+all the agents are connected by a 5G wireless network, which makes it possible 
+to capture, compare, and analyze the delays between each other. As we all know, 
+many factors influence network delays: the transmission medium (e.g., wireless), 
+the distance between two transport entities, network traffic, bandwidth, 
+throughput, and so forth. To ensure that the collaborative robot operation 
+system meets real-time requirements, it is crucial to minimize network delays. 
+
+
+
+In this article, we conducted many tests to analyze the network delays 
+for both systems. Those tests for \gls{mas} communications can be roughly 
+divided into three types: performance tests for an increasing number of servers, 
+clients, and message lengths in different types, including worst-case scenarios, 
+message prioritization mechanism in server design for critical messages 
+(e.g., emergent stop, important task prioritization), and a use case specific 
+delay measurement for real-world production process simulation. 

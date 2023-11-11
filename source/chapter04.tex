@@ -755,6 +755,16 @@ final section will cover the setup of the Azure \gls{dt} platform for data inges
 \caption{Conceptual diagram of global \gls{dt}. \label{fig: DTConceptual}}
 \end{figure}
 
+The \gls{dta} program is named as DTAgent, which 
+should also run in a Linux OS.
+Despite being identified as an agent, \gls{dta} is not included in our 
+\gls{mas} design. The main reason is that, \gls{dta} receives process data from 
+each robot right after the connection establishment with \gls{rcp} 
+(program that control the robot operation). Since the robot 
+should always update its state, the \gls{dta} keeps alive even 
+after the production is finished. 
+
+
 The workflow of updating global \gls{dt} through the \gls{dta} process is shown 
 in Figure \ref{fig: DTConceptual}. The process begins on the left-hand side of the 
 graph, where the \gls{dta} receives process data from robots, including steady-state 

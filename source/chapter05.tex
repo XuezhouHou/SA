@@ -725,36 +725,37 @@ the repository.
 % \usepackage[normalem]{ulem}
 % \useunder{\uline}{\ul}{}
 % \usepackage{lscape}
-\begin{landscape}
+
     \begin{table}[htbp]
+        \footnotesize
     \centering
     \caption{An overview of tests for WebSocket and HTTP performance testing including worst case scenarios.}
     \label{tab: TestsProportional}
-    \resizebox{\columnwidth}{!}{%
-    \begin{tabular}{llllllll}
+    \begin{tabular}{m{0.2\textwidth} m{0.08\textwidth} m{0.08\textwidth} m{0.08\textwidth} m{0.08\textwidth} m{0.08\textwidth} m{0.08\textwidth} m{0.08\textwidth}}
     \textbf{Test case}                        & \textbf{var. value} & \textbf{Trans. Delay (ms)} & \textbf{OWD (ms)} & \textbf{Server Proc. Delay (ms)} & \textbf{Trans. Delay (ms)} & \textbf{OWD (ms)} & \textbf{Server Proc. Delay (ms)} \\ \hline
     1. Increase client\_Nr.          & 1          & 0.792             & 0.635    & 0.157                   & 0.782             & 0.629    & 0.153                   \\
     (server: 1,                      & 10         & 0.882             & 0.839    & 0.043                   & 0.548             & 0.515    & 0.034                   \\
     byte length: 40B,                & 100        & 4.610             & 4.548    & 0.062                   & 6.167             & 6.109    & 0.058                   \\
     protocol: WebSocket)             & 500        & 11.064            & 10.918   & 0.146                   & 21.681            & 21.540   & 0.141                   \\
                                      & 1000       & Timeout           & Timeout  & Timeout                 & Timeout           & Timeout  & Timeout                 \\
-
+    & & & & & & &\\
     2. Increase server\_Nr.          & 2          & 1.538             & 1.394    & 0.144                   & 46.536            & 46.368   & 0.168                   \\
     (client: 1000, byte length: 40B, & 3          & 0.977             & 0.862    & 0.115                   & 55.024            & 54.918   & 0.106                   \\
     protocol: WS)                    &            &                   &          &                         &                   &          &                         \\
+    & & & & & & &\\
     3. Increase string\_msg length   & 1KB        & 0.923             & 0.722    & 0.201                   & 0.936             & 0.737    & 0.199                   \\
     (client: 1,                      & 10KB       & 2.713             & 0.751    & 1.963                   & 3.128             & 0.946    & 2.182                   \\
     server: 1,                       & 100KB      & 19.848            & 0.769    & 19.079                  & 23.342            & 1.230    & 22.112                  \\
     protocol: WebSocket)             & 1MB        & 229.443           & 2.454    & 226.988                 & 253.098           & 4.122    & 248.976                 \\
                                      & 10MB       & 2789.003          & 28.481   & 2760.522                & 2834.665          & 31.330   & 2803.335                \\
                                      & 100MB      & Timeout           & Timeout  & Timeout                 & Timeout           & Timeout  & Timeout                 \\
-
+    & & & & & & &\\
     4. Increase string\_msg length   &            & 2.294             & 1.525    & 0.768                   & 2.231             & 1.569    & 0.663                   \\
     (client: 1,                      &            & 7.331             & 5.380    & 1.951                   & 7.937             & 5.519    & 2.419                   \\
     server: 1,                       &            & 11.673            & 9.147    & 2.526                   & 12.528            & 9.652    & 2.876                   \\
     protocol: RESTful API)           &            & 51.967            & 49.963   & 2.003                   & 56.313            & 54.336   & 1.977                   \\
                                      &            & 362.932           & 359.836  & 3.096                   & 393.885           & 390.473  & 3.412                   \\
-
+    & & & & & & &\\
     5. Increase json\_msg length     & 1KB        & 1.183             & 0.881    & 0.303                   & 1.226             & 0.881    & 0.346                   \\
     (client: 1,                      & 10KB       & 3.390             & 1.662    & 1.728                   & 3.488             & 1.662    & 1.826                   \\
     server: 1,                       & 100KB      & 11.848            & 5.306    & 6.542                   & 12.115            & 5.306    & 6.809                   \\
@@ -762,64 +763,64 @@ the repository.
                                      & 10MB       & 621.605           & 255.235  & 366.370                 & 654.673           & 255.235  & 399.438                 \\
                                      & 100MB      & 5810.514          & 1568.242 & 4242.272                & 5961.350          & 1568.242 & 4393.107               
     \end{tabular}%
-    }
     \end{table}
-    \end{landscape}
+
 
 
  % Please add the following required packages to your document preamble:
 % \usepackage{graphicx}
 % \usepackage{lscape}
-\begin{landscape}
+
     \begin{table}[htbp]
+        \footnotesize
     \centering
     \caption{An overview of tests for message prioritization in WebSocket server with various performance testing.}
     \label{tab: TestsPriority}
-    \resizebox{\columnwidth}{!}{%
-    \begin{tabular}{llllllll}
+
+    \begin{tabular}{m{0.2\textwidth} m{0.08\textwidth} m{0.08\textwidth} m{0.08\textwidth} m{0.08\textwidth} m{0.08\textwidth} m{0.08\textwidth} m{0.08\textwidth}}
         \textbf{Test case}                     & \textbf{Client ID}  & \textbf{Trans. Delay (ms)} & \textbf{OWD (ms)}    & \textbf{Server Proc. Delay (ms)} & \textbf{Trans. Delay (ms)} & \textbf{OWD (ms)}    & \textbf{Server Proc. Delay (ms)} \\ \hline
         6. Non-priori. string\_msg    & 1-10       & 0.968   & 0.763  & 0.205   & 0.954   & 0.748  & 0.206   \\
         (client: 10,                  & (normal)   &         &        &         &         &        &         \\
         byte length: 40B,             &            &         &        &         &         &        &         \\
         Protocol: WebSocket)          &            &         &        &         &         &        &         \\
-
+        & & & & & & &\\
         7. Non-priori. json\_msg      & 1-10       & 9.173   & 3.783  & 5.389   & 1.315   & 1.063  & 0.252   \\
         (byte length: 33.4KB,         & (normal)   &         &        &         &         &        &         \\
         Protocol: WebSocket)          &            &         &        &         &         &        &         \\
-
+        & & & & & & &\\
         8. priori.string\_msg         & 1          & 31.391  & 1.140  & 30.251  & 973.309 & 1.193  & 972.116 \\
         (client: 2,                   & (normal)   &         &        &         &         &        &         \\
         byte length: 40B,             & 2          & 1.167   & 0.957  & 0.210   & 1.244   & 1.011  & 0.233   \\
         Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
-
+        & & & & & & &\\
         9. priori.string\_msg         & 1-9        & 115.323 & 2.789  & 112.534 & 69.841  & 1.789  & 68.052  \\
         (client: 10,                  & (normal)   &         &        &         &         &        &         \\
         byte length: 40B,             & 10         & 0.898   & 0.794  & 0.104   & 0.693   & 0.586  & 0.107   \\
         Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
-
+        & & & & & & &\\
         10. priori.string\_msg        & 1-49       & 28.700  & 3.090  & 25.610  & 12.079  & 3.435  & 8.644   \\
         (client: 50,                  & (normal)   &         &        &         &         &        &         \\
         byte length: 40B,             & 50         & 1.791   & 1.726  & 0.064   & 0.412   & 0.362  & 0.050   \\
         Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
-
+        & & & & & & &\\
         11. priori.json\_msg          & 1          & 393.123 & 4.344  & 388.779 & 243.836 & 3.113  & 240.723 \\
         (client: 2,                   & (normal)   &         &        &         &         &        &         \\
         (S/R byte length: 33.4KB/36B, & 2          & 12.781  & 4.293  & 8.488   & 2.635   & 2.331  & 0.305   \\
         Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
-
+        & & & & & & &\\
         12. priori.json\_msg          & 1-9        & 66.039  & 2.546  & 63.492  & 145.040 & 1.654  & 143.387 \\
         (client: 10,                  & (normal)   &         &        &         &         &        &         \\
         (S/R byte length: 33.4KB/36B, & 10         & 11.114  & 5.818  & 5.296   & 3.355   & 3.175  & 0.180   \\
         Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
-
+        & & & & & & &\\
         13. priori.json\_msg          & 1-49       & 84.425  & 10.530 & 73.895  & 31.434  & 23.069 & 8.365   \\
         (client: 50,                  & (normal)   &         &        &         &         &        &         \\
         (S/R byte length: 33.4KB/36B, & 50         & 27.577  & 22.481 & 5.097   & 4.277   & 4.094  & 0.183   \\
         Protocol: WebSocket)          & (critical) &         &        &         &         &        &                             
     \end{tabular}%
-    }
+    
     \end{table}
-    \end{landscape}
+
 
 
 % Please add the following required packages to your document preamble:
@@ -827,11 +828,12 @@ the repository.
 % \usepackage{lscape}
 
 \begin{table}[htbp]
+    \footnotesize
 \centering
 \caption{An overview of tests for data transport between \gls{rcp}, \gls{dta} and Azure \gls{dt}.}
 \label{tab: TestsDT}
-\resizebox{\columnwidth}{!}{%
-\begin{tabular}{lllll}
+
+\begin{tabular}{m{0.36\textwidth} m{0.1\textwidth} m{0.1\textwidth} m{0.1\textwidth} m{0.1\textwidth}}
 \textbf{Test case}                               & \textbf{var. value}   & \textbf{OWD forward (ms)} & \textbf{OWD return (ms)} & \textbf{RTT (ms)} \\ \hline
 14. Var. string\_msg, RCP-DTA           & 151B         & 8.071  & None   & None    \\
 (Protocol: TCP)                         & 80B          & 6.394  & None   & None    \\
@@ -848,7 +850,7 @@ msg type: json, byte length: 49B)       &              &        &        &      
 msg type: string, json;                 &              &        &        &         \\
 robot data: JointGripper)               &              &        &        &    
 \end{tabular}%
-}
+
 \end{table}
 
 
