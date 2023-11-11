@@ -3,15 +3,15 @@
 In this chapter, the results of the performance testing based on assumptions 
 and two industrial use cases to verify the feasibility of the methods presented 
 in chapter \ref{chap: Meth} will be discussed. The tests will be divided into 
-two parts: internal (section \ref{chap: Result-Internal}) and 
-external (section \ref{chap: Result-External}), as previously mentioned in 
+two parts: local \gls{mas} (section \ref{chap: Result-Internal}) and 
+global \gls{dt} (section \ref{chap: Result-External}), as previously mentioned in 
 chapter \ref{chap: Meth}. Both of them are tested under a 5G Network in the lab.
 
 
 
 \section{Local \gls{mas}}\label{chap: Result-Internal}
 In the following sections, multiple tests are conducted on the agent communication system 
-of the internal \gls{mas}. These tests involve passing messages through the \gls{ca} under 
+of the local \gls{mas}. These tests involve passing messages through the \gls{ca} under 
 WebSocket architecture. The results of these tests are discussed in 
 section \ref{chap: Result-WS}. In addition to testing the performance of WebSocket 
 architecture alone, a comparison between WebSocket and \gls{http} is done to verify 
@@ -100,7 +100,8 @@ the loads between each process might be unbalanced and added up by the increment
 
 \subsubsection{Increasing string message length}\label{chap: Result-Internal-string}
 To determine the effect of packet size (i.e., message length) on system performance, 
-it's important to conduct another significant test. The formula for packet transmission 
+it is important to conduct another significant test. The 
+formula\cite{forouzan2004data}\cite{kurose2005computer} for packet transmission 
 time is given as:
 
 
@@ -230,7 +231,7 @@ prioritization and data processing mechanisms in the WebSocket server. In contra
 the RESTful API server is only designed with a simple message POST and GET mechanism. 
 However, the data transmission time between both is more comparable. First of all, 
 both of them reflect the fit of the model with the coefficient of determination close 
-to one, which is namely: 
+to one, which is namely\cite{archdeacon1994correlation}: 
 
 
     \begin{align}
@@ -240,7 +241,7 @@ to one, which is namely:
         TSS & = \text{total sum of squares}\nonumber
     \end{align}
 
-meaning that the model fits the data well.
+meaning that the model fits the data well (good fit for $R^{2}>0.7$).
 
 
 
@@ -445,7 +446,7 @@ production based on its simplicity of agent communication design.
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{figures/tests/usecase/SequenceUsecases.pdf}\hfill 
-    \caption{\gls{uml} general use case diagram of the \gls{mas} architecture.} 
+    \caption{sequenced diagram for general use case of the \gls{mas} architecture.} 
     \label{fig: sequence-diagram}
 \end{figure}
 
@@ -559,7 +560,7 @@ the real-time requirements, with the largest message size of 636 Bytes taking a 
 
 
 \section{Global \gls{dt}}\label{chap: Result-External}
-As for the delay measurement of the external \gls{dta} system, tests for the 
+As for the delay measurement of the global \gls{dta} system, tests for the 
 upload and download are done separately, with different packet sizes as tuning 
 parameters. 
 
@@ -705,16 +706,16 @@ inconsistency issues.
 
 \section{Tests results overview}
 
-For a more abstract overview, except for the use case specific ones, all 
+For a more abstract overview, except for the use case-specific ones, all 
 test results are listed in the following table \ref{tab: TestsProportional} to 
-\ref{tab: TestsDT} for the horizonal and vertical comparison between 
+\ref{tab: TestsDT} for the horizontal and vertical comparison between 
 one another. Table \ref{tab: TestsProportional} shows the tests results for 
-WebSocket and \gls{http} by varying the conditions of the experiments, 
-while keeping the others unchanged. Similarily, tests conducted for message 
+WebSocket and \gls{http} by varying the conditions of the experiments 
+while keeping the others unchanged. Similarly, tests conducted for message 
 prioritization in the server are grouped in table \ref{tab: TestsPriority}, 
 and the tests for global \gls{dt} are summarized in table \ref{tab: TestsDT}. 
 The values in those tables are highly concentrated, with only the essential 
-information included. A detailed view to all the experimental data refers to 
+information included. A detailed view of all the experimental data refers to 
 the repository. 
 \footnote[3]{https://github.com/XuezhouHou/Websocket\_MAS/tree/master/Table\_with\_all\_values/Proportional\_test.xlsx}
 \footnote[4]{https://github.com/XuezhouHou/Websocket\_MAS/tree/master/Table\_with\_all\_values/priority\_test.xlsx}
