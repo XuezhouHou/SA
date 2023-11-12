@@ -4748,7 +4748,7 @@
 % Select citation style
 % ---------------------
 \ifdefined\optBibstyleNumeric%
-    \PassOptionsToPackage{style=numeric-comp}{biblatex}%
+    \PassOptionsToPackage{style=numeric-comp, sorting=none}{biblatex}%
 \else\fi%
 \ifdefined\optBibstyleAlphabetic%
     \PassOptionsToPackage{style=alphabetic}{biblatex}%
@@ -4774,7 +4774,7 @@
 %
 % Sorting
 % -------
-\ExecuteBibliographyOptions{sorting=nyt}%  Set sorting order
+\ExecuteBibliographyOptions{sorting=none}%  Set sorting order
 \ExecuteBibliographyOptions{maxnames=99}%  Set maximum names of a reference
 \DeclareNameAlias{sortname}{family-given}% Sort by last name
 \DeclareNameAlias{default}{family-given}%  Print last name first
