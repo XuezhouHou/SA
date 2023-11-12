@@ -106,7 +106,7 @@ time is given as:
 
 
 \begin{equation}
-    Transmission $ $ delay = Packet $ $ size/Bandwidth
+    Transmission \; delay = Packet \; size/Bandwidth
 \end{equation}
 
 Assuming the bandwidth is constant, the transmission time should be linearly proportional 
@@ -122,6 +122,7 @@ up to 100MB is tested, resulting in a system timeout error that exceeds the serv
 maximum processing capacity.
 
 \begin{figure}[htb]
+    \centering
     \begin{subfigure}{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/tests/proportional_tests/log_Average_string_messages_sending_time_of_100_tests_1KB_to_10MB.png}
@@ -344,6 +345,7 @@ and coordinated explicitly.
     respresent mean \gls{owd}.} \label{fig: priority-10clients-a}
 \end{sidewaysfigure}
 \begin{sidewaysfigure}[htb]
+    \centering
     \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_string_priority.png}\hfill 
     \caption{Tests for mean \gls{owd} of forward and return prioritized string messages between 10 clients 
     and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
@@ -410,6 +412,7 @@ fig.\ref{fig: priority-2clients-image} to \ref{fig: priority-50clients-image-e}.
 
 
 \begin{sidewaysfigure}[htb]
+    \centering
     \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_image_priority.png}\hfill 
     \caption{Tests for mean \gls{owd} of prioritized forward image messages and return string messages between 10 clients 
     and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
@@ -452,6 +455,7 @@ production based on its simplicity of agent communication design.
 
 
 \begin{figure}[htb]
+    \centering
     \includegraphics[width=\textwidth]{figures/tests/usecase/Usecase_flow.pdf}\hfill 
     \caption{Flowchart of BMW and Wittenstein use case of the \gls{mas} architecture. 
     Blue containers: BMW use case, allocated agents are Storge agent, 
@@ -581,8 +585,8 @@ transmission speeds or times for the packets in \gls{tcp} sockets.
 
 
 \begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_SendReceive_JointGripper_Elbow.png}
     \centering
+    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_SendReceive_JointGripper_Elbow.png}
     \caption{Tests for different packet sizes w.r.t data transmission time between robots 
     and \gls{dta}. \label{fig: SR-JointGripper-Elbow}}
 \end{figure}
@@ -625,8 +629,8 @@ update mechanisms can further reduce data \gls{rtt}.
 
 
 \begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_UploadDownloadCycleTime_JointGripper.pdf}
     \centering
+    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_UploadDownloadCycleTime_JointGripper.pdf}
     \caption{Tests for \gls{rtt} of data upload and download for JointGripper. \label{fig: UD-cycle-JointGripper}}
 \end{figure}
 
@@ -644,8 +648,8 @@ to the average download time.
 
 
 \begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_UploadDownload_JointGripper.png}
     \centering
+    \includegraphics[width=\textwidth]{figures/tests/DT/Delay_UploadDownload_JointGripper.png}
     \caption{Tests for delays between \gls{dta} and \gls{dt} update of JointGripper, 
     and delays for twin value download. \label{fig: UD-sep-JointGripper}}
 \end{figure}
@@ -665,8 +669,8 @@ under the same 5G network, and many more, which influence the data transmission 
 even more than the patch sizes.
 
 \begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/tests/DT/violin_patch_size.png}
     \centering
+    \includegraphics[width=\textwidth]{figures/tests/DT/violin_patch_size.png}
     \caption{Tests for \gls{rtt}, delays between \gls{dta} and \gls{dt} 
     update of JointGripper, and delays of twin value download for 
     two different patch sizes. In the graph, s represents small patches 
@@ -683,8 +687,8 @@ Considering the non-symmetric triangular shape of the uploading and downloading 
 it is likely to be attributed to the data points with a predominance at the lower extremum 
 and the minimal presence at the upper extremum.
 \begin{figure}[htb]
-    \includegraphics[width=\textwidth]{figures/tests/DT/log_violin_Plot_3cat.png}
     \centering
+    \includegraphics[width=\textwidth]{figures/tests/DT/log_violin_Plot_3cat.png}
     \caption{Tests for data transmission time from robot to \gls{dta}, 
     delays between \gls{dta} and \gls{dt} 
     update of JointGripper, and delays for twin value download.\label{fig: SR-U-D-violin}} 
