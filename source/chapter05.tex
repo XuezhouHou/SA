@@ -10,22 +10,30 @@ chapter \ref{chap: Meth}. Both of them are tested under a 5G Network in the lab.
 
 
 \section{Local \gls{mas}}\label{chap: Result-Internal}
-In the following sections, multiple tests are conducted on the agent communication system 
-of the local \gls{mas}. These tests involve passing messages through the \gls{ca} under 
+After construting the local \gls{mas} system, multiple tests are conducted on the 
+agent's communication. These tests involve passing messages through the \gls{ca} under 
 WebSocket architecture. The results of these tests are discussed in 
 section \ref{chap: Result-WS}. In addition to testing the performance of WebSocket 
 architecture alone, a comparison between WebSocket and \gls{http} is done to verify 
 the feasibility of WebSocket. Packet prioritization tests will also be performed in 
 section \ref{chap: Result-priority}. Finally, the test results of the 
 WebSocket-based \gls{mas} architecture under the BMW use case are presented to 
-close the sections.
-
+close the sections. During all tests, the \gls{owd} (delays with process time) and 
+the data transmission time (delays without process time) is measured, representing 
+time total time it takes for a message sent from one client and received by another client, 
+and the time the message travels through the network without counting the time 
+it takes for a server to process and repackage the message. 
 
 \subsection{Test results of WebSocket in various performance testing including worst case scenarios} \label{chap: Result-WS}
 
-After the construction a \gls{mas} under WebSocket, the speed, robustness, 
-reliability and application size of the system will be examined by 
-performance tests. 
+The first part of the tests are designed to examine the speed, robustness, 
+reliability, and application size of the system. In the tests below, we consider the factors that may influence 
+the system performance, including the number of clients sending messages to one client 
+at the same time, the number of servers to scale out (horizontal scaling) the system, 
+the message length of a string or a JSON file. During the tests, the system performance 
+will be checked by increasing those factors until it reaches the 
+limits, with all other conditions remained constant while tuning the factors.
+
 
 \subsubsection{Increasing client numbers}
 In the real world, the number of clients will significantly influence the server's 
@@ -153,7 +161,7 @@ maximum processing capacity.
     \label{fig: proportional-stringsize}}
 \end{figure}
 
-\subsubsection{Increasing image message length}
+\subsubsection{Increasing JSON message length}
 In addition to string, images are also frequently transported between different agents. 
 However, unlike string messages, image sizes can be significantly larger, even up to over 
 100MB for raw images. In addition, the agent's ID or message priority information should 
@@ -220,7 +228,7 @@ be further transported directly.
 After testing the performance of the WebSocket-based communication system, it will be 
 interesting to see whether the other application layer protocols with different message 
 transport mechanisms will have a similar or completely different performance under the 
-same conditions. As demonstrated from fig.\ref{fig: MsgConceptual}, \gls{http} is designed 
+same conditions between two clients. As demonstrated from fig.\ref{fig: MsgConceptual}, \gls{http} is designed 
 for message transport in both directions and, therefore, more comparable with WebSocket 
 among the others. As a result, a \gls{http} based interface RESTful API is designed under 
 a similar architecture as WebSocket and tested under the exact condition of the WebSocket 
@@ -242,7 +250,7 @@ to one, which is namely\cite{archdeacon1994correlation}:
         TSS & = \text{total sum of squares}\nonumber
     \end{align}
 
-meaning that the model fits the data well (good fit for $R^{2}>0.7$).
+meaning that the model fits the data well (considered a good fit for $R^{2}>0.7$).
 
 
 
@@ -255,7 +263,9 @@ of 0.01ms to a few milliseconds, which grows over message size.
 
 
 Therefore, WebSocket is proven more appropriate for real-time message transport, 
-essential for an agent-based system.
+essential for an agent-based system. However, an ignorable data process time for \gls{mqtt} 
+indicates that, a lightweight \gls{mqtt} could be more appropriate for simple data 
+transmission tasks.
 
 
 \begin{figure}[htb]
@@ -300,10 +310,14 @@ In an agent communication system, the server that serves as a \gls{ca} should no
 focus on speed, robustness, reliability, and application size, but also have additional 
 functionalities beyond pure message transport. The design pattern of \gls{ca} should 
 include a communication interface 
-capable of processing various messages with different data types such as jsonified images, 
+capable of processing various messages with different data types such as string 
+and jsonified images, 
 handling a large number of agent connections, and prioritizing incoming messages. 
 In the following sections, we will test and discuss the server's performance in 
-handling message prioritization.
+handling message prioritization. In both tests, we gradually increase the number 
+of clients with only one client that sends a critical message, causing the data processing 
+of other messages with lower priorities to wait. Except for the client numbers and 
+message type, all other conditions remain constant. 
 
 \subsubsection{Measurgin method}
 In order to verify the prioritization mechanism of the server, a delay of 1s should be 
@@ -368,7 +382,7 @@ last client sent a critical message, while the other 49 sent normal messages. As
 result, some clients were affected by the mechanism, causing significant delays, while 
 client 50 always had the smallest round-trip time.
 
-\subsubsection{Image message priority test}
+\subsubsection{JSON message priority test}
 The same tests are also done for image message transport. Slightly different from string 
 messages, the prioritization jsonified image file (image size: 33.4KB) will be performed 
 after deserialization. In the image priority test, client1 to client10 will send an image 
@@ -564,9 +578,13 @@ the real-time requirements, with the largest message size of 636 Bytes taking a 
 
 
 \section{Global \gls{dt}}\label{chap: Result-External}
-As for the delay measurement of the global \gls{dta} system, tests for the 
+Second part of the study focuses on the delay measurement of the global \gls{dta} system, tests for the 
 upload and download are done separately, with different packet sizes as tuning 
-parameters. 
+parameters. In those tests, we first differentiate the delays of a packet with different 
+sizes delivered from \gls{rcp} to \gls{dta} through a \gls{tcp} socket. Then we investigate 
+delays for the same packet, between \gls{dta} and Azure \gls{dt} through APIs based on 
+\gls{http}. Finally, the the same upload and download processes between \gls{dta} and 
+Azure \gls{dt} with different patch size are also tested. 
 
 
 \subsection{Test results of data transmission 
@@ -755,13 +773,13 @@ the repository.
                                      & 10MB       & 2789.003          & 28.481   & 2760.522                & 2834.665          & 31.330   & 2803.335                \\
                                      & 100MB      & Timeout           & Timeout  & Timeout                 & Timeout           & Timeout  & Timeout                 \\
     & & & & & & &\\
-    4. Increase string\_msg length   &            & 2.294             & 1.525    & 0.768                   & 2.231             & 1.569    & 0.663                   \\
-    (client: 1,                      &            & 7.331             & 5.380    & 1.951                   & 7.937             & 5.519    & 2.419                   \\
-    server: 1,                       &            & 11.673            & 9.147    & 2.526                   & 12.528            & 9.652    & 2.876                   \\
-    protocol: RESTful API)           &            & 51.967            & 49.963   & 2.003                   & 56.313            & 54.336   & 1.977                   \\
-                                     &            & 362.932           & 359.836  & 3.096                   & 393.885           & 390.473  & 3.412                   \\
+    4. Increase string\_msg length   &  1KB       & 2.294             & 1.525    & 0.768                   & 2.231             & 1.569    & 0.663                   \\
+    (client: 1,                      &  10KB      & 7.331             & 5.380    & 1.951                   & 7.937             & 5.519    & 2.419                   \\
+    server: 1,                       &  100KB     & 11.673            & 9.147    & 2.526                   & 12.528            & 9.652    & 2.876                   \\
+    protocol: RESTful API)           &  1MB       & 51.967            & 49.963   & 2.003                   & 56.313            & 54.336   & 1.977                   \\
+                                     &  10MB      & 362.932           & 359.836  & 3.096                   & 393.885           & 390.473  & 3.412                   \\
     & & & & & & &\\
-    5. Increase json\_msg length     & 1KB        & 1.183             & 0.881    & 0.303                   & 1.226             & 0.881    & 0.346                   \\
+    5. Increase JSON\_msg length     & 1KB        & 1.183             & 0.881    & 0.303                   & 1.226             & 0.881    & 0.346                   \\
     (client: 1,                      & 10KB       & 3.390             & 1.662    & 1.728                   & 3.488             & 1.662    & 1.826                   \\
     server: 1,                       & 100KB      & 11.848            & 5.306    & 6.542                   & 12.115            & 5.306    & 6.809                   \\
     protocol: WebSocket)             & 1MB        & 125.042           & 47.894   & 77.148                  & 117.523           & 47.894   & 69.629                  \\
@@ -789,7 +807,7 @@ the repository.
         byte length: 40B,             &            &         &        &         &         &        &         \\
         Protocol: WebSocket)          &            &         &        &         &         &        &         \\
         & & & & & & &\\
-        7. Non-priori. json\_msg      & 1-10       & 9.173   & 3.783  & 5.389   & 1.315   & 1.063  & 0.252   \\
+        7. Non-priori. JSON\_msg      & 1-10       & 9.173   & 3.783  & 5.389   & 1.315   & 1.063  & 0.252   \\
         (byte length: 33.4KB,         & (normal)   &         &        &         &         &        &         \\
         Protocol: WebSocket)          &            &         &        &         &         &        &         \\
         & & & & & & &\\
@@ -808,17 +826,17 @@ the repository.
         byte length: 40B,             & 50         & 1.791   & 1.726  & 0.064   & 0.412   & 0.362  & 0.050   \\
         Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
         & & & & & & &\\
-        11. priori.json\_msg          & 1          & 393.123 & 4.344  & 388.779 & 243.836 & 3.113  & 240.723 \\
+        11. priori.JSON\_msg          & 1          & 393.123 & 4.344  & 388.779 & 243.836 & 3.113  & 240.723 \\
         (client: 2,                   & (normal)   &         &        &         &         &        &         \\
         (S/R byte length: 33.4KB/36B, & 2          & 12.781  & 4.293  & 8.488   & 2.635   & 2.331  & 0.305   \\
         Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
         & & & & & & &\\
-        12. priori.json\_msg          & 1-9        & 66.039  & 2.546  & 63.492  & 145.040 & 1.654  & 143.387 \\
+        12. priori.JSON\_msg          & 1-9        & 66.039  & 2.546  & 63.492  & 145.040 & 1.654  & 143.387 \\
         (client: 10,                  & (normal)   &         &        &         &         &        &         \\
         (S/R byte length: 33.4KB/36B, & 10         & 11.114  & 5.818  & 5.296   & 3.355   & 3.175  & 0.180   \\
         Protocol: WebSocket)          & (critical) &         &        &         &         &        &         \\
         & & & & & & &\\
-        13. priori.json\_msg          & 1-49       & 84.425  & 10.530 & 73.895  & 31.434  & 23.069 & 8.365   \\
+        13. priori.JSON\_msg          & 1-49       & 84.425  & 10.530 & 73.895  & 31.434  & 23.069 & 8.365   \\
         (client: 50,                  & (normal)   &         &        &         &         &        &         \\
         (S/R byte length: 33.4KB/36B, & 50         & 27.577  & 22.481 & 5.097   & 4.277   & 4.094  & 0.183   \\
         Protocol: WebSocket)          & (critical) &         &        &         &         &        &                             
@@ -845,14 +863,14 @@ the repository.
                                         &              &        &        &         \\
 15. Var. robot data, DTA-Azure DT       & JointGripper & 26.367 & 70.322 & 96.688  \\
 (Protocol: HTTP/HTTPS,                  & Elbow        & 24.419 & 71.599 & 96.019  \\
-msg type: json, byte length: 49B)       &              &        &        &         \\
+msg type: JSON, byte length: 49B)       &              &        &        &         \\
                                         &              &        &        &         \\
-16. Var. json\_msg, DTA-Azure DT        & 554B         & 20.920 & 82.160 & 103.080 \\
-(Protocol: HTTP/HTTPS, data type: json) & 49B          & 23.780 & 78.630 & 102.410 \\
+16. Var. JSON\_msg, DTA-Azure DT        & 554B         & 20.920 & 82.160 & 103.080 \\
+(Protocol: HTTP/HTTPS, data type: JSON) & 49B          & 23.780 & 78.630 & 102.410 \\
                                         &              &        &        &         \\
 17. RCP-DTA-Azure DT                    & 151B         & 5.414  & None   & None    \\
 (Protocols: TCP, HTTP/HTTPS;            & 49B          & 26.367 & 70.322 & 96.689  \\
-msg type: string, json;                 &              &        &        &         \\
+msg type: string, JSON;                 &              &        &        &         \\
 robot data: JointGripper)               &              &        &        &    
 \end{tabular}%
 
