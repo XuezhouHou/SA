@@ -6,7 +6,8 @@ in this article, including centralized and decentralized systems,
 \gls{mas}, \gls{dt}, network latency, 
 and \gls{dsl} as a system modularization method. The article aims to 
 design a program to fulfill the real-time communication requirements 
-of specific use cases, in addition to studying the timing behaviors. 
+of specific use cases, in addition to analyzing and modularizing the 
+timing behaviors. 
 It builds on the works of leading researchers in the field.
 
 
@@ -17,18 +18,18 @@ centralized top-down to decentralized bottom-up synthesis\cite{ueda_emergent_200
 In the supply chain, for example, there is no longer a standalone production. Instead, 
 a synergy of all vendors, customers, third-party providers, or other
 ﬁrms\cite{mahapatra_modeling_2003}. This concept is carried over to be applied to multi-agent architecture. A comparison between centralized and decentralized 
-architecture has been presented by service restoration with bus tests. The 
+architecture has been presented by service restoration with bus tests\cite{sharma_comparative_2016}. The 
 analysis exposes the time taken by other system considerations, the impact 
 of communication failure, and the impact of multiple fault scenarios, indicating 
 that the decentralized system benefits from a lower computation time and cycles, 
 not prone to single point failures, and efficient restoration of 
-multiple faults\cite{sharma_comparative_2016}. 
+multiple faults. 
 In \cite{egger_deployment-friendly_2020}, simulation and production tests 
 for decentralized scheduling tasks have been conducted. In this paper, as shown 
 in fig.\ref{fig: CentralizeDecentralizeConcept}, centralized and decentralized 
 schemes are compared. In the centralized model, the master agent has the most power, 
 while other agents serve as slaves without the ability to make their own decisions. 
-However, in a \gls{mas} based decentralized model, the production agents are 
+However, in a \gls{mas}-based decentralized model, the production agents are 
 capable of making decisions and interacting with each other under the coordination 
 of the central customer interface agent. 
 
@@ -140,6 +141,10 @@ On top of the measured delay
 that includes additional connection establishment and process time, 
 models can be built additionally to estimate delays over different layers in 
 \gls{osi} model to bridge the gap between experiments and simulations. 
+Meanwhile, \gls{tcp/ip} model\cite{cerf1980protocols} is 
+used more often in practical implementation 
+for its simplicity, real-world alignment, while \gls{osi} model serves a more theoretical 
+and sometimes too detailed for network modeling purposes. 
 Studies including those for instance the modeling of \gls{tcp}-based 
 packet transmission latency that enables both short and 
 long \gls{tcp} flows\cite{luan_estimating_2019}. In the book \cite{wehrle2010modeling}, 
@@ -261,7 +266,7 @@ The last biggest challenge for \gls{dt} development will be the security threats
 Although it benefits from breaking the edges in Industry 4.0, industrial stakeholders 
 become more and more conservative. The threats exist but are not limited to the following 
 fields: software attack, Privilege escalation, Man-in-the-middle, Rogue \gls{dt} 
-servers and infrastructures and DT service tampering. Some possible solutions to these 
+servers and infrastructures and DT service tampering\cite{alcaraz_digital_2022}. Some possible solutions to these 
 threats have been introduced, including the improvement of Identity, Authentication 
 and Authorization, 
 Hardware and Software Security, Hardening of DT Infrastructures and Decoupling, and many 
@@ -302,7 +307,8 @@ soft real-time requirements should be executed in the design stage.
 
 According to current research, there are various implementations of \gls{mas} in 
 different fields. However, there have been limited efforts to standardize and 
-modularize the \gls{mas}. In addition, a cloud-based resource digitization should also 
+modularize the \gls{mas} especially within the field of agent-based communication. 
+In addition, a cloud-based resource digitization should also 
 be considered and implemented in the \gls{mas}. In general, the \gls{mas} should be designed 
 with a high level of modularization based on \gls{dsl}.
 

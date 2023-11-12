@@ -5,7 +5,7 @@ two parts. The local \gls{mas} (section \ref{chap: Meth-Internal}) to achieve ag
 collaboration and the global \gls{dt} (section \ref{chap: Meth-External})
 for cloud-based digital mapping of physical entities. The local \gls{mas} 
 includes a \gls{mas} for the \gls{cda}, \gls{ca} and \gls{ra}, 
-while the global \gls{dt} represents the cloud-based \gls{dta}. 
+while the cloud-based \gls{dta} represents the global \gls{dt}. 
 Although these two systems are decoupled from each other, 
 they both follow the principles of an agent-based operating system. 
 In the end, it concludes the timing properties for both 
@@ -18,12 +18,12 @@ network latency modularly using the visual notation of \gls{dsl}.
 
 \section{Local \gls{mas}}\label{chap: Meth-Internal}%
 
-This section discusses the selected design pattern for \gls{mas} along 
+This section first discusses the selected design pattern for \gls{mas} along 
 with the responsibilities of each module within it.
 It then compares the features of transport layer protocols with those of 
-application layer protocols.
+application layer protocols. 
 Eventually, the methods for using python WebSocket for \gls{mas} and 
-RESTful API for one-to-one agent communication is presented in the form of pseudocode. 
+RESTful API for one-to-one agent communication are presented. 
 
 
 \subsection{\gls{mas}-based decentralization}
@@ -33,7 +33,7 @@ Based on the use cases from BMW and Wittenstein, all the agents can be roughly
 divided into two kinds: the management-level master agent and the field-level sub-agents. 
 The \gls{cda} represents the former, while the others belong to the latter, 
 including the storage agent, transport agent, wiring agent, and assembly agent. For 
-convenience, we will refer to all sub-agents as \gls{ras}. Additionally, we included 
+convenience, we will refer to all sub-agents as \gls{ras}. Additionally, we will include 
 a \gls{ca} to handle real-time communication between agents at different levels. 
 
 
@@ -307,7 +307,7 @@ with its details described in section \ref{chap: RCPTCP-DTAPI}.
 
 
 
-\subsection{Decentralization of \gls{mas} communication with more than one server}
+\subsection{Scale out \gls{mas} communication with more than one server}
 After choosing server-based \gls{ca} design and selecting WebSocket as the 
 communication protocol for \gls{mas}, we now focus on system decentralization.  
 Except for the ideas of the decentralization of tasks for each sub-agent, the agent 
@@ -351,7 +351,7 @@ of the agent communication system with two servers.
 
 
 \subsection{Prerequisite}
-\subsubsection{System Setup}
+\subsubsection{\gls{mas} system setup}
  
 
 \begin{figure}[htbp]
@@ -396,9 +396,9 @@ concurrently. The following steps
 show the simplified function calls for each connection step from the client side: 
 \begin{enumerate}
     \item use \textit{with connect(URI) as websocket}: to establish connection with server
-    \item use \textit{await websocket.send(client ID)} to send client ID
-    \item use \textit{await websocket.send(message)} to send messages
-    \item use \textit{await websocket.recv(response)} to get response
+    \item use \textit{await websocket.send(client ID)} to send client ID to the server
+    \item use \textit{await websocket.send(message)} to send messages to server
+    \item use \textit{await websocket.recv(response)} to get response from server
 \end{enumerate}
 If the functions are called under a loop, the client can send and receive 
 messages consistently until the connection is closed explicitly. 
@@ -409,8 +409,8 @@ client, extract the receiver information, and route the packet continuously.
 So, at the receiver side, the send and receive calls are reverted: 
 \begin{enumerate}
     \item use \textit{with connect(URI) as websocket}: to establish connection with server
-    \item use \textit{await websocket.recv(response)} to receive messages
-    \item use \textit{await websocket.send(message)} to send response
+    \item use \textit{await websocket.recv(response)} to receive messages from server
+    \item use \textit{await websocket.send(message)} to send response to server
 \end{enumerate}
 
 With regards to the \textit{flask} APIs, it is closely related to the common 
@@ -743,8 +743,8 @@ In section \ref{chap: Overview-External}, the data flow for the external
 \gls{dta} system will be presented. Following that, section \ref{chap: ntpsetup} 
 will explain the \gls{ntp} setup used to measure delays between local devices and 
 the cloud. To better understand the workflow, the pseudo-code for both \gls{rcp} 
-and \gls{dta} will be provided in section \ref{chap: RCPDTAPseudo}. Lastly, the 
-final section will cover the setup of the Azure \gls{dt} platform for data ingestion.
+and \gls{dta} will be provided in section \ref{chap: RCPDTAPseudo}. Finally, the 
+last section will cover the setup of the Azure \gls{dt} platform for data ingestion.
 
 
 
@@ -757,14 +757,16 @@ final section will cover the setup of the Azure \gls{dt} platform for data inges
 \caption{Conceptual diagram of global \gls{dt}. \label{fig: DTConceptual}}
 \end{figure}
 
-The \gls{dta} program is named as DTAgent, which 
+Named as DTAgent, \gls{dta} 
 should also run on a Linux OS.
 Despite being identified as an agent, \gls{dta} is not included in our 
 \gls{mas} design. The main reason is that \gls{dta} receives process data from 
 each robot right after the connection establishment with \gls{rcp} 
 (program that controls the robot operation). Since the robot 
 should always update its state, the \gls{dta} keeps alive even 
-after the production is finished. 
+after the production finishes, making it possible to completely decouple 
+both systems. If \gls{mas} breaks down, \gls{dta} can still tracks the robot 
+states to find the potential issues. 
 
 
 The workflow of updating global \gls{dt} through the \gls{dta} process is shown 
@@ -809,6 +811,19 @@ The \gls{ntp} setup of the Linux system is as follows:
 
 Since the cloud system clock is already synchronized with \gls{utc}, all the tests and calculations results are based on \gls{utc}. 
 
+
+\subsection{Connection establishment based on \gls{tcp} socket}
+Compared to WebSocket and RESTful API, the connection established with \gls{tcp} 
+socket is relatively simple. Once the \gls{dta} runs, it creates a \gls{tcp} socket 
+object in a new thread, waits for the initial "welcome" message from \gls{rcp} 
+and then open the socket after confirmation. 
+From the \gls{rcp} side, it also waits for the connection establishment before 
+starting any robot control motions.  
+In the \gls{dta}, there are multiple threads created to wait for the connection 
+from \gls{ras}, such as the MiR600 transport agent and the storage agent. 
+The \gls{dta} can run on the same device as \gls{rcp} or a device dedicated 
+to receiving the robot's connections.
+
 \subsection{Data flow with \gls{tcp} socket and Azure \gls{dt} REST APIs}\label{chap: RCPTCP-DTAPI}
 Different from the \gls{mas} with frequent connection reestablishment and heavy data handling in \gls{ca}, 
 \gls{dta} only conducts a simple one-way data flow, starting from \gls{rcp} and 
@@ -828,6 +843,74 @@ and \textit{UpdateComponent} for the specific update of \gls{dt} component.
 Other APIs, for example, \textit{Query}, are used to execute queries for twin 
 instances to get the demanding components. It was once used for timestamp 
 logging in local devices. 
+
+
+\subsection{Azure \gls{dt}}
+\subsubsection{Initial connection setup}
+According to the workflow explained in section \ref{chap: Overview-External}, 
+it is crucial to establish a reliable and operational Azure \gls{dt} platform 
+to ensure seamless data transfer. The platform should include Azure \gls{dt} Explorer, 
+Azure Event Hub, and Azure Data Explorer. Additionally, the Azure \gls{dt} 
+instance must be configured with a time-series data history connection. Other resources 
+must also be created, such as an Event Hubs namespace, an event hub, Azure Data Explorer 
+cluster, and a database. To use the data update APIs 
+from section \ref{chap: RCPTCP-DTAPI}, a client for Azure \gls{dt} should be 
+initialized. The following steps should enable the Azure \gls{dt} connection 
+establishment: 
+
+
+\begin{enumerate}
+    \item Initialize the URL that points to the Azure \gls{dt}
+    \item Get a credential to authenticate with Azure services
+    \item Create a client object that allows interaction between \gls{dta} and Azure \gls{dt}
+    \end{enumerate}
+
+After the connection from the local device to the Azure \gls{dt}, 
+data is sent to an event hub, which eventually forwards the data to 
+the Azure Data Explorer cluster and stores it in a database. The history data includes 
+twin property updates, twin lifecycle events, and relationship lifecycle events, which 
+can be later queried in Azure Data Explorer.
+
+\subsubsection{Data history setup}
+Here is the sequence of the basic setup in the Azure platform:
+\begin{enumerate}
+    \item Create Azure Event Hub namespace and add an instance.
+    \item Create Azure Data Explorer cluster and add database.
+    \item Connect data history of the Event Hub instance to the \gls{dt} instance.
+\end{enumerate}
+
+In order to verify whether the connection is successful, one can try updating the 
+\gls{dt} instance and querying data from the Azure Data Explorer side. The query
+language is called \gls{kql}, which is powerful for pattern discovery, anomalies 
+and outliers identification, and statistical modeling (various graphs creation). 
+Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} code in the test: 
+
+\begin{algorithm}
+    \caption{\gls{kql} for Azure \gls{dt} data history query}
+    \label{alg: KQLCode}
+    \begin{algorithmic}
+        \State  AdtPropertyEvents 
+        \State {| where ID == 'RadPositionJoint3' and Key == 'value'}
+        \State {| where TimeStamp between (datetime(2023-08-27 16:02) .. datetime(2023-08-27 19:00))}
+        \State {| order by TimeStamp asc}
+        \State {| project TimeStamp, Id, Key, Value}
+    \end{algorithmic}
+\end{algorithm}
+
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/KQL_cut.jpg}
+    \caption{An example of Azure Data Explorer with \gls{kql} to 
+    query history data.\label{fig: KQL}}
+\end{figure}
+
+As shown in fig.\ref{fig: KQL}, by executing the code from the snippet, all the history data will be listed as a table 
+which can be downloaded to the local devices later. 
+
+
+
+
 
 \subsection{Pseudo-Code of \gls{rcp} and \gls{dta} workflow in C++ and C\#}\label{chap: RCPDTAPseudo}
 
@@ -896,66 +979,7 @@ but are stuck together. To solve this, delimiters are utilized for sticky packet
 
 
 
-\subsection{Azure \gls{dt}}
-According to the workflow explained in section \ref{chap: Overview-External}, 
-it is crucial to establish a reliable and operational Azure \gls{dt} platform 
-to ensure seamless data transfer. The platform should include Azure \gls{dt} Explorer, 
-Azure Event Hub, and Azure Data Explorer. Additionally, the Azure \gls{dt} 
-instance must be configured with a time-series data history connection. Other resources 
-must also be created, such as an Event Hubs namespace, an event hub, Azure Data Explorer 
-cluster, and a database. To use the data update APIs 
-from section \ref{chap: RCPTCP-DTAPI}, a client for Azure \gls{dt} should be 
-initialized. The following steps should enable the Azure \gls{dt} connection 
-establishment: 
 
-
-\begin{enumerate}
-    \item Initialize the URL that points to the Azure \gls{dt}
-    \item Get a credential to authenticate with Azure services
-    \item Create a client object that allows interaction between \gls{dta} and Azure \gls{dt}
-    \end{enumerate}
-
-After the connection from the local device to the Azure \gls{dt}, 
-data is sent to an event hub, which eventually forwards the data to 
-the Azure Data Explorer cluster and stores it in a database. The history data includes 
-twin property updates, twin lifecycle events, and relationship lifecycle events, which 
-can be later queried in Azure Data Explorer.
-
-\subsubsection{Data history setup}
-Here is the sequence of the basic setup in the Azure platform:
-\begin{enumerate}
-    \item Create Azure Event Hub namespace and add an instance.
-    \item Create Azure Data Explorer cluster and add database.
-    \item Connect data history of the Event Hub instance to the \gls{dt} instance.
-\end{enumerate}
-
-In order to verify whether the connection is successful, one can try updating the 
-\gls{dt} instance and querying data from the Azure Data Explorer side. The query
-language is called \gls{kql}, which is powerful for pattern discovery, anomalies 
-and outliers identification, and statistical modeling (various graphs creation). 
-Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} code in the test: 
-
-\begin{algorithm}
-    \caption{\gls{kql} for Azure \gls{dt} data history query}
-    \label{alg: KQLCode}
-    \begin{algorithmic}
-        \State  AdtPropertyEvents 
-        \State {| where ID == 'RadPositionJoint3' and Key == 'value'}
-        \State {| where TimeStamp between (datetime(2023-08-27 16:02) .. datetime(2023-08-27 19:00))}
-        \State {| order by TimeStamp asc}
-        \State {| project TimeStamp, Id, Key, Value}
-    \end{algorithmic}
-\end{algorithm}
-
-
-\begin{figure}[htb]
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/KQL_cut.jpg}
-    \caption{Snippet of Azure Data Explorer.\label{fig: KQL}}
-\end{figure}
-
-As shown in fig.\ref{fig: KQL}, by executing the code from the snippet, all the history data will be listed as a table 
-which can be downloaded to the local devices later. 
 
 
 \section{Modularization}\label{chap: Meth-Modular}
