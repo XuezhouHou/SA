@@ -3,7 +3,7 @@
               ,optCharter%           font
               %,optCMYK%             color model
               ,optBibtex% 	         bibliography tool
-              ,optBibstyleNumeric%lbam (ieee) citation style
+              ,optBibstyleNumeric %lbam (ieee) citation style
               ,optEnglish% 		 language
               %,optTikzExternalize%  compiles faster for large tikz images
               ]{IWBlatex}%
@@ -11,6 +11,7 @@
 % Set paths
 \graphicspath{{figures/}}%
 \addbibresource{source/literature.bib}%
+
 \include{source/abbreviations}%
 \include{source/glossary}%
 % Custom macros
@@ -85,7 +86,7 @@
 \frontmatter%
 % Info: replace Prof Reinhart by Prof. Zäh:\IWBnamesProfZaeh \newline \IWBlangChairMWIWBLWF
 % Info: separate multiple supervisors by \newline
-\IWBstudentthesisTitlePageCustomSemesterThesis{Modellierung und Analyse von Kommunikations-\\verzögerungen in Multi-Agent-Systemen mit zwei Anwendungsfällen}{Modeling and Analyzing Communication \\Delays in Multi-Agent System with Two \\Industry Use Cases}{Xuezhou Hou \newline Willi-Graf-Straße 5 \newline 80805 München}{\IWBnamesProfVogelHeuser \newline M.Sc. Jingyun Zhao \newline M. Sc. Fandi Bi \newline \IWBlangChairMWAIS}{\IWButilsDate{15}{11}{2023}}%
+\IWBstudentthesisTitlePageCustomSemesterThesis{Modellierung und Analyse von Kommunikations-\\verzögerungen in Multi-Agent-Systemen mit zwei Anwendungsfällen}{Modeling and Analyzing Communication \\Delays in Multi-Agent System with Two \\Industry Use Cases}{Xuezhou Hou \newline Willi-Graf-Straße 5 \newline 80805 München}{\IWBnamesProfVogelHeuser \newline M.Sc. Jingyun Zhao \newline M.Sc. Fandi Bi \newline \IWBlangChairMWAIS}{\IWButilsDate{15}{11}{2023}}%
 %
 %\IWBstudentthesisTitlePageCustomBachelorsThesis{German Title}{English Title}{Martin Mustermann \newline Musterweg 20 \newline 80999 München}{\IWBnamesProfReinhart \newline \IWBlangChairMWIWBLBM}{\IWButilsDate{1}{1}{2018}}%
 %
@@ -112,7 +113,7 @@
 % Mainmatter
 % ----------
 \mainmatter%
-\include{source/latex_tutorial}%
+% \include{source/latex_tutorial}%
 \include{source/chapter01}%
 \include{source/chapter02}%
 \include{source/chapter03}%
@@ -131,8 +132,10 @@
 %
 % References
 % ----------
+
 \printbibliography[heading=bibintoc, title={\IWBlangBibliography}]%
 %
+
 %
 % List of Abbreviations
 % ---------------------
