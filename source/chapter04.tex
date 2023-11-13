@@ -523,7 +523,16 @@ starting any robot control motions.
 In the \gls{dta}, there are multiple threads created to wait for the connection 
 from \gls{ras}, such as the MiR600 transport agent and the storage agent. 
 The \gls{dta} can run on the same device with \gls{rcp} or a device dedicated 
-to receiving the robot's connections. 
+to receiving the robot's connections. The following fig.\ref{fig: tcpRCPDTA} shows the connection 
+process of \gls{rcp} and \gls{dta}. 
+
+\begin{figure}[htb]
+    \centering
+\includegraphics[width=0.8\textwidth]{figures/tcpsocket.pdf}
+\caption{Connection process between \gls{rcp} and \gls{dta} 
+through \gls{tcp} socket. \label{fig: tcpRCPDTA}}
+\end{figure}
+
 
 \subsection{Data flow with \gls{tcp} socket and Azure \gls{dt} REST APIs}\label{chap: RCPTCP-DTAPI}
 Different from the \gls{mas} with frequent connection reestablishment and heavy data handling in \gls{ca}, 
