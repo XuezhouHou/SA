@@ -581,6 +581,7 @@ the Azure Data Explorer cluster and stores it in a database. The history data in
 twin property updates, twin lifecycle events, and relationship lifecycle events, which 
 can be later queried in Azure Data Explorer.
 
+
 \subsubsection{Data history setup}
 Here is the sequence of the basic setup in the Azure platform:
 \begin{enumerate}
@@ -617,6 +618,28 @@ Following algorithm \ref{alg: KQLCode} is a snippet of the example \gls{kql} cod
 
 As shown in fig.\ref{fig: KQL}, by executing the code from the snippet, all the history data will be listed as a table 
 which can be downloaded to the local devices later. 
+
+\subsubsection{Large patch size for Azure \gls{dt} update}
+One of our tests for differentiating the \gls{owd} for Azure 
+\gls{dt} depends on patch size of the to-be-updated 
+twin properties (section \ref{chap: Result-DTA-DT}). In the test, 
+the small patch only contains the twin value, while the large patch 
+contains more information under the architecture of the twin graph. 
+The patch size can be extended by \textit{AppendAdd} to add more properties. 
+In our test, for example, the twin's category, checksum, value type, 
+value type, data specification, id and the semantic id value are added 
+to greatly enlarge the patch.   
+
+Fig.\ref{fig: largepatchDT} shows the update of the large patch of a 
+twin in Azure \gls{dt} Explorer at the right hand side. 
+
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{figures/Update_twin_largerPatch.png}
+    \caption{An example of twin update in Azure \gls{dt} 
+    Explorer with large patch.\label{fig: largepatchDT}}
+\end{figure}
 
 
 
