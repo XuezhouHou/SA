@@ -905,7 +905,7 @@ the real-time requirements, with the largest message size of 636 Bytes taking a 
 \end{figure}
 
 %addtional for footnote in caption
-\footnotetext[2]{\label{firstfootnote}https://github.com/XuezhouHou/Websocket\_MAS/blob/master/Table\_with\_all\_values/table4UCBMW.xlsx}
+\footnotetext[1]{\label{firstfootnote}https://github.com/XuezhouHou/Websocket\_MAS/blob/master/Table\_with\_all\_values/table4UCBMW.xlsx}
 
 
 
@@ -918,7 +918,9 @@ we first differentiate the delays of a packet with different
 sizes delivered from \gls{rcp} to \gls{dta} through a \gls{tcp} socket. Then we investigate 
 delays for the same packet, between \gls{dta} and Azure \gls{dt} through APIs based on 
 \gls{http}. Finally, the the same upload and download processes between \gls{dta} and 
-Azure \gls{dt} with different patch size are also tested. 
+Azure \gls{dt} with different patch size are also tested. Different from \gls{mas}, 
+the server process time in \gls{dta} is not measured. Hence, in the tests below, 
+\gls{owd} is identical to data transmission time. 
 
 \subsection{Pseudocode of \gls{rcp} and \gls{dta} workflow in C++ and C\#}\label{chap: RCPDTAPseudo}
 
@@ -1027,7 +1029,7 @@ Magdeburg measured delay with logical links from a 5G standalone network and the
 between data upload and update reflects the actual \gls{dt} data update patterns, 
 which includes additional process time in the cloud. Therefore, we can infer that the 
 increased latency of data upload may be caused by the internal Azure \gls{dt} Model 
-API for data update (an unclosed issue in \gls{ms} Q\&A\footnote[1]{https://learn.microsoft.com/en-us/answers/questions/1328803/experiencing-slow-load-times-on-azure-digital-twin}).
+API for data update (an unclosed issue in \gls{ms} Q\&A\footnote[2]{https://learn.microsoft.com/en-us/answers/questions/1328803/experiencing-slow-load-times-on-azure-digital-twin}).
     
 
 It is worth mentioning that the data upload time from JointGripper and Elbow has little to 
