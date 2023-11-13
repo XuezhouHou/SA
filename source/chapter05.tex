@@ -660,7 +660,7 @@ and coordinated explicitly.
 \begin{sidewaysfigure}[htb]
     \centering
     \includegraphics[width=\textheight]{figures/tests/priority_tests/violin_10clients_string_non_priority.png}\hfill 
-    \caption{Tests for mean \gls{owd} of forward and return non-prioritized string messages between 10 clients 
+    \caption{Tests for timing properites of forward and return non-prioritized string messages between 10 clients 
     and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
     respresent mean \gls{owd}.} \label{fig: priority-10clients-a}
 \end{sidewaysfigure}
@@ -704,7 +704,7 @@ will be higher than that of a string message.
 \begin{sidewaysfigure}[htb]
     \centering
     \includegraphics[width=\textheight]{figures/tests/priority_tests/violin_10clients_image_non_priority.png}\hfill 
-    \caption{Tests for mean \gls{owd} of non-prioritized forward image messages and return string messages between 10 clients 
+    \caption{Tests for timing properites of non-prioritized forward image messages and return string messages between 10 clients 
     and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
     respresent mean \gls{owd}.} \label{fig: priority-10clients-c}
 \end{sidewaysfigure}
@@ -734,7 +734,7 @@ fig.\ref{fig: priority-2clients-image} to \ref{fig: priority-50clients-image-e}.
 \begin{sidewaysfigure}[htb]
     \centering
     \includegraphics[width=\textheight]{figures/tests/priority_tests/log_violin_10clients_image_priority.png}\hfill 
-    \caption{Tests for mean \gls{owd} of prioritized forward image messages and return string messages between 10 clients 
+    \caption{Tests for timing properites of prioritized forward image messages and return string messages between 10 clients 
     and clientR for 100 times. The blue violin represents the average data transmission time and the red violin 
     respresent mean \gls{owd}.} \label{fig: priority-10clients-d}
 \end{sidewaysfigure}
@@ -978,8 +978,8 @@ transmission speeds or times for the packets in \gls{tcp} sockets.
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{figures/tests/DT/Delay_SendReceive_JointGripper_Elbow.png}
-    \caption{Tests for different packet sizes w.r.t data transmission time between robots 
-    and \gls{dta}. \label{fig: SR-JointGripper-Elbow}}
+    \caption{Tests for different packet sizes w.r.t \gls{owd} from \gls{rcp} 
+    to \gls{dta}. \label{fig: SR-JointGripper-Elbow}}
 \end{figure}
 
 Since each packet only takes a few milliseconds to be transported, the real-time 
@@ -1041,8 +1041,8 @@ to the average download time.
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{figures/tests/DT/Delay_UploadDownload_JointGripper.png}
-    \caption{Tests for delays between \gls{dta} and \gls{dt} update of JointGripper, 
-    and delays for twin value download. \label{fig: UD-sep-JointGripper}}
+    \caption{Tests for \gls{owd} from \gls{dta} to \gls{dt} update of JointGripper, 
+    and \gls{owd} for twin value download. \label{fig: UD-sep-JointGripper}}
 \end{figure}
 
 
@@ -1062,8 +1062,8 @@ even more than the patch sizes.
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{figures/tests/DT/violin_patch_size.png}
-    \caption{Tests for \gls{rtt}, delays between \gls{dta} and \gls{dt} 
-    update of JointGripper, and delays of twin value download for 
+    \caption{Tests for \gls{rtt}, \gls{owd} from \gls{dta} to \gls{dt} 
+    update of JointGripper, and \gls{owd} of twin value download for 
     two different patch sizes. In the graph, s represents small patches 
     and l for large patches.\label{fig: UD-violin-patchsize}}
 \end{figure}
@@ -1080,9 +1080,9 @@ and the minimal presence at the upper extremum.
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{figures/tests/DT/log_violin_Plot_3cat.png}
-    \caption{Tests for data transmission time from robot to \gls{dta}, 
-    delays between \gls{dta} and \gls{dt} 
-    update of JointGripper, and delays for twin value download.\label{fig: SR-U-D-violin}} 
+    \caption{Tests for \gls{owd} from \gls{rcp} to \gls{dta}, 
+    \gls{owd} from \gls{dta} to \gls{dt} 
+    update of JointGripper, and \gls{owd} for twin value download.\label{fig: SR-U-D-violin}} 
 \end{figure}
 
 
