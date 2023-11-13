@@ -534,25 +534,7 @@ through \gls{tcp} socket. \label{fig: tcpRCPDTA}}
 \end{figure}
 
 
-\subsection{Data flow with \gls{tcp} socket and Azure \gls{dt} REST APIs}\label{chap: RCPTCP-DTAPI}
-Different from the \gls{mas} with frequent connection reestablishment and heavy data handling in \gls{ca}, 
-\gls{dta} only conducts a simple one-way data flow, starting from \gls{rcp} and 
-ending at local download from Azure \gls{dt} platform. \gls{tcp} is beneficial for 
-it's less overhead and lightweight compared to WebSocket. 
 
-
-The Azure \gls{dt} REST APIs are, on the other hand, responsible for the data 
-transport between local devices and the cloud. It consists of two modules: the 
-control plane APIs for managing \gls{dt} instances as a whole and the 
-data plane APIs to manage elements of the Azure \gls{dt} instances. For the 
-time measurement of \gls{dt} update, we mainly used the data plane APIs. The 
-common operations include create, delete, update, and list. In the test, two 
-APIs are mainly used. \textit{UpdateDigitalTwin} is used for updating 
-the whole twin instance 
-and \textit{UpdateComponent} for the specific update of \gls{dt} component. 
-Other APIs, for example, \textit{Query}, are used to execute queries for twin 
-instances to get the demanding components. It was once used for timestamp 
-logging in local devices. 
 
 
 \subsection{Azure \gls{dt}}
@@ -641,7 +623,25 @@ twin in Azure \gls{dt} Explorer at the right hand side.
     Explorer with large patch.\label{fig: largepatchDT}}
 \end{figure}
 
+\subsection{Data flow with \gls{tcp} socket and Azure \gls{dt} REST APIs}\label{chap: RCPTCP-DTAPI}
+Different from the \gls{mas} with frequent connection reestablishment and heavy data handling in \gls{ca}, 
+\gls{dta} only conducts a simple one-way data flow, starting from \gls{rcp} and 
+ending at local download from Azure \gls{dt} platform. \gls{tcp} is beneficial for 
+it's less overhead and lightweight compared to WebSocket. 
 
+
+The Azure \gls{dt} REST APIs are, on the other hand, responsible for the data 
+transport between local devices and the cloud. It consists of two modules: the 
+control plane APIs for managing \gls{dt} instances as a whole and the 
+data plane APIs to manage elements of the Azure \gls{dt} instances. For the 
+time measurement of \gls{dt} update, we mainly used the data plane APIs. The 
+common operations include create, delete, update, and list. In the test, two 
+APIs are mainly used. \textit{UpdateDigitalTwin} is used for updating 
+the whole twin instance 
+and \textit{UpdateComponent} for the specific update of \gls{dt} component. 
+Other APIs, for example, \textit{Query}, are used to execute queries for twin 
+instances to get the demanding components. It was once used for timestamp 
+logging in local devices. 
 
 
 \section{Modularization}\label{chap: Meth-Modular}
@@ -680,12 +680,7 @@ layer, while the transport layer remains the same.
 When operating in an application, both TCP sockets and WebSockets transport packets 
 through all layers of the TCP/IP model. In order to better modularize delay, a set of 
 visual notations based on \gls{dsl} is created.
-Thanks to the works of former researchers, there are already some commercial graphical tools 
-developed for different purposes. The graphical tools 
-can be roughly divided into two types: tools ideal for real-world delay measurement, 
-for example, the famous Wireshark, OPNET, and NS-3, 
-and tools suitable for modeling and visualization, such as OpenModelica, 
-Matlab/Simulink and LabVIEW.
+
 
 
 Fig.\ref{fig: DSLConceptual} shows a conceptual diagram of a modularized 
@@ -744,3 +739,12 @@ back to the robot controller interface through a \gls{a/d} converter and network
     \caption{Conceptual diagram of a modularized general \gls{mas} based on \gls{dsl}. \label{fig: DSLConceptual}}
 \end{figure}
         
+
+
+Thanks to the works of former researchers, there are already some commercial graphical tools 
+developed for different purposes. The graphical tools 
+can be roughly divided into two types: tools ideal for real-world delay measurement, 
+for example, the famous Wireshark, OPNET, and NS-3, 
+and tools suitable for modeling and visualization, such as OpenModelica, 
+Matlab/Simulink and LabVIEW. The exact delay measurement on each layer could be possibly 
+measured or modeled by any of these tools in the future.
