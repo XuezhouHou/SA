@@ -12,24 +12,39 @@ chapter \ref{chap: Meth}. Both of them are tested under a 5G Network in the lab.
 \section{Local \gls{mas}}\label{chap: Result-Internal}
 After construting the local \gls{mas} system, multiple tests are conducted on the 
 agent's communication. For a better understanding of the \gls{mas} program, we 
-provide its pseudocode with its performance later tested. These tests involve 
+provide its pseudocode (section \ref{chap: Meth-WS-MAS}) with its performance later tested. These tests involve 
 passing messages through the \gls{ca} under 
 WebSocket architecture. The results of these tests are discussed in 
 section \ref{chap: Result-WS}. In addition to testing the performance of WebSocket 
-architecture alone, a comparison between WebSocket and \gls{http} is done to verify 
+architecture alone, a comparison between WebSocket and \gls{http} is done in 
+section \ref{chap: Result-RestFUL_WS} to verify 
 the feasibility of WebSocket, also with the pseudocode of the RESTful API design 
-provided. Packet prioritization tests will also be performed in 
+provided (section \ref{chap: Meth-REST-pseudocode}). Packet prioritization tests will also be performed in 
 section \ref{chap: Result-priority}. Finally, the test results of the 
-WebSocket-based \gls{mas} architecture under the BMW use case are presented to 
-close the sections. During all tests, the \gls{owd} (delays with process time) and 
+WebSocket-based \gls{mas} architecture under the BMW use case is presented to 
+close the sections. 
+
+
+
+
+
+During all tests, the \gls{owd} (delays with process time) and 
 the data transmission time (delays without process time) is measured, representing 
 time total time it takes for a message sent from one client and received by another client, 
 and the time the message travels through the network without counting the time 
-it takes for a server to process and repackage the message. 
+it takes for a server to process and repackage the message. In each test, the 
+default conditions are as follows: 
+
+\begin{itemize}
+    \item server number: 1
+    \item clientS number: 1
+    \item clientR number: 1
+    \item String message length: \~=40B
+    \item JSON message length: \~=33.4KB
+\end{itemize}
 
 
-
-\subsection{Pseudo-Code of MAS workflow in WebSocket python}\label{chap: Meth-WS-MAS}
+\subsection{Pseudocode of MAS workflow in WebSocket python}\label{chap: Meth-WS-MAS}
 The local \gls{mas} application is named as Websocket\_MAS, which is designed under the 
 environment of Ubuntu 20.04 LTS with Python 3.10. 
 In algorithm \ref{alg: CDAPseudoCode} is a piece of pseudocode that reflects the workflow of the \gls{mas} for the \gls{cda}. 
@@ -57,7 +72,7 @@ In order to rearrange them and handle the messages with higher priority in advan
 Finally, the message will be processed further or sent directly to the recipient. 
    
 \begin{breakablealgorithm}
-\caption{Pseudo-Code for \gls{cda} in MAS workflow.}
+\caption{Pseudocode for \gls{cda} in MAS workflow.}
 \label{alg: CDAPseudoCode}
 \begin{algorithmic}[1]
 \State \textbf{Input:} custRequirement
@@ -122,7 +137,7 @@ Finally, the message will be processed further or sent directly to the recipient
 
 %pseudo code for RA
 \begin{breakablealgorithm}
-    \caption{Pseudo-Code for \gls{ra} in MAS workflow.}
+    \caption{Pseudocode for \gls{ra} in MAS workflow.}
     \label{alg: RAPseudoCode}
     \begin{algorithmic}[1]
     \State {Import} WebSocket
@@ -201,7 +216,7 @@ Finally, the message will be processed further or sent directly to the recipient
 
 %pseudo code for Server
 \begin{breakablealgorithm}
-    \caption{Pseudo-Code for \gls{ca} as a server in MAS workflow.}
+    \caption{Pseudocode for \gls{ca} as a server in MAS workflow.}
     \label{alg: ServerPseudoCode}
     \begin{algorithmic}[1]
         \State {Import} WebSocket
@@ -437,20 +452,31 @@ be further transported directly.
     \label{fig: proportional-imagesize}}
 \end{figure}
 
-\subsection{Pseudo-Code of one-to-one agent communication workflow in RESTful API}
+\subsection{Pseudocode of one-to-one agent communication workflow in RESTful API}\label{chap: Meth-REST-pseudocode}
 A more comparable application layer protocol is \gls{http}, which has the request-response mechanism with more additional functionalities compared to \gls{http}. 
-Therefore, \gls{http} was considered an alternative communication protocol other than WebSocket. 
-However, based on some test results in chapter \ref{chap: Result}, WebSocket is more appropriate.
-As a result, different from WebSocket, the design of \gls{http} based system is only built for performance testing and compared to WebSocket. In the methods below, RESTful API will be used as a Web Service API, an interface to connect two devices over the internet based on \gls{http} protocol. With the design based on RESTful API, the clients can communicate with each other by using its standard \gls{crud} operations, for example, POST and GET, to send and receive messages. 
-Therefore, the RESTful API system is simplified to one-to-one agent communication without other functionalities like decision-making or message prioritization, among others.
+Therefore, \gls{http} was considered an alternative communication protocol other 
+than WebSocket. 
+Different from WebSocket, the design of \gls{http} based system is 
+only built for performance testing and its results will be compared to those from 
+WebSocket. In the pseudocode 
+below, RESTful API will be used as a Web Service API, an interface to connect 
+two devices over the internet based on \gls{http} protocol. With the design 
+based on RESTful API, the clients can communicate with each other by using its 
+standard \gls{crud} operations, for example, POST and GET, to send and receive 
+messages. 
+Therefore, the RESTful API system is simplified to one-to-one agent communication 
+without other functionalities like decision-making or message prioritization, 
+among others.
 
 
-According to the pseudo-code for agentSR (send and receive messages) and agentRS (receive and send messages) in algorithm \ref{alg: SRPseudoCode} and \ref{alg: RSPseudoCode}, and the server in algorithm \ref{alg: apiServerPseudoCode}, the primary mechanism is similar to the one designed for WebSocket. One significant difference is that the connection will be closed after the message is sent from the clientSR to clientRS. If the agentRS needs to send a response message back to inform the success, re-connection is needed. 
-Instead of sending and receiving from WebSocket, agentSR first POST a request to the server to call the function $send\_message()$, 
-while agentRS GET a request to the server for the function call $get\_message()$, same for the reverse direction. 
+According to the pseudo-code for agentS (send and receive messages) and agentR (receive and send messages) in algorithm \ref{alg: SRPseudoCode} and \ref{alg: RSPseudoCode}, and the server in algorithm \ref{alg: apiServerPseudoCode}, the primary mechanism is similar to the one designed for WebSocket. One significant difference is that the connection will be closed after the message is sent from the clientS to clientR. If the agentR needs to send a response message back to inform the success, re-connection is needed. 
+Instead of sending and receiving from WebSocket, agentS first POST a request to the server to call the function $send\_message()$, 
+while agentR GET a request to the server for the function call $get\_message()$, same for the reverse direction. 
 Under the same condition, the message transport routine with RESTful API may result in more latency than WebSocket, which will be verified later.
+
+
 \begin{algorithm}
-    \caption{Pseudo-Code for agentSR in one to one communication workflow.}
+    \caption{Pseudocode for agentS in one to one communication workflow.}
     \label{alg: SRPseudoCode}
     \begin{algorithmic}[1]
     \State {Import} flask
@@ -475,7 +501,7 @@ Under the same condition, the message transport routine with RESTful API may res
 
 
 \begin{algorithm}
-    \caption{Pseudo-Code for agentRS in one to one communication workflow.}
+    \caption{Pseudocode for agentR in one to one communication workflow.}
     \label{alg: RSPseudoCode}
     \begin{algorithmic}[1]
     \State {Import} flask
@@ -498,7 +524,7 @@ Under the same condition, the message transport routine with RESTful API may res
     \end{algorithm}
 
 \begin{algorithm}
-    \caption{Pseudo-Code for a server in one to one communication workflow.}
+    \caption{Pseudocode for a server in one to one communication workflow.}
     \label{alg: apiServerPseudoCode}
     \begin{algorithmic}[1]
     \State {Import} flask
@@ -894,7 +920,7 @@ delays for the same packet, between \gls{dta} and Azure \gls{dt} through APIs ba
 \gls{http}. Finally, the the same upload and download processes between \gls{dta} and 
 Azure \gls{dt} with different patch size are also tested. 
 
-\subsection{Pseudo-Code of \gls{rcp} and \gls{dta} workflow in C++ and C\#}\label{chap: RCPDTAPseudo}
+\subsection{Pseudocode of \gls{rcp} and \gls{dta} workflow in C++ and C\#}\label{chap: RCPDTAPseudo}
 
 As previously mentioned in this chapter, it is important to completely separate the 
 \gls{dta} from the \gls{mas}. Algorithms \ref{alg:RCPPseudoCode} and 
@@ -911,7 +937,7 @@ but are stuck together. To solve this, delimiters are utilized for sticky packet
 
 %pseudo code for RCP
 \begin{breakablealgorithm}
-    \caption{Pseudo-Code of \gls{rcp} workflow}
+    \caption{Pseudocode of \gls{rcp} workflow}
     \label{alg:RCPPseudoCode}
     \begin{algorithmic}
     \State {Import} socket, franka
@@ -933,7 +959,7 @@ but are stuck together. To solve this, delimiters are utilized for sticky packet
 
 %pseudo code for DTAgent
 \begin{breakablealgorithm}
-    \caption{Pseudo-Code of \gls{dta} workflow}
+    \caption{Pseudocode of \gls{dta} workflow}
     \label{alg:DTAgentPseudoCode}
     \begin{algorithmic}
     \State {Import} socket, AzureDigitalTwin
