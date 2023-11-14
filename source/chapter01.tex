@@ -121,21 +121,56 @@ a higher system modularization possibility.
 
 
 \section{Research questions}
-\textbf{RQ1}: How to decentralize a general \gls{mas} from a traditional highly 
+\textbf{RQ1}: \textit{How to decentralize a general \gls{mas} from a traditional highly 
 centralized pattern to obtain a more efficient and real-time oriented agent-based 
-communication system?
+communication system?}
 
-\textbf{RQ2}: How to measure the network delays of data exchanges between 
-different agents in \gls{mas}, as well as delays between \gls{dta} and the cloud 
-to retrieve end-to-end delays for each participant of the production system?
+In a collaborative robot system, planning and scheduling are always a topic under 
+discussion. In a centralized \gls{mas}, the management system always has full control 
+of the whole process plans, which allows the designer to have a full understanding 
+of the process. However, the collaboration will highly rely on that one control 
+unit, resulting in a full collapse of the system with faults. One the other hand, 
+the decentralization of \gls{mas} is often relies on local decision-making from 
+a global state, to achieve a local goal. In comparison, it becomes more difficult for an agent to 
+coordinate and synchronize with the others, causing system inconsistency and 
+efficiency reduction\cite{xuan_multi-agent_nodate}\cite{sharma_comparative_2016}.
 
-\textbf{RQ3}: How to design a communication based \gls{mas} for two industrial use 
+
+
+
+\textbf{RQ2}: \textit{How to measure the network delays of data exchanges between 
+different agents in \gls{mas}, as well as delays between local devices and the cloud 
+to retrieve end-to-end delays for each participant of the production system?}
+
+Delay measurement is always a key factor in checking the real-time capabilities of a 
+production system. The most common delay measurement of the network is based on 
+\gls{rtt} and \gls{owd}, meaning the cycle time and one-way time it takes for 
+a message to be transferred 
+from the source to the destination port\cite{paxson_end--end_1999}. The value of the measured delays can be influenced by 
+many factors, including network bandwidth and throughput, number of users, hardware 
+or cables as physical mediums, and many more\cite{neokosmidis_roadmap_2017}. 
+
+
+
+\textbf{RQ3}: \textit{How to design a communication-based \gls{mas} for two industrial use 
 cases that is also adaptable for other use cases with different production 
-requirements? 
+requirements?}
+Due to the complexity of \gls{mas} design, we mainly focus on agent-based communication, 
+planning, decision-making, and scheduling. The goal is to design a \gls{mas} architecture, 
+that can be adapted to any production requirements. The designed architecture should 
+be later tested and verified by two industrial use cases BMW and Wittenstein. 
 
-\textbf{RQ4}: How to modularize the delays among the general \gls{mas} to improve the 
+\textbf{RQ4}: \textit{How to modularize the delays among the \gls{mas} to improve the 
 predictability, scalability, accuracy, and troubleshooting possibilities for 
-each module?  
+each module?}  
+
+One challenge is to analyze the network delays in \gls{cps}. Whether the delays fulfill 
+the real-time requirements or not is less determined\cite{forouzan2004data}. Because the real-time requirements 
+are changing over factors such as product types, customer requirements, resources, hardware 
+capabilities, and so forth. So it is impossible to analyze the delays directly with 
+the data. One possible solution is to modularize the delays to have a better understanding 
+of the timing properties in each domain of the module\cite{blecker_modularity_2006}. 
+
 
 
 

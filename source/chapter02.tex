@@ -47,7 +47,7 @@ of the central customer interface agent.
 
 
 
-\section{MAS}
+\section{\gls{mas}}
 
 Within the subfields of \gls{mas}, an agent can be identified as a 
 software agent with no physical embodiment but only software to control 
@@ -303,11 +303,21 @@ high real-time streaming requirements. Hence, the real-time requirement is not u
 soft real-time requirements should be executed in the design stage. 
 
 \section{Research gap}
+In the \gls{mas} design, whether to choose a centralized or decentralized pattern 
+is dependent on the production requirements. It is essential to decentralize a 
+traditional production system without being overly detailed, which may reduce the 
+overall system efficiency. A design with both patterns integrated should be considered 
+in this article. During the \gls{mas}-based production process, frequent data exchange 
+between agents and constant data flow between \gls{dt} and the physical world may create a 
+large number of delays in the network, which should be further analyzed and modeled 
+to meet the real-time requirements of a collaborative robot system and cloud applications\cite{zhang_infrastructure_2017}. 
+Additionally, the modularization of an agent should also be considered, which should be 
+based on the Wannagat's design architecture\cite{cruz_salazar_cyber-physical_2019}. 
+In general, the \gls{mas} should be designed 
+with a high level of modularization based on \gls{dsl}\cite{hujo_toward_2022}. Along with the considerations, 
+a \gls{mas} with its cloud-based digitalization should be designed for a general production 
+workflow in the production. The performance of the \gls{mas} should be tested by 
+two industrial use cases: BMW and Wittenstein. 
+ 
 
-According to current research, there are various implementations of \gls{mas} in 
-different fields. However, there have been limited efforts to standardize and 
-modularize the \gls{mas} especially within the field of agent-based communication. 
-In addition, a cloud-based resource digitization should also 
-be considered and implemented in the \gls{mas}. In general, the \gls{mas} should be designed 
-with a high level of modularization based on \gls{dsl}.
 
